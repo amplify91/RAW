@@ -12,7 +12,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
-import android.util.Log;
 
 public class Sprite {
 	
@@ -76,6 +75,22 @@ public class Sprite {
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 	}
 	
+	public void loadGLTexture(GL10 gl, Bitmap bm){
+		bitmap = bm;
+		
+		gl.glDeleteTextures(1, textures, 0);
+		gl.glGenTextures(1, textures, 0);
+		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
+		
+		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		
+	}
+	
 	public void loadGLTexture(GL10 gl, Context context, int id){
 		
 		InputStream is = context.getResources().openRawResource(id);
@@ -89,6 +104,7 @@ public class Sprite {
 			}
 		}
 		
+		gl.glDeleteTextures(1, textures, 0);
 		gl.glGenTextures(1, textures, 0);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
 		
@@ -98,7 +114,6 @@ public class Sprite {
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
 		
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-		Log.d(LOG_TAG, ""+gl.glGetError());
 		
 		bitmap.recycle();
 	}

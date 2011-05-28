@@ -10,13 +10,16 @@ public class GameLoopThread extends Thread{
     int loops;
     float interpolation;
     boolean game_is_running;
-    
+
     GameView gameView;
+    FPSCounter fps;
 	
 	public GameLoopThread(GameView gv){
 		super();
 		gameView = gv;
 		game_is_running = false;
+		
+		fps = new FPSCounter();
 	}
 	
 	@Override
@@ -46,6 +49,8 @@ public class GameLoopThread extends Thread{
 		//without updating the game logic between scheduled ticks.
 		
 		//view_position = position + (speed * interpol);
+		
+		//fps.calculate();
 	}
 	
 	public void setGameRunning(boolean b){

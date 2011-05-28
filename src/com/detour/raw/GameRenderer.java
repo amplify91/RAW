@@ -5,7 +5,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.opengl.GLU;
 import android.opengl.GLSurfaceView.Renderer;
 
@@ -15,10 +14,11 @@ public class GameRenderer implements Renderer{
 	Context mContext;
 	Bitmap bitmap;
 	
-	private float red = 1.0f;
-	private float green = 1.0f;
-	private float blue = 1.0f;
+	//private float red = 1.0f;
+	//private float green = 1.0f;
+	//private float blue = 1.0f;
 	
+	FPSCounter fps;
 	Sprite sprite;
 	Sprite sprite2;
 	int x = 0;
@@ -27,6 +27,7 @@ public class GameRenderer implements Renderer{
 		mContext = context;
 		sprite = new Sprite();
 		sprite2 = new Sprite();
+		fps = new FPSCounter();
 	}
 	
 	@Override
@@ -39,6 +40,9 @@ public class GameRenderer implements Renderer{
 		gl.glPushMatrix();
 		gl.glScalef(0.5f, 0.5f, 1.0f);
 		gl.glTranslatef(-4, -1.5f, 0);
+		if(x>3){
+			x=0;
+		}
 		if(x%2==0){
 			sprite.draw(gl);
 		}else{
@@ -46,6 +50,8 @@ public class GameRenderer implements Renderer{
 		}
 		x++;
 		gl.glPopMatrix();
+		fps.calculate();
+		//fps.draw(gl);
 	}
 	
 	@Override
@@ -71,7 +77,7 @@ public class GameRenderer implements Renderer{
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		// Set the background color to black.
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		// Enable Smooth Shading, default not really needed.
 		gl.glShadeModel(GL10.GL_SMOOTH);
 		// Depth buffer setup.
