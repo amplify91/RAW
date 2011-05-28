@@ -15,7 +15,7 @@ public class GameActivity extends Activity{
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        
         gameView = new GameView(this.getApplicationContext());
         setContentView(gameView);
     }

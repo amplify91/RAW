@@ -29,37 +29,36 @@ public class Sprite {
             1.0f, 0.0f};
 	
 	private float vertices[] = {
-		      -1.0f,  1.0f, 0.0f,  // 0, Top Left
-		      -1.0f, -1.0f, 0.0f,  // 1, Bottom Left
-		       1.0f, -1.0f, 0.0f,  // 2, Bottom Right
-		       1.0f,  1.0f, 0.0f,  // 3, Top Right
-		};
-	// The order we like to connect them.
-	private byte[] indices = {0, 1, 2, 0, 2, 3};
-	// Our vertex buffer.
+		      -1.0f,  1.0f, 0.0f,
+		      -1.0f, -1.0f, 0.0f,
+		       1.0f, -1.0f, 0.0f,
+		       1.0f,  1.0f, 0.0f,};
+	
+	private byte[] indices = {
+			0, 1, 2,
+			0, 2, 3};
+	
 	private FloatBuffer vertexBuffer;
-	// Our index buffer.
+	private FloatBuffer textureBuffer;
 	private ByteBuffer indexBuffer;
 	
-	private FloatBuffer textureBuffer;
-	
-	public Sprite() {
+	public Sprite(){
 		
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
 		vbb.order(ByteOrder.nativeOrder());
 		vertexBuffer = vbb.asFloatBuffer();
 		vertexBuffer.put(vertices);
 		vertexBuffer.position(0);
-
-		indexBuffer = ByteBuffer.allocateDirect(indices.length);
-		indexBuffer.put(indices);
-		indexBuffer.position(0);
 		
 		ByteBuffer byteBuf = ByteBuffer.allocateDirect(textureCoordinates.length * 4);
 		byteBuf.order(ByteOrder.nativeOrder());
 		textureBuffer = byteBuf.asFloatBuffer();
 		textureBuffer.put(textureCoordinates);
 		textureBuffer.position(0);
+
+		indexBuffer = ByteBuffer.allocateDirect(indices.length);
+		indexBuffer.put(indices);
+		indexBuffer.position(0);
 	}
 	
 	public void draw(GL10 gl) {
@@ -99,7 +98,7 @@ public class Sprite {
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
 		
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-		Log.i(LOG_TAG, ""+gl.glGetError());
+		Log.d(LOG_TAG, ""+gl.glGetError());
 		
 		bitmap.recycle();
 	}

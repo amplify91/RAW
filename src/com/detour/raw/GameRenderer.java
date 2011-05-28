@@ -20,10 +20,13 @@ public class GameRenderer implements Renderer{
 	private float blue = 1.0f;
 	
 	Sprite sprite;
+	Sprite sprite2;
+	int x = 0;
 	
 	public GameRenderer(Context context){
 		mContext = context;
 		sprite = new Sprite();
+		sprite2 = new Sprite();
 	}
 	
 	@Override
@@ -36,7 +39,12 @@ public class GameRenderer implements Renderer{
 		gl.glPushMatrix();
 		gl.glScalef(0.5f, 0.5f, 1.0f);
 		gl.glTranslatef(-4, -1.5f, 0);
-		sprite.draw(gl);
+		if(x%2==0){
+			sprite.draw(gl);
+		}else{
+			sprite2.draw(gl);
+		}
+		x++;
 		gl.glPopMatrix();
 	}
 	
@@ -75,6 +83,7 @@ public class GameRenderer implements Renderer{
 		// Really nice perspective calculations.
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
 		sprite.loadGLTexture(gl, mContext, R.drawable.raw1);
+		sprite2.loadGLTexture(gl, mContext, R.drawable.raw2);
 		
 	}
 	
