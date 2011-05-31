@@ -12,8 +12,9 @@ public class GameView extends GLSurfaceView{
 
 	public GameView(Context context) {
 		super(context);
-		//setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
-		
+		setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
+		setKeepScreenOn(true);
+		setEGLContextClientVersion(2);
 		renderer = new GameRenderer(context);
 		setRenderer(renderer);
 		setRenderMode(RENDERMODE_WHEN_DIRTY);

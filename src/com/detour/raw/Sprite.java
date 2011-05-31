@@ -5,21 +5,27 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.opengl.GLES20;
 import android.opengl.GLUtils;
 
 public class Sprite {
 	
+	public static final int FRAME_WIDTH = 64;
+	public static final int FRAME_HEIGHT = 64;
 	private static final String LOG_TAG = GameRenderer.class.getSimpleName();
 	Context mContext;
 	Bitmap bitmap;
 	
-	int[] textures = new int[1];
+	private int[] textures = new int[1];
+	private int[] pixels;
 	
 	private float textureCoordinates[] = {
             0.0f, 0.0f,
@@ -33,13 +39,13 @@ public class Sprite {
 		       1.0f, -1.0f, 0.0f,
 		       1.0f,  1.0f, 0.0f,};
 	
-	private byte[] indices = {
+	private short[] indices = {
 			0, 1, 2,
 			0, 2, 3};
 	
 	private FloatBuffer vertexBuffer;
-	private FloatBuffer textureBuffer;
-	private ByteBuffer indexBuffer;
+	private IntBuffer textureBuffer;
+	private ShortBuffer indexBuffer;
 	
 	public Sprite(){
 		
@@ -49,45 +55,42 @@ public class Sprite {
 		vertexBuffer.put(vertices);
 		vertexBuffer.position(0);
 		
-		ByteBuffer byteBuf = ByteBuffer.allocateDirect(textureCoordinates.length * 4);
-		byteBuf.order(ByteOrder.nativeOrder());
-		textureBuffer = byteBuf.asFloatBuffer();
-		textureBuffer.put(textureCoordinates);
-		textureBuffer.position(0);
+		
 
-		indexBuffer = ByteBuffer.allocateDirect(indices.length);
+		ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * 2);
+		ibb.order(ByteOrder.nativeOrder());
+		indexBuffer = ibb.asShortBuffer();
 		indexBuffer.put(indices);
 		indexBuffer.position(0);
+		
 	}
 	
 	public void draw(GL10 gl) {
 		
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
-		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		gl.glFrontFace(GL10.GL_CCW);
-		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
-		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, FRAME_WIDTH, FRAME_HEIGHT, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, textureBuffer);
+		GLES20.glVertexAttribPointer(0, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);//Pointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 		
-		gl.glDrawElements(GL10.GL_TRIANGLES, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer);
 		
-		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+		
 	}
 	
 	public void loadGLTexture(GL10 gl, Bitmap bm){
 		bitmap = bm;
 		
-		gl.glDeleteTextures(1, textures, 0);
-		gl.glGenTextures(1, textures, 0);
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		GLES20.glDeleteTextures(1, textures, 0);
+		GLES20.glGenTextures(1, textures, 0);
+		GLES20.glActiveTexture(textures[0]);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
 		
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_REPEAT);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_REPEAT);
 		
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, FRAME_WIDTH, FRAME_HEIGHT, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, textureBuffer);
 		
 	}
 	
@@ -104,16 +107,26 @@ public class Sprite {
 			}
 		}
 		
-		gl.glDeleteTextures(1, textures, 0);
-		gl.glGenTextures(1, textures, 0);
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		pixels = new int[(bitmap.getWidth()*bitmap.getHeight())];
+		bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
 		
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
+		ByteBuffer byteBuf = ByteBuffer.allocateDirect(pixels.length * 4);
+		byteBuf.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuf.asIntBuffer();
+		textureBuffer.put(pixels);
+		textureBuffer.position(0);
 		
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		GLES20.glDeleteTextures(1, textures, 0);
+		GLES20.glGenTextures(1, textures, 0);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
+		
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_REPEAT);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_REPEAT);
+		
+		//GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, FRAME_WIDTH, FRAME_HEIGHT, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, byteBuf);//(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+		GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 		
 		bitmap.recycle();
 	}
