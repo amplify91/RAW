@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 
-public class FPSCounter extends Sprite{
+public class FPSCounter {
 	
 	private long mLastTime;
     private long frameSampleTime = 0;
@@ -67,8 +67,8 @@ public class FPSCounter extends Sprite{
 	
 	public void draw(GL10 gl){
 		
-		super.loadGLTexture(gl, bitmap);
-		super.draw(gl);
+		//super.loadGLTexture(gl, bitmap);
+		//super.draw(gl);
 	}
 	
 }

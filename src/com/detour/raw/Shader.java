@@ -10,6 +10,7 @@ import android.util.Log;
 
 public class Shader {
 	
+	public static final String TAG = "Shader";	
 	int program;
 	int vertexShader;
 	int fragmentShader;
@@ -30,14 +31,13 @@ public class Shader {
 	}
 	
 	public Shader(int vs_source_id, int fs_source_id, Context context) {
-		//totally borrowed constructor
 		
 		StringBuffer vs = new StringBuffer();
 		StringBuffer fs = new StringBuffer();
 		
 		try{
 			InputStream inputStream = context.getResources().openRawResource(vs_source_id);
-			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream), inputStream.toString().length());
 			
 			String read = in.readLine();
 			while (read != null) {
@@ -47,7 +47,7 @@ public class Shader {
 			vs.deleteCharAt(vs.length() - 1);
 			
 			inputStream = context.getResources().openRawResource(fs_source_id);
-			in = new BufferedReader(new InputStreamReader(inputStream));
+			in = new BufferedReader(new InputStreamReader(inputStream), inputStream.toString().length());
 			
 			read = in.readLine();
 			while (read != null) {
@@ -59,20 +59,41 @@ public class Shader {
 			Log.d("ERROR-readingShader", "Could not read shader: " + e.getLocalizedMessage());
 		}
 		
-		createProgram();
 		this.vShaderSource = vs.toString();
+		//Log.i(TAG, vShaderSource);
 		this.fShaderSource = fs.toString();
+		//Log.i(TAG, fShaderSource);
+		
+		createProgram();
 	}
 	
 	private void createProgram(){
 		
 		program = GLES20.glCreateProgram();
-		vertexShader = createShader(GLES20.GL_VERTEX_SHADER, vShaderSource);
-		fragmentShader = createShader(GLES20.GL_FRAGMENT_SHADER, fShaderSource);
+		if(program!=0){
+			vertexShader = createShader(GLES20.GL_VERTEX_SHADER, vShaderSource);
+			fragmentShader = createShader(GLES20.GL_FRAGMENT_SHADER, fShaderSource);
+			
+			if(vertexShader!=0){
+				GLES20.glAttachShader(program, vertexShader);
+				
+			}
+			String vs_info = GLES20.glGetShaderInfoLog(vertexShader);
+			Log.d(TAG, vs_info);
+			
+			if(fragmentShader!=0){
+				GLES20.glAttachShader(program, fragmentShader);
+			}
+			String fs_info = GLES20.glGetShaderInfoLog(fragmentShader);
+			Log.d(TAG, fs_info);
+			
+			GLES20.glLinkProgram(program);
+		}else{
+			Log.e(TAG, "Couldn't create program.");
+		}
+		String p_info = GLES20.glGetProgramInfoLog(program);
+		Log.d(TAG, p_info);
 		
-		GLES20.glAttachShader(program, vertexShader);
-		GLES20.glAttachShader(program, fragmentShader);
-		GLES20.glLinkProgram(program);
 		
 	}
 	

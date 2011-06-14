@@ -6,13 +6,13 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
-import android.opengl.GLU;
-import android.opengl.Matrix;
 import android.opengl.GLSurfaceView;
+import android.opengl.Matrix;
+import android.util.Log;
 
 public class GameRenderer implements GLSurfaceView.Renderer{
 	
-	private static final String LOG_TAG = GameRenderer.class.getSimpleName();
+	private static final String LOG_TAG = "GameRenderer";
 	Context mContext;
 	Bitmap bitmap;
 	
@@ -30,20 +30,17 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	
 	//int[] vertexShader;
 	//int[] fragmentShader;
-	int program;
-	String vShaderSource = "";
-	String fShaderSource = "";
+	//int program;
+	//String vShaderSource = "";
+	//String fShaderSource = "";
 	
 	
 	public GameRenderer(Context context){
 		mContext = context;
 		
-		//vertexShader = new int[1]; //for using shaders written in resource files.
-		//fragmentShader = new int[1];
-		
 		//create objects/sprites
-		sprite = new Sprite();
-		sprite2 = new Sprite();
+		sprite = new Sprite(mContext);
+		sprite2 = new Sprite(mContext);
 		fps = new FPSCounter();
 	}
 	
@@ -63,7 +60,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		}
 		x++;
 		
-		fps.calculate();
+		//fps.calculate();
 		//fps.draw(gl);
 	}
 	
@@ -79,7 +76,10 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// TODO Auto-generated method stub
 		
-		GLES20.glEnable(GLES20.GL_TEXTURE_2D);
+		/*int error = GLES20.glGetError();
+		Log.d(LOG_TAG, ""+error);*/
+		
+		//GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 		GLES20.glClearDepthf(1.0f);
 		GLES20.glDepthFunc(GLES20.GL_LEQUAL);
@@ -88,15 +88,11 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glCullFace(GLES20.GL_BACK);
 		GLES20.glClearColor(red, green, blue, 1.0f);
 		
-		shader = new Shader(vShaderSource, fShaderSource);
-		program = shader.getProgram();
-		GLES20.glUseProgram(program);
-		
-		//load sprite textures (preferably loop through an array of all sprites).
+		//load sprite/object textures (preferably loop through an array of all sprites).
 		sprite.loadGLTexture(gl, mContext, R.drawable.raw1);
 		sprite2.loadGLTexture(gl, mContext, R.drawable.raw2);
 		
-		//Matrix.setLookAtM(mVMatrix, 0, 0, 0, -5.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
+		Matrix.setLookAtM(mVMatrix, 0, 0, 0, -5.0f, 0.0f, 0f, 0f, 0f, 0.0f, 0.0f);
 		
 		System.gc();
 	}
