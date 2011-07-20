@@ -6,7 +6,7 @@ public class GameLoopThread extends Thread{
 	public static final long SKIP_TICKS = 1000000000 / TICKS_PER_SECOND;
 	public static final int MAX_FRAMESKIP = 5;
 	
-	long next_game_tick = System.nanoTime();
+	long next_game_tick;
     int loops;
     float interpolation;
     boolean game_is_running;
@@ -16,6 +16,7 @@ public class GameLoopThread extends Thread{
 	
 	public GameLoopThread(GameView gv){
 		super();
+		next_game_tick = System.nanoTime();
 		gameView = gv;
 		game_is_running = false;
 		

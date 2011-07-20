@@ -8,11 +8,10 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.util.Log;
 
 public class GameRenderer implements GLSurfaceView.Renderer{
 	
-	private static final String LOG_TAG = "GameRenderer";
+	private static final String TAG = "GameRenderer";
 	Context mContext;
 	Bitmap bitmap;
 	
@@ -50,15 +49,16 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glClearColor(red, green, blue, 1.0f);
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 		
-		if(x>3){
+		sprite.draw();
+		/*if(x>3){
 			x=0;
 		}
 		if(x%2==0){
-			sprite.draw(gl);
+			sprite.draw();
 		}else{
-			sprite2.draw(gl);
+			sprite2.draw();
 		}
-		x++;
+		x++;*/
 		
 		//fps.calculate();
 		//fps.draw(gl);
@@ -69,7 +69,8 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		GLES20.glViewport(0, 0, width, height);
 		float ratio = (float)(width/height);
-		Matrix.frustumM(mProjMatrix, 0, -ratio, ratio, -1, 1, 0.5f, 10);
+		Matrix.orthoM(mProjMatrix, 0, -ratio, ratio, -1, 1, 0.5f, 10);
+		Matrix.setLookAtM(mVMatrix, 0, 0, 0, -1.0f, 0.0f, 0f, 0f, 0f, 0.0f, 0.0f);
 	}
 
 	@Override
@@ -89,10 +90,10 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glClearColor(red, green, blue, 1.0f);
 		
 		//load sprite/object textures (preferably loop through an array of all sprites).
-		sprite.loadGLTexture(gl, mContext, R.drawable.raw1);
-		sprite2.loadGLTexture(gl, mContext, R.drawable.raw2);
+		sprite.loadGLTexture(R.drawable.raw1a);
+		//sprite2.loadGLTexture(R.drawable.raw2);
 		
-		Matrix.setLookAtM(mVMatrix, 0, 0, 0, -5.0f, 0.0f, 0f, 0f, 0f, 0.0f, 0.0f);
+		//Matrix.setLookAtM(mVMatrix, 0, 0, 0, -1.0f, 0.0f, 0f, 0f, 0f, 0.0f, 0.0f);
 		
 		System.gc();
 	}
