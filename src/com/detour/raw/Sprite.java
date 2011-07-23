@@ -16,8 +16,8 @@ public class Sprite {
 		renderable.draw();
 	}
 	
-	public void loadGLTexture(int id) {
-		renderable.loadGLTexture(id);
+	public void loadGLTexture(int id, int program) {
+		renderable.loadGLTexture(id, program);
 	}
 	
 }

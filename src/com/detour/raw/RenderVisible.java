@@ -16,8 +16,9 @@ public class RenderVisible implements Renderable{
 	Context mContext;
 	Bitmap bitmap;
 	
-	private int textureLoc;
-	private int vertexLoc;
+	private int textureHandle;
+	private int vertexHandle;
+	
 	private int[] textures = new int[1];
 	
 	private float vertices[] = {
@@ -63,20 +64,19 @@ public class RenderVisible implements Renderable{
 	@Override
 	public void draw() {
 		
+		GLES20.glEnableVertexAttribArray(vertexHandle);
+		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
 		GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
 		
 	}
 
 	@Override
-	public void loadGLTexture(int id) {
-		shader = new Shader(R.raw.sprite_vs, R.raw.sprite_fs, mContext);
-		program = shader.getProgram();
+	public void loadGLTexture(int id, int program) {
 		
-		GLES20.glUseProgram(program);
-		
-		vertexLoc = GLES20.glGetAttribLocation(program, "a_position");
-		textureLoc = GLES20.glGetUniformLocation(program, "u_texture"); //texture
+		vertexHandle = GLES20.glGetAttribLocation(program, "a_position");
+		textureHandle = GLES20.glGetUniformLocation(program, "u_texture"); //texture
 		
 		bitmap = BitmapFactory.decodeResource(mContext.getResources(), id);
 		/*InputStream is = mContext.getResources().openRawResource(id);
@@ -93,10 +93,8 @@ public class RenderVisible implements Renderable{
 		GLES20.glGenTextures(1, textures, 0);
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
-		GLES20.glUniform1i(textureLoc, 0);
-		
-		GLES20.glEnableVertexAttribArray(vertexLoc);
-		GLES20.glVertexAttribPointer(vertexLoc, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+		GLES20.glUniform1i(textureHandle, 0);
+		//GLES20.glUniformMatrix4fv(location, count, transpose, value);
 		
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
