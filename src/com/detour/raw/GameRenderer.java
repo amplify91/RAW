@@ -32,8 +32,9 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	private float[] mProjMatrix = new float[16];
 	private float[] mVMatrix = new float[16];
 	private float[] mMMatrix = new float[16];
-	private float[] mVPMatrix = new float[16];
-	private float[] mIMatrix = new float[16];
+	private float[] mMVMatrix = new float[16];
+	//private float[] mVPMatrix = new float[16];
+	//private float[] mIMatrix = new float[16];
 	
 	//int[] vertexShader;
 	//int[] fragmentShader;
@@ -60,8 +61,8 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glUseProgram(program);
 		//Matrix.setIdentityM(mIMatrix, 0);
 		
-		Matrix.multiplyMM(mMVPMatrix, 0, mVMatrix, 0, mMMatrix, 0);
-        Matrix.multiplyMM(mMVPMatrix, 0, mProjMatrix, 0, mMVPMatrix , 0);
+		//Matrix.multiplyMM(mMVMatrix, 0, mVMatrix, 0, mMMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjMatrix, 0, mMVMatrix , 0);
 
         GLES20.glUniformMatrix4fv(muMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		
@@ -84,9 +85,9 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		
 		GLES20.glViewport(0, 0, width, height);
-		float ratio = (float)(width/height);
+		float ratio = ((float)(width))/((float)(height));
 		Matrix.orthoM(mProjMatrix, 0, -ratio, ratio, -1, 1, 0.5f, 10);
-		//Matrix.setLookAtM(mVMatrix, 0, 0, 0, -1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
+		Matrix.setLookAtM(mMVMatrix, 0, 0, 0, 1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
 	}
 
 	@Override
@@ -114,7 +115,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		sprite.loadGLTexture(R.drawable.raw1a, program);
 		sprite2.loadGLTexture(R.drawable.raw2, program);
 		
-		Matrix.setLookAtM(mVMatrix, 0, 0, 0, -1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
+		//Matrix.setLookAtM(mVMatrix, 0, 0, 0, -1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
 		
 		System.gc();
 	}
