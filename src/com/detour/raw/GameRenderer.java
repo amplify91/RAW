@@ -15,9 +15,9 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	Context mContext;
 	Bitmap bitmap;
 	
-	private float red = 0.0f;
-	private float green = 0.0f;
-	private float blue = 0.0f;
+	private float red = 0.5f;
+	private float green = 0.5f;
+	private float blue = 0.5f;
 	
 	Shader shader;
 	int program;
@@ -30,17 +30,11 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	
 	private float[] mMVPMatrix = new float[16];
 	private float[] mProjMatrix = new float[16];
-	private float[] mVMatrix = new float[16];
-	private float[] mMMatrix = new float[16];
 	private float[] mMVMatrix = new float[16];
+	//private float[] mVMatrix = new float[16];
+	//private float[] mMMatrix = new float[16];
 	//private float[] mVPMatrix = new float[16];
 	//private float[] mIMatrix = new float[16];
-	
-	//int[] vertexShader;
-	//int[] fragmentShader;
-	//int program;
-	//String vShaderSource = "";
-	//String fShaderSource = "";
 	
 	
 	public GameRenderer(Context context){
@@ -66,8 +60,8 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 
         GLES20.glUniformMatrix4fv(muMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		
-		//sprite.draw();
-		if(x>3){
+		sprite.draw();
+		/*if(x>3){
 			x=0;
 		}
 		if(x%2==0){
@@ -75,7 +69,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		}else{
 			sprite2.draw();
 		}
-		x++;
+		x++;*/
 		
 		//fps.calculate();
 		//fps.draw(gl);
@@ -102,7 +96,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		muMVPMatrixHandle = GLES20.glGetUniformLocation(program, "u_MVPMatrix");
 		
-		//GLES20.glEnable(GLES20.GL_TEXTURE_2D);
+		GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 		GLES20.glClearDepthf(1.0f);
 		GLES20.glDepthFunc(GLES20.GL_LEQUAL);
@@ -114,8 +108,6 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		//load sprite/object textures (preferably loop through an array of all sprites).
 		sprite.loadGLTexture(R.drawable.raw1a, program);
 		sprite2.loadGLTexture(R.drawable.raw2, program);
-		
-		//Matrix.setLookAtM(mVMatrix, 0, 0, 0, -1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
 		
 		System.gc();
 	}

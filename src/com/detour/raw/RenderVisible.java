@@ -16,10 +16,18 @@ public class RenderVisible implements Renderable{
 	Context mContext;
 	Bitmap bitmap;
 	
-	private int textureHandle;
 	private int vertexHandle;
+	private int texCoordHandle;
+	private int textureHandle;
 	
 	private int[] textures = new int[1];
+	
+	private float textureCoordinates[] = {
+            0.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+            1.0f, 0.0f
+            };
 	
 	private float vertices[] = {
 			-1.0f,  1.0f,// 0.0f,
@@ -33,13 +41,8 @@ public class RenderVisible implements Renderable{
 			0, 2, 3};
 	
 	private FloatBuffer vertexBuffer;
-	//private IntBuffer textureBuffer;
+	private FloatBuffer textureBuffer;
 	private ShortBuffer indexBuffer;
-	
-	Shader shader;
-	int program;
-	String vShaderSource = "";
-	String fShaderSource = "";
 	
 	public RenderVisible(Context context){
 		
@@ -51,7 +54,11 @@ public class RenderVisible implements Renderable{
 		vertexBuffer.put(vertices);
 		vertexBuffer.position(0);
 		
-		
+		ByteBuffer byteBuf = ByteBuffer.allocateDirect(textureCoordinates.length * 4);
+		byteBuf.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuf.asFloatBuffer();
+		textureBuffer.put(textureCoordinates);
+		textureBuffer.position(0);
 
 		ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * 2);
 		ibb.order(ByteOrder.nativeOrder());
@@ -65,7 +72,9 @@ public class RenderVisible implements Renderable{
 	public void draw() {
 		
 		GLES20.glEnableVertexAttribArray(vertexHandle);
+		GLES20.glEnableVertexAttribArray(texCoordHandle);
 		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+		GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
 		GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
@@ -76,7 +85,8 @@ public class RenderVisible implements Renderable{
 	public void loadGLTexture(int id, int program) {
 		
 		vertexHandle = GLES20.glGetAttribLocation(program, "a_position");
-		textureHandle = GLES20.glGetUniformLocation(program, "u_texture"); //texture
+		texCoordHandle = GLES20.glGetAttribLocation(program, "a_texcoord");
+		textureHandle = GLES20.glGetUniformLocation(program, "u_texture");
 		
 		bitmap = BitmapFactory.decodeResource(mContext.getResources(), id);
 		/*InputStream is = mContext.getResources().openRawResource(id);
@@ -94,7 +104,6 @@ public class RenderVisible implements Renderable{
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
 		GLES20.glUniform1i(textureHandle, 0);
-		//GLES20.glUniformMatrix4fv(location, count, transpose, value);
 		
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
