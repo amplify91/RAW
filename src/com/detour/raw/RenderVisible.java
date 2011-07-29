@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
+import android.opengl.Matrix;
 
 public class RenderVisible implements Renderable{
 	
@@ -19,6 +20,7 @@ public class RenderVisible implements Renderable{
 	private int vertexHandle;
 	private int texCoordHandle;
 	private int textureHandle;
+	private int MVPMatrixHandle;
 	
 	private int[] textures = new int[1];
 	
@@ -30,29 +32,34 @@ public class RenderVisible implements Renderable{
             };
 	
 	private float vertices[] = {
-			-1.0f,  1.0f,// 0.0f,
-			-1.0f, -1.0f,// 0.0f,
-			 1.0f, -1.0f,// 0.0f,
-			 1.0f,  1.0f// 0.0f,
+			-1.0f,  1.0f, 0.0f, 1.0f,
+			-1.0f, -1.0f, 0.0f, 1.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f,
+			 1.0f,  1.0f, 0.0f, 1.0f
 		     };
 	
 	private short[] indices = {
 			0, 1, 2,
-			0, 2, 3};
+			0, 2, 3
+			};
 	
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer textureBuffer;
 	private ShortBuffer indexBuffer;
 	
+	private float[] mModelMatrix = new float[16];
+	private float[] mMVMatrix = new float[16];
+	private float[] mMVPMatrix = new float[16];
+	
+	private float mScaleX = 1.0f;
+	private float mScaleY = 1.0f;
+	private float mTransX = 0;
+	private float mTransY = 0;
+	//private float mRotate = 0;
+	
 	public RenderVisible(Context context){
 		
 		mContext = context;
-		
-		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
-		vbb.order(ByteOrder.nativeOrder());
-		vertexBuffer = vbb.asFloatBuffer();
-		vertexBuffer.put(vertices);
-		vertexBuffer.position(0);
 		
 		ByteBuffer byteBuf = ByteBuffer.allocateDirect(textureCoordinates.length * 4);
 		byteBuf.order(ByteOrder.nativeOrder());
@@ -66,18 +73,38 @@ public class RenderVisible implements Renderable{
 		indexBuffer.put(indices);
 		indexBuffer.position(0);
 		
+		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
+		vbb.order(ByteOrder.nativeOrder());
+		vertexBuffer = vbb.asFloatBuffer();
+		vertexBuffer.put(vertices);
+		vertexBuffer.position(0);
+		
 	}
 	
 	@Override
-	public void draw() {
+	public void draw(float[] view, float[] proj) {
+		
+		Matrix.setIdentityM(mModelMatrix, 0);
+		Matrix.scaleM(mModelMatrix, 0, mScaleX, mScaleY, 1);
+		Matrix.translateM(mModelMatrix, 0, mTransX, mTransY, 0);
+		//Matrix.rotateM(mModelMatrix, 0, mRotate, 0, 0, 0);
+		Matrix.multiplyMM(mMVMatrix, 0, view, 0, mModelMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, proj, 0, mMVMatrix, 0);
 		
 		GLES20.glEnableVertexAttribArray(vertexHandle);
 		GLES20.glEnableVertexAttribArray(texCoordHandle);
-		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+		GLES20.glVertexAttribPointer(vertexHandle, 4, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 		GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
+		GLES20.glUniform1i(textureHandle, 0);
+		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, mMVPMatrix, 0);
+		
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
+		
 		GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+		
+		GLES20.glDisableVertexAttribArray(vertexHandle);
+		GLES20.glDisableVertexAttribArray(texCoordHandle);
 		
 	}
 
@@ -87,6 +114,7 @@ public class RenderVisible implements Renderable{
 		vertexHandle = GLES20.glGetAttribLocation(program, "a_position");
 		texCoordHandle = GLES20.glGetAttribLocation(program, "a_texcoord");
 		textureHandle = GLES20.glGetUniformLocation(program, "u_texture");
+		MVPMatrixHandle = GLES20.glGetUniformLocation(program, "u_MVPMatrix");
 		
 		bitmap = BitmapFactory.decodeResource(mContext.getResources(), id);
 		/*InputStream is = mContext.getResources().openRawResource(id);
@@ -103,7 +131,6 @@ public class RenderVisible implements Renderable{
 		GLES20.glGenTextures(1, textures, 0);
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
-		GLES20.glUniform1i(textureHandle, 0);
 		
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
@@ -115,5 +142,15 @@ public class RenderVisible implements Renderable{
 		
 		bitmap.recycle();
 	}
-
+	
+	public void scale(float sx, float sy){
+		mScaleX = sx;
+		mScaleY = sy;
+	}
+	
+	public void translate(float tx, float ty){
+		mTransX = tx;
+		mTransY = ty;
+	}
+	
 }

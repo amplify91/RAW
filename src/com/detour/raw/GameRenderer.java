@@ -11,7 +11,7 @@ import android.opengl.Matrix;
 
 public class GameRenderer implements GLSurfaceView.Renderer{
 	
-	private static final String TAG = "GameRenderer";
+	//private static final String TAG = "GameRenderer";
 	Context mContext;
 	Bitmap bitmap;
 	
@@ -26,16 +26,8 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	Sprite sprite2;
 	int x = 0;
 	
-	private int muMVPMatrixHandle;
-	
-	private float[] mMVPMatrix = new float[16];
+	private float[] mViewMatrix = new float[16];
 	private float[] mProjMatrix = new float[16];
-	private float[] mMVMatrix = new float[16];
-	//private float[] mVMatrix = new float[16];
-	//private float[] mMMatrix = new float[16];
-	//private float[] mVPMatrix = new float[16];
-	//private float[] mIMatrix = new float[16];
-	
 	
 	public GameRenderer(Context context){
 		mContext = context;
@@ -53,23 +45,14 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 		
 		GLES20.glUseProgram(program);
-		//Matrix.setIdentityM(mIMatrix, 0);
 		
-		//Matrix.multiplyMM(mMVMatrix, 0, mVMatrix, 0, mMMatrix, 0);
-        Matrix.multiplyMM(mMVPMatrix, 0, mProjMatrix, 0, mMVMatrix , 0);
-
-        GLES20.glUniformMatrix4fv(muMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+		sprite.scale(0.5f, 0.5f);
+		sprite.translate(-1, 0);
+		sprite.draw(mViewMatrix, mProjMatrix);
 		
-		sprite.draw();
-		/*if(x>3){
-			x=0;
-		}
-		if(x%2==0){
-			sprite.draw();
-		}else{
-			sprite2.draw();
-		}
-		x++;*/
+		sprite2.scale(1.0f, 0.5f);
+		sprite2.translate(1.0f, 0.5f);
+        sprite2.draw(mViewMatrix, mProjMatrix);
 		
 		//fps.calculate();
 		//fps.draw(gl);
@@ -81,12 +64,11 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glViewport(0, 0, width, height);
 		float ratio = ((float)(width))/((float)(height));
 		Matrix.orthoM(mProjMatrix, 0, -ratio, ratio, -1, 1, 0.5f, 10);
-		Matrix.setLookAtM(mMVMatrix, 0, 0, 0, 1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
+		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
 	}
 
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		// TODO Auto-generated method stub
 		
 		/*int error = GLES20.glGetError();
 		Log.d(LOG_TAG, ""+error);*/
@@ -94,10 +76,9 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		shader = new Shader(R.raw.sprite_vs, R.raw.sprite_fs, mContext);
 		program = shader.getProgram();
 		
-		muMVPMatrixHandle = GLES20.glGetUniformLocation(program, "u_MVPMatrix");
-		
 		GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+		GLES20.glEnable(GLES20.GL_BLEND);
 		GLES20.glClearDepthf(1.0f);
 		GLES20.glDepthFunc(GLES20.GL_LEQUAL);
 		GLES20.glDepthMask(true);
@@ -106,8 +87,8 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glClearColor(red, green, blue, 1.0f);
 		
 		//load sprite/object textures (preferably loop through an array of all sprites).
-		sprite.loadGLTexture(R.drawable.raw1a, program);
-		sprite2.loadGLTexture(R.drawable.raw2, program);
+		sprite.loadGLTexture(R.drawable.raw1, program);
+		sprite2.loadGLTexture(R.drawable.spritesheet1, program);
 		
 		System.gc();
 	}

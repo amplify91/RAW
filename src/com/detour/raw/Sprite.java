@@ -12,12 +12,21 @@ public class Sprite {
 		
 	}
 	
-	public void draw(){
-		renderable.draw();
+	public void draw(float[] view, float[] proj){
+		
+		renderable.draw(view, proj);
 	}
 	
 	public void loadGLTexture(int id, int program) {
 		renderable.loadGLTexture(id, program);
+	}
+	
+	public void scale(float sx, float sy){
+		renderable.scale(sx, sy);
+	}
+	
+	public void translate(float tx, float ty){
+		renderable.translate(tx, ty);
 	}
 	
 }
