@@ -3,7 +3,7 @@ package com.detour.raw;
 public class GameLoopThread extends Thread{
 	
 	public static final int TICKS_PER_SECOND = 25; //UPS
-	public static final long SKIP_TICKS = 1000000000 / TICKS_PER_SECOND;
+	public static final long TICK_DURARTION = 1000000000 / TICKS_PER_SECOND;
 	public static final int MAX_FRAMESKIP = 5;
 	
 	long next_game_tick;
@@ -30,10 +30,10 @@ public class GameLoopThread extends Thread{
 	        loops = 0;
 	        while(System.nanoTime() > next_game_tick && loops < MAX_FRAMESKIP) {
 	            updateGame();
-	            next_game_tick += SKIP_TICKS;
+	            next_game_tick += TICK_DURARTION;
 	            loops++;
 	        }
-	        interpolation = ((float)(System.nanoTime() + SKIP_TICKS - next_game_tick))/((float)SKIP_TICKS);
+	        interpolation = ((float)(System.nanoTime() + TICK_DURARTION - next_game_tick))/((float)TICK_DURARTION);
 	        displayGame(interpolation);
 	    }
 	}

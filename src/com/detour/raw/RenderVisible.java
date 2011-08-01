@@ -4,10 +4,12 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
@@ -16,6 +18,8 @@ public class RenderVisible implements Renderable{
 	
 	Context mContext;
 	Bitmap bitmap;
+	
+	ArrayList<Bitmap> aFrames = new ArrayList<Bitmap>();
 	
 	private int vertexHandle;
 	private int texCoordHandle;
@@ -116,7 +120,6 @@ public class RenderVisible implements Renderable{
 		textureHandle = GLES20.glGetUniformLocation(program, "u_texture");
 		MVPMatrixHandle = GLES20.glGetUniformLocation(program, "u_MVPMatrix");
 		
-		bitmap = BitmapFactory.decodeResource(mContext.getResources(), id);
 		/*InputStream is = mContext.getResources().openRawResource(id);
 		try {
 			bitmap = BitmapFactory.decodeStream(is);
@@ -137,10 +140,60 @@ public class RenderVisible implements Renderable{
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_REPEAT);
 		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_REPEAT);
 		
-		//GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, FRAME_WIDTH, FRAME_HEIGHT, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, byteBuf);//(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
-		GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+		if(id!=0){
+			Options opts = new Options();
+			opts.inScaled = false; //Trying to not allow Android to do its stupid screen density pixel fucking.
+			bitmap = BitmapFactory.decodeResource(mContext.getResources(), id, opts );
+			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+			bitmap.recycle();
+		}
+		
+	}
+	
+	public void createAnitmationFrames(int id, int frameWidth, int frameHeight, int program){
+		
+		loadGLTexture(0, program);
+		
+		Options opts = new Options();
+		opts.inScaled = false; //Trying to not allow Android to do its stupid screen density pixel fucking.
+		bitmap = BitmapFactory.decodeResource(mContext.getResources(), id, opts );
+		
+		int framesWide = bitmap.getWidth()/frameWidth;
+		int framesHigh = bitmap.getHeight()/frameHeight;
+		int numberOfFrames = framesWide*framesHigh;
+		int x = 0;
+		int y = 0;
+		
+		for(int i=0; i<numberOfFrames;i++){
+			if(i>=framesWide){
+				x = (i%framesWide)*frameWidth;
+				y = (i/framesWide)*frameHeight;
+			}else{
+				x = i*frameWidth;
+				y = 0;
+			}
+			Bitmap b = Bitmap.createBitmap(bitmap, x, y, frameWidth, frameHeight);
+			aFrames.add(b);
+		}
 		
 		bitmap.recycle();
+		
+	}
+	
+	public void selectFrame(int frameIndex){
+		
+		GLES20.glGenTextures(1, textures, 0);
+		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
+		
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_REPEAT);
+		GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_REPEAT);
+		
+		//GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, FRAME_WIDTH, FRAME_HEIGHT, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, byteBuf);//(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+		GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, aFrames.get(frameIndex), 0);
+		
 	}
 	
 	public void scale(float sx, float sy){

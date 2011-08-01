@@ -6,6 +6,11 @@ public class Sprite {
 	
 	Renderable renderable;
 	
+	float x;
+	float y;
+	float xVel;
+	float yVel;
+	
 	public Sprite(Context context){
 		
 		renderable = new RenderVisible(context);
@@ -19,6 +24,14 @@ public class Sprite {
 	
 	public void loadGLTexture(int id, int program) {
 		renderable.loadGLTexture(id, program);
+	}
+	
+	public void createAnitmationFrames(int id, int frameWidth, int frameHeight, int program){
+		renderable.createAnitmationFrames(id, frameWidth, frameHeight, program);
+	}
+	
+	public void selectFrame(int frameIndex){
+		renderable.selectFrame(frameIndex);
 	}
 	
 	public void scale(float sx, float sy){

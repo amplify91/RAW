@@ -50,8 +50,13 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		sprite.translate(-1, 0);
 		sprite.draw(mViewMatrix, mProjMatrix);
 		
-		sprite2.scale(1.0f, 0.5f);
-		sprite2.translate(1.0f, 0.5f);
+		sprite2.scale(0.5f, 0.5f);
+		sprite2.translate(1.0f, 0.0f);
+		if(x==8){
+			x = 0;
+		}
+		sprite2.selectFrame(x);
+		x++;
         sprite2.draw(mViewMatrix, mProjMatrix);
 		
 		//fps.calculate();
@@ -88,7 +93,8 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		//load sprite/object textures (preferably loop through an array of all sprites).
 		sprite.loadGLTexture(R.drawable.raw1, program);
-		sprite2.loadGLTexture(R.drawable.spritesheet1, program);
+		sprite2.createAnitmationFrames(R.drawable.spritesheet1, 64, 64, program);
+		sprite2.selectFrame(0);
 		
 		System.gc();
 	}
