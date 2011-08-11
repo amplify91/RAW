@@ -28,6 +28,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	Sprite sprite2;
 	int x = 0;
 	int y = 0;
+	int i = 0;
 	
 	Tile[][] tiles = new Tile[15][25];
 	
@@ -62,10 +63,15 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 			}
 		}
 		
-		//sprite.draw(mViewMatrix, mProjMatrix);
+		sprite.draw(mViewMatrix, mProjMatrix);
 		
-		//sprite2.selectFrame(x);
-        //sprite2.draw(mViewMatrix, mProjMatrix);
+		sprite2.selectFrame(i);
+		if(i==7){
+			i=0;
+		}else{
+			i++;
+		}
+        sprite2.draw(mViewMatrix, mProjMatrix);
 		
 		//fps.calculate();
 		//fps.draw(gl);
@@ -113,6 +119,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 		GLES20.glEnable(GLES20.GL_BLEND);
+		GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		GLES20.glClearDepthf(1.0f);
 		GLES20.glDepthFunc(GLES20.GL_LEQUAL);
 		GLES20.glDepthMask(true);
