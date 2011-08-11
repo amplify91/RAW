@@ -83,14 +83,13 @@ public class RenderVisible implements Renderable{
 		vertexBuffer.put(vertices);
 		vertexBuffer.position(0);
 		
+		Matrix.setIdentityM(mModelMatrix, 0);
 	}
 	
 	@Override
 	public void draw(float[] view, float[] proj) {
 		
-		Matrix.setIdentityM(mModelMatrix, 0);
-		Matrix.scaleM(mModelMatrix, 0, mScaleX, mScaleY, 1);
-		Matrix.translateM(mModelMatrix, 0, mTransX, mTransY, 0);
+		
 		//Matrix.rotateM(mModelMatrix, 0, mRotate, 0, 0, 0);
 		Matrix.multiplyMM(mMVMatrix, 0, view, 0, mModelMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, proj, 0, mMVMatrix, 0);
@@ -107,8 +106,8 @@ public class RenderVisible implements Renderable{
 		
 		GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
 		
-		GLES20.glDisableVertexAttribArray(vertexHandle);
-		GLES20.glDisableVertexAttribArray(texCoordHandle);
+		//GLES20.glDisableVertexAttribArray(vertexHandle);
+		//GLES20.glDisableVertexAttribArray(texCoordHandle);
 		
 	}
 
@@ -199,11 +198,13 @@ public class RenderVisible implements Renderable{
 	public void scale(float sx, float sy){
 		mScaleX = sx;
 		mScaleY = sy;
+		Matrix.scaleM(mModelMatrix, 0, mScaleX, mScaleY, 1);
 	}
 	
 	public void translate(float tx, float ty){
 		mTransX = tx;
 		mTransY = ty;
+		Matrix.translateM(mModelMatrix, 0, tx*2f, ty*2f, 0);
 	}
 	
 }

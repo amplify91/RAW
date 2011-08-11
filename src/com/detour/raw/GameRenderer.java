@@ -1,5 +1,7 @@
 package com.detour.raw;
 
+import java.util.Random;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -25,6 +27,14 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	Sprite sprite;
 	Sprite sprite2;
 	int x = 0;
+	int y = 0;
+	
+	Tile[][] tiles = new Tile[15][25];
+	
+	float xUnit;
+	float yUnit = (2f/15f);
+	//float xOrig = -1;
+	//float yOrig = -1;
 	
 	private float[] mViewMatrix = new float[16];
 	private float[] mProjMatrix = new float[16];
@@ -46,18 +56,16 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		GLES20.glUseProgram(program);
 		
-		sprite.scale(0.5f, 0.5f);
-		sprite.translate(-1, 0);
-		sprite.draw(mViewMatrix, mProjMatrix);
-		
-		sprite2.scale(0.5f, 0.5f);
-		sprite2.translate(1.0f, 0.0f);
-		if(x==8){
-			x = 0;
+		for(y=0;y<tiles.length;y++){
+			for(x=0;x<tiles[y].length;x++){
+				tiles[y][x].draw(mViewMatrix, mProjMatrix);
+			}
 		}
-		sprite2.selectFrame(x);
-		x++;
-        sprite2.draw(mViewMatrix, mProjMatrix);
+		
+		//sprite.draw(mViewMatrix, mProjMatrix);
+		
+		//sprite2.selectFrame(x);
+        //sprite2.draw(mViewMatrix, mProjMatrix);
 		
 		//fps.calculate();
 		//fps.draw(gl);
@@ -70,6 +78,27 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		float ratio = ((float)(width))/((float)(height));
 		Matrix.orthoM(mProjMatrix, 0, -ratio, ratio, -1, 1, 0.5f, 10);
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
+		xUnit = ((2f/15f)*ratio);
+		
+		//temporary place for loading drawables. Change later!
+		sprite.loadGLTexture(R.drawable.raw1, program);
+		sprite.scale(0.5f, 0.5f);
+		sprite.translate(-1, 0);
+		sprite2.scale(0.5f, 0.5f);
+		sprite2.translate(1.0f, 0.0f);
+		sprite2.createAnitmationFrames(R.drawable.spritesheet1, 64, 64, program);
+		sprite2.selectFrame(0);
+		
+		Random rand = new Random();
+		
+		for(y=0;y<tiles.length;y++){
+			for(x=0;x<tiles[y].length;x++){
+				tiles[y][x] = new Tile(mContext, ratio);
+				tiles[y][x].loadGLTexture((getRandomPlaceholder(rand.nextInt(4))), program);
+				tiles[y][x].translate(x, y);
+			}
+		}
+		
 	}
 
 	@Override
@@ -92,11 +121,24 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glClearColor(red, green, blue, 1.0f);
 		
 		//load sprite/object textures (preferably loop through an array of all sprites).
-		sprite.loadGLTexture(R.drawable.raw1, program);
-		sprite2.createAnitmationFrames(R.drawable.spritesheet1, 64, 64, program);
-		sprite2.selectFrame(0);
 		
 		System.gc();
+	}
+	
+	int getRandomPlaceholder(int x){
+		int id = 0;
+		
+		if(x==0){
+			id = R.drawable.t9;
+		}else if(x==1){
+			id = R.drawable.t91;
+		}else if(x==2){
+			id = R.drawable.t92;
+		}else{
+			id = R.drawable.t93;
+		}
+		
+		return id;
 	}
 	
 }
