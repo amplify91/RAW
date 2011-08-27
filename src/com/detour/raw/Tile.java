@@ -24,8 +24,12 @@ public class Tile {
 		renderable.draw(view, proj);
 	}
 	
-	public void loadGLTexture(int id, int program) {
-		renderable.loadGLTexture(id, program);
+	public void loadGLTexture(int id) {
+		renderable.loadGLTexture(id);
+	}
+	
+	public void setProgram(int program){
+		renderable.setProgram(program);
 	}
 	
 	public void scale(float sx, float sy){

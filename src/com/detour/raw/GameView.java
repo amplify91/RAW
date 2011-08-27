@@ -15,7 +15,7 @@ public class GameView extends GLSurfaceView{
 		setDebugFlags(DEBUG_CHECK_GL_ERROR | DEBUG_LOG_GL_CALLS);
 		setKeepScreenOn(true);
 		setEGLContextClientVersion(2);
-		renderer = new GameRenderer(context);
+		renderer = GameRenderer.getGameRenderer(context);
 		setRenderer(renderer);
 		setRenderMode(RENDERMODE_WHEN_DIRTY);
 		thread = new GameLoopThread(this);

@@ -3,7 +3,7 @@ package com.detour.raw;
 
 public interface Renderable {
 	
-	void loadGLTexture(int id, int program);
+	void loadGLTexture(int id);
 	
 	void draw(float[] view, float[] proj);
 	
@@ -14,5 +14,7 @@ public interface Renderable {
 	void scale(float sx, float sy);
 	
 	void translate(float tx, float ty);
+	
+	void setProgram(int program);
 	
 }

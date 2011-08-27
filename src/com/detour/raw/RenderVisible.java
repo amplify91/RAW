@@ -21,6 +21,7 @@ public class RenderVisible implements Renderable{
 	
 	ArrayList<Bitmap> aFrames = new ArrayList<Bitmap>();
 	
+	private int program;
 	private int vertexHandle;
 	private int texCoordHandle;
 	private int textureHandle;
@@ -112,7 +113,7 @@ public class RenderVisible implements Renderable{
 	}
 
 	@Override
-	public void loadGLTexture(int id, int program) {
+	public void loadGLTexture(int id){
 		
 		vertexHandle = GLES20.glGetAttribLocation(program, "a_position");
 		texCoordHandle = GLES20.glGetAttribLocation(program, "a_texcoord");
@@ -142,7 +143,7 @@ public class RenderVisible implements Renderable{
 		if(id!=0){
 			Options opts = new Options();
 			opts.inScaled = false; //Trying to not allow Android to do its stupid screen density pixel fucking.
-			bitmap = BitmapFactory.decodeResource(mContext.getResources(), id, opts );
+			bitmap = BitmapFactory.decodeResource(mContext.getResources(), id, opts);
 			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 			bitmap.recycle();
 		}
@@ -151,7 +152,7 @@ public class RenderVisible implements Renderable{
 	
 	public void createAnitmationFrames(int id, int frameWidth, int frameHeight, int program){
 		
-		loadGLTexture(0, program);
+		loadGLTexture(0);
 		
 		Options opts = new Options();
 		opts.inScaled = false; //Trying to not allow Android to do its stupid screen density pixel fucking.
@@ -205,6 +206,10 @@ public class RenderVisible implements Renderable{
 		mTransX = tx;
 		mTransY = ty;
 		Matrix.translateM(mModelMatrix, 0, tx*2f, ty*2f, 0);
+	}
+	
+	public void setProgram(int program){
+		this.program = program;
 	}
 	
 }

@@ -10,27 +10,33 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.util.Log;
 
 public class GameRenderer implements GLSurfaceView.Renderer{
 	
+	//Singleton instance
+	private static GameRenderer renderer = new GameRenderer();
+	
+	GameManager gameManager = GameManager.getGameManager();
+	
 	//private static final String TAG = "GameRenderer";
-	Context mContext;
+	static Context mContext;
 	Bitmap bitmap;
 	
 	private float red = 0.5f;
 	private float green = 0.5f;
 	private float blue = 0.5f;
 	
+	static float ratio;
+	
 	Shader shader;
 	int program;
 	FPSCounter fps;
-	Sprite sprite;
-	Sprite sprite2;
+	//Sprite sprite;
+	//Sprite sprite2;
 	int x = 0;
 	int y = 0;
 	int i = 0;
-	
-	Tile[][] tiles = new Tile[15][25];
 	
 	float xUnit;
 	float yUnit = (2f/15f);
@@ -40,13 +46,35 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	private float[] mViewMatrix = new float[16];
 	private float[] mProjMatrix = new float[16];
 	
-	public GameRenderer(Context context){
+	private GameRenderer(){
+		
+	}
+	
+	/*private GameRenderer(Context context){
 		mContext = context;
 		
 		//create objects/sprites
-		sprite = new Sprite(mContext);
-		sprite2 = new Sprite(mContext);
-		fps = new FPSCounter();
+		//sprite = new Sprite(mContext);
+		//sprite2 = new Sprite(mContext);
+		//fps = new FPSCounter();
+	}*/
+	
+	public static GameRenderer getGameRenderer(Context c){
+		mContext = c;
+		if(renderer == null){
+			renderer = new GameRenderer();
+		}
+		return renderer;
+	}
+	
+	public static GameRenderer getGameRenderer(){
+		if(mContext==null){
+			Log.d("GameRenderer", "null context. Use other singleton getter method.");
+		}
+		if(renderer == null){
+			renderer = new GameRenderer();
+		}
+		return renderer;
 	}
 	
 	@Override
@@ -57,13 +85,9 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		GLES20.glUseProgram(program);
 		
-		for(y=0;y<tiles.length;y++){
-			for(x=0;x<tiles[y].length;x++){
-				tiles[y][x].draw(mViewMatrix, mProjMatrix);
-			}
-		}
+		gameManager.draw(mViewMatrix, mProjMatrix);
 		
-		sprite.draw(mViewMatrix, mProjMatrix);
+		/*sprite.draw(mViewMatrix, mProjMatrix);
 		
 		sprite2.selectFrame(i);
 		if(i==7){
@@ -71,7 +95,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		}else{
 			i++;
 		}
-        sprite2.draw(mViewMatrix, mProjMatrix);
+        sprite2.draw(mViewMatrix, mProjMatrix);*/
 		
 		//fps.calculate();
 		//fps.draw(gl);
@@ -81,29 +105,22 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		
 		GLES20.glViewport(0, 0, width, height);
-		float ratio = ((float)(width))/((float)(height));
+		ratio = ((float)(width))/((float)(height));
 		Matrix.orthoM(mProjMatrix, 0, -ratio, ratio, -1, 1, 0.5f, 10);
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
-		xUnit = ((2f/15f)*ratio);
+		//xUnit = ((2f/15f)*ratio);
+		
+		gameManager.loadLevel(mContext, program, 0);
 		
 		//temporary place for loading drawables. Change later!
-		sprite.loadGLTexture(R.drawable.raw1, program);
+		/*sprite.loadGLTexture(R.drawable.raw1, program);
 		sprite.scale(0.5f, 0.5f);
 		sprite.translate(-1, 0);
 		sprite2.scale(0.5f, 0.5f);
 		sprite2.translate(1.0f, 0.0f);
 		sprite2.createAnitmationFrames(R.drawable.spritesheet1, 64, 64, program);
-		sprite2.selectFrame(0);
+		sprite2.selectFrame(0);*/
 		
-		Random rand = new Random();
-		
-		for(y=0;y<tiles.length;y++){
-			for(x=0;x<tiles[y].length;x++){
-				tiles[y][x] = new Tile(mContext, ratio);
-				tiles[y][x].loadGLTexture((getRandomPlaceholder(rand.nextInt(4))), program);
-				tiles[y][x].translate(x, y);
-			}
-		}
 		
 	}
 
@@ -127,25 +144,11 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glCullFace(GLES20.GL_BACK);
 		GLES20.glClearColor(red, green, blue, 1.0f);
 		
-		//load sprite/object textures (preferably loop through an array of all sprites).
-		
 		System.gc();
 	}
 	
-	int getRandomPlaceholder(int x){
-		int id = 0;
-		
-		if(x==0){
-			id = R.drawable.t9;
-		}else if(x==1){
-			id = R.drawable.t91;
-		}else if(x==2){
-			id = R.drawable.t92;
-		}else{
-			id = R.drawable.t93;
-		}
-		
-		return id;
+	public static float getScreenRatio(){
+		return ratio;
 	}
 	
 }

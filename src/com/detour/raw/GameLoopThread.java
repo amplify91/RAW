@@ -12,12 +12,14 @@ public class GameLoopThread extends Thread{
     boolean game_is_running;
 
     GameView gameView;
+    GameManager gameManager;
     FPSCounter fps;
 	
 	public GameLoopThread(GameView gv){
 		super();
 		next_game_tick = System.nanoTime();
 		gameView = gv;
+		gameManager = GameManager.getGameManager();
 		game_is_running = false;
 		
 		fps = new FPSCounter();
@@ -40,6 +42,7 @@ public class GameLoopThread extends Thread{
 	
 	private void updateGame(){
 		//update game logic (AI, Animation, Physics, Sound, etc.)
+		gameManager.update();
 	}
 	
 	private void displayGame(float interpol){

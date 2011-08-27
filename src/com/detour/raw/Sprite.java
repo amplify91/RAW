@@ -1,6 +1,7 @@
 package com.detour.raw;
 
 import android.content.Context;
+import android.util.Log;
 
 public class Sprite {
 	
@@ -23,7 +24,8 @@ public class Sprite {
 	}
 	
 	public void loadGLTexture(int id, int program) {
-		renderable.loadGLTexture(id, program);
+		Log.d("Sprite", "TODO!!!"); //TODO
+		//renderable.loadGLTexture(id, program);
 	}
 	
 	public void createAnitmationFrames(int id, int frameWidth, int frameHeight, int program){
