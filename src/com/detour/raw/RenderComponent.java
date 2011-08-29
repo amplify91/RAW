@@ -1,7 +1,6 @@
 package com.detour.raw;
 
-
-public interface Renderable {
+public interface RenderComponent {
 	
 	void loadGLTexture(int id);
 	

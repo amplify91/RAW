@@ -14,7 +14,7 @@ import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
 
-public class RenderVisible implements Renderable{
+public class RenderVisible implements RenderComponent{
 	
 	Context mContext;
 	Bitmap bitmap;

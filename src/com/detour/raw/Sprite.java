@@ -5,7 +5,7 @@ import android.util.Log;
 
 public class Sprite {
 	
-	Renderable renderable;
+	RenderComponent renderable;
 	
 	float x;
 	float y;
