@@ -19,9 +19,9 @@ public class Tile {
 		
 	}
 	
-	public void draw(float[] view, float[] proj){
+	public void draw(){
 		
-		render.draw(view, proj);
+		render.draw();
 	}
 	
 	public void loadGLTexture(int id) {

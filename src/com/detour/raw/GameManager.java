@@ -11,6 +11,10 @@ public class GameManager {
 	private Context mContext;
 	
 	Tile[][] tileMap;
+	Sprite[] sprites;
+	
+	private static float[] mViewMatrix;
+	private static float[] mProjMatrix;
 	
 	int speed = 1;
 	
@@ -32,14 +36,34 @@ public class GameManager {
 		}
 	}
 	
-	public void draw(float[] mViewMatrix, float[] mProjMatrix){
+	public void draw(){
 		
 		for(int y=0;y<tileMap.length;y++){
 			for(int x=0;x<tileMap[y].length;x++){
-				tileMap[y][x].draw(mViewMatrix, mProjMatrix);
+				tileMap[y][x].draw();
 			}
 		}
+		for(int x=0;x<sprites.length;x++){
+			sprites[x].draw();
+			//sprites[x].translate(0.1f, 0.1f);
+		}
 		
+	}
+	
+	public static float[] getViewMatrix(){
+		return mViewMatrix;
+	}
+	
+	public static float[] getProjMatrix(){
+		return mProjMatrix;
+	}
+	
+	public void setViewMatrix(float[] view){
+		mViewMatrix = view;
+	}
+	
+	public void setProjMatrix(float[] proj){
+		mProjMatrix = proj;
 	}
 	
 	public void setSpeed(int s){
@@ -50,7 +74,11 @@ public class GameManager {
 		this.mContext = context;
 		levelLoader = new LevelLoader(context, program, level);
 		tileMap = levelLoader.getTileMap();
-		
+		sprites = new Sprite[1];
+		sprites[0] = new Sprite(mContext);
+		sprites[0].setProgram(program);
+		sprites[0].loadGLTexture(R.drawable.raw1a);
+		sprites[0].translate(-1, -0.5f);
 	}
 	
 }

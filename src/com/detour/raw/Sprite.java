@@ -15,17 +15,18 @@ public class Sprite {
 	public Sprite(Context context){
 		
 		renderable = new RenderVisible(context);
+		scale(0.5f, 0.5f);
 		
 	}
 	
-	public void draw(float[] view, float[] proj){
+	public void draw(){
 		
-		renderable.draw(view, proj);
+		renderable.draw();
 	}
 	
-	public void loadGLTexture(int id, int program) {
+	public void loadGLTexture(int id) {
 		Log.d("Sprite", "TODO!!!"); //TODO
-		//renderable.loadGLTexture(id, program);
+		renderable.loadGLTexture(id);
 	}
 	
 	public void createAnitmationFrames(int id, int frameWidth, int frameHeight, int program){
@@ -42,6 +43,10 @@ public class Sprite {
 	
 	public void translate(float tx, float ty){
 		renderable.translate(tx, ty);
+	}
+	
+	public void setProgram(int program){
+		renderable.setProgram(program);
 	}
 	
 }

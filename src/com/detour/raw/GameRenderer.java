@@ -85,7 +85,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		GLES20.glUseProgram(program);
 		
-		gameManager.draw(mViewMatrix, mProjMatrix);
+		gameManager.draw();
 		
 		/*sprite.draw(mViewMatrix, mProjMatrix);
 		
@@ -110,7 +110,9 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
 		//xUnit = ((2f/15f)*ratio);
 		
-		gameManager.loadLevel(mContext, program, 1);
+		gameManager.loadLevel(mContext, program, 0);
+		gameManager.setProjMatrix(mProjMatrix);
+		gameManager.setViewMatrix(mViewMatrix);
 		
 		//temporary place for loading drawables. Change later!
 		/*sprite.loadGLTexture(R.drawable.raw1, program);

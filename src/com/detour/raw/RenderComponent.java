@@ -4,7 +4,7 @@ public interface RenderComponent {
 	
 	void loadGLTexture(int id);
 	
-	void draw(float[] view, float[] proj);
+	void draw();
 	
 	void createAnitmationFrames(int id, int frameWidth, int frameHeight, int program);
 	
