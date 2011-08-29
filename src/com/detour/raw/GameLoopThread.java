@@ -1,5 +1,7 @@
 package com.detour.raw;
 
+import android.content.Context;
+
 public class GameLoopThread extends Thread{
 	
 	public static final int TICKS_PER_SECOND = 25; //UPS
@@ -10,16 +12,20 @@ public class GameLoopThread extends Thread{
     int loops;
     float interpolation;
     boolean game_is_running;
+    
+    Context mContext;
 
-    GameView gameView;
-    GameManager gameManager;
-    FPSCounter fps;
+    private GameView gameView;
+    private GameManager gameManager;
+    private FPSCounter fps;
 	
-	public GameLoopThread(GameView gv){
+	public GameLoopThread(GameView gv, Context context){
 		super();
 		next_game_tick = System.nanoTime();
 		gameView = gv;
+		mContext = context;
 		gameManager = GameManager.getGameManager();
+		
 		game_is_running = false;
 		
 		fps = new FPSCounter();
