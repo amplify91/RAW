@@ -10,6 +10,16 @@ import android.util.Log;
 
 public class LevelLoader {
 	
+	/*
+	 * A class for accessing level files, parsing them, loading them,
+	 * and returning the contents of a level to the GameManager.
+	 * 
+	 * It should only need a few methods:
+	 * createLevel(levelnumber), //should possibly be called in the constructor
+	 * getLevel(), and
+	 * getLevelItem() (like getTiles() or getEnemies()).
+	 */
+	
 	Context mContext;
 	int program;
 	int levelWidth = 0;
@@ -107,16 +117,25 @@ public class LevelLoader {
 			for(int x=0;x<gridArr.length;x++){
 				gridArr[x] = (int)(Double.parseDouble(str[x]));
 			}
-			for(int x=0;x<gridArr.length;x++){
+			
+			
+			for(int x=0, y = levelHeight;x<gridArr.length;x++){
 				Tile t = createTile(gridArr[x]);
 				if(x<levelWidth){
-					t.translate(x, 0);
-					tiles[0][x] = t;
+					y = levelHeight - 1;
+					tiles[y][x] = t;
 				}else{
-					t.translate((x%levelWidth), (x/levelWidth));
-					tiles[(x/levelWidth)][(x%levelWidth)] = t;
+					y = levelHeight - (x/levelWidth) - 1;
+					tiles[y][(x%levelWidth)] = t;
 				}
 			}
+			
+			for(int y=0;y<tiles.length;y++){
+				for(int x=0;x<tiles[y].length;x++){
+					tiles[y][x].translate(x, y);
+				}
+			}
+			
 		}
 		
 		/*int numberOfPieces = 0;

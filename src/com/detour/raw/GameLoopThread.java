@@ -42,7 +42,7 @@ public class GameLoopThread extends Thread{
 	
 	private void updateGame(){
 		//update game logic (AI, Animation, Physics, Sound, etc.)
-		gameManager.update();
+		//gameManager.update();
 	}
 	
 	private void displayGame(float interpol){
