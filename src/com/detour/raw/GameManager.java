@@ -45,7 +45,7 @@ public class GameManager {
 		}
 		for(int x=0;x<sprites.length;x++){
 			sprites[x].draw();
-			//sprites[x].translate(0.1f, 0.1f);
+			//sprites[x].translate(0.1f, 0.0f);
 		}
 		
 	}

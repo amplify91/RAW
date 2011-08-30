@@ -20,8 +20,7 @@ public class Tile {
 	}
 	
 	public void draw(){
-		
-		render.draw();
+		render.draw(physics.getX(), physics.getY());
 	}
 	
 	public void loadGLTexture(int id) {
@@ -37,7 +36,7 @@ public class Tile {
 	}
 	
 	public void translate(float tx, float ty){
-		render.translate(tx, ty);
+		physics.translate(tx, ty);
 	}
 	
 }

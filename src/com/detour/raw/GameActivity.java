@@ -7,7 +7,7 @@ import android.view.WindowManager;
 
 public class GameActivity extends Activity{
 	
-	private static final String LOG_TAG = GameActivity.class.getSimpleName();
+	private static final String LOG_TAG = "GameActivity";
     private GameView gameView;
     private GameLoopThread thread;
 	

@@ -10,4 +10,6 @@ public interface PhysicsComponent {
 	
 	public void setY(float y);
 	
+	public void translate(float x, float y);
+	
 }

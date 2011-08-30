@@ -30,16 +30,9 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	Shader shader;
 	int program;
 	FPSCounter fps;
-	//Sprite sprite;
-	//Sprite sprite2;
-	int x = 0;
-	int y = 0;
-	int i = 0;
 	
 	float xUnit;
 	float yUnit = (2f/15f);
-	//float xOrig = -1;
-	//float yOrig = -1;
 	
 	private float[] mViewMatrix = new float[16];
 	private float[] mProjMatrix = new float[16];
@@ -85,18 +78,6 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		gameManager.draw();
 		
-		/*sprite.draw(mViewMatrix, mProjMatrix);
-		
-		sprite2.selectFrame(i);
-		if(i==7){
-			i=0;
-		}else{
-			i++;
-		}
-        sprite2.draw(mViewMatrix, mProjMatrix);*/
-		
-		//fps.calculate();
-		//fps.draw(gl);
 	}
 	
 	@Override

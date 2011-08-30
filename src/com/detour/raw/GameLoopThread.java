@@ -47,12 +47,10 @@ public class GameLoopThread extends Thread{
 	}
 	
 	private void updateGame(){
-		//update game logic (AI, Animation, Physics, Sound, etc.)
 		gameManager.update();
 	}
 	
 	private void displayGame(float interpol){
-		//render to the screen.
 		gameView.requestRender();
 		//when running at FPS faster than UPS, 
 		//use the interpolation value to update the view

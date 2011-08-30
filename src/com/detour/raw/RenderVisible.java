@@ -88,8 +88,11 @@ public class RenderVisible implements RenderComponent{
 	}
 	
 	@Override
-	public void draw() {
+	public void draw(float x, float y) { //TODO draw at x,y
 		
+		Matrix.setIdentityM(mModelMatrix, 0);
+		scale(mScaleX, mScaleY);
+		translate(x, y);
 		
 		//Matrix.rotateM(mModelMatrix, 0, mRotate, 0, 0, 0);
 		Matrix.multiplyMM(mMVMatrix, 0, GameManager.getViewMatrix(), 0, mModelMatrix, 0);
@@ -203,8 +206,6 @@ public class RenderVisible implements RenderComponent{
 	}
 	
 	public void translate(float tx, float ty){
-		mTransX = tx;
-		mTransY = ty;
 		Matrix.translateM(mModelMatrix, 0, tx*2f, ty*2f, 0);
 	}
 	

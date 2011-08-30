@@ -35,4 +35,10 @@ public class PhysicsStaticTile implements PhysicsComponent{
 		this.y = y;
 	}
 
+	@Override
+	public void translate(float x, float y) {
+		this.x += x;
+		this.y += y;
+	}
+
 }

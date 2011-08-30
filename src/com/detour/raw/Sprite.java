@@ -6,6 +6,7 @@ import android.util.Log;
 public class Sprite {
 	
 	RenderComponent renderable;
+	PhysicsComponent physics;
 	
 	float x;
 	float y;
@@ -15,13 +16,13 @@ public class Sprite {
 	public Sprite(Context context){
 		
 		renderable = new RenderVisible(context);
+		physics = new PhysicsStaticTile();
 		scale(0.5f, 0.5f);
 		
 	}
 	
 	public void draw(){
-		
-		renderable.draw();
+		renderable.draw(physics.getX(), physics.getY());
 	}
 	
 	public void loadGLTexture(int id) {
@@ -42,7 +43,7 @@ public class Sprite {
 	}
 	
 	public void translate(float tx, float ty){
-		renderable.translate(tx, ty);
+		physics.translate(tx, ty);
 	}
 	
 	public void setProgram(int program){
