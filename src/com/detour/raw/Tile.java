@@ -23,6 +23,14 @@ public class Tile {
 		render.draw(physics.getX(), physics.getY());
 	}
 	
+	public float getX(){
+		return physics.getX();
+	}
+	
+	public float getY(){
+		return physics.getY();
+	}
+	
 	public void loadGLTexture(int id) {
 		render.loadGLTexture(id);
 	}

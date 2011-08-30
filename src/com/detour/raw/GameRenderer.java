@@ -31,14 +31,11 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	int program;
 	FPSCounter fps;
 	
-	float xUnit;
-	float yUnit = (2f/15f);
-	
-	private float[] mViewMatrix = new float[16];
-	private float[] mProjMatrix = new float[16];
+	private static float[] mViewMatrix = new float[16];
+	private static float[] mProjMatrix = new float[16];
 	
 	private GameRenderer(){
-		
+		fps = new FPSCounter();
 	}
 	
 	/*private GameRenderer(Context context){
@@ -78,6 +75,8 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		gameManager.draw();
 		
+		fps.calculate();
+		
 	}
 	
 	@Override
@@ -87,21 +86,8 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		ratio = ((float)(width))/((float)(height));
 		Matrix.orthoM(mProjMatrix, 0, -ratio, ratio, -1, 1, 0.5f, 10);
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
-		//xUnit = ((2f/15f)*ratio);
 		
 		gameManager.loadLevel(mContext, program, 0);
-		gameManager.setProjMatrix(mProjMatrix);
-		gameManager.setViewMatrix(mViewMatrix);
-		
-		//temporary place for loading drawables. Change later!
-		/*sprite.loadGLTexture(R.drawable.raw1, program);
-		sprite.scale(0.5f, 0.5f);
-		sprite.translate(-1, 0);
-		sprite2.scale(0.5f, 0.5f);
-		sprite2.translate(1.0f, 0.0f);
-		sprite2.createAnitmationFrames(R.drawable.spritesheet1, 64, 64, program);
-		sprite2.selectFrame(0);*/
-		
 		
 	}
 
@@ -130,6 +116,22 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	
 	public static float getScreenRatio(){
 		return ratio;
+	}
+	
+	public static float[] getViewMatrix(){
+		return mViewMatrix;
+	}
+	
+	public static float[] getProjMatrix(){
+		return mProjMatrix;
+	}
+	
+	public void setViewMatrix(float[] view){
+		mViewMatrix = view;
+	}
+	
+	public void setProjMatrix(float[] proj){
+		mProjMatrix = proj;
 	}
 	
 }

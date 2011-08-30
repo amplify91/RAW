@@ -3,17 +3,18 @@ package com.detour.raw;
 import android.content.Context;
 import android.util.Log;
 
-public class Sprite {
+public class Sprite{
 	
 	RenderComponent renderable;
 	PhysicsComponent physics;
 	
-	float x;
-	float y;
 	float xVel;
 	float yVel;
 	
+	public static final int SPRITE_SIZE = 5;
+	
 	public Sprite(Context context){
+		super();
 		
 		renderable = new RenderVisible(context);
 		physics = new PhysicsStaticTile();
@@ -25,8 +26,16 @@ public class Sprite {
 		renderable.draw(physics.getX(), physics.getY());
 	}
 	
+	public float getX(){
+		return physics.getX();
+	}
+	
+	public float getY(){
+		return physics.getY();
+	}
+	
 	public void loadGLTexture(int id) {
-		Log.d("Sprite", "TODO!!!"); //TODO
+		Log.d("Sprite", "TODO!!!"); //TODO get rid of this and load tex coord from a texture atlas
 		renderable.loadGLTexture(id);
 	}
 	

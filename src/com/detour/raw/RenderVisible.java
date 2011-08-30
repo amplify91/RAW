@@ -95,8 +95,8 @@ public class RenderVisible implements RenderComponent{
 		translate(x, y);
 		
 		//Matrix.rotateM(mModelMatrix, 0, mRotate, 0, 0, 0);
-		Matrix.multiplyMM(mMVMatrix, 0, GameManager.getViewMatrix(), 0, mModelMatrix, 0);
-        Matrix.multiplyMM(mMVPMatrix, 0, GameManager.getProjMatrix(), 0, mMVMatrix, 0);
+		Matrix.multiplyMM(mMVMatrix, 0, GameRenderer.getViewMatrix(), 0, mModelMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, GameRenderer.getProjMatrix(), 0, mMVMatrix, 0);
 		
 		GLES20.glEnableVertexAttribArray(vertexHandle);
 		GLES20.glEnableVertexAttribArray(texCoordHandle);
