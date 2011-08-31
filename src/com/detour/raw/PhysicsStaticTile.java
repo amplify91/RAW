@@ -5,6 +5,9 @@ public class PhysicsStaticTile implements PhysicsComponent{
 	private float x = 0;
 	private float y = 0;
 	
+	float xVel; // TODO static tiles don't move and don't need velocity.
+	float yVel; // Put these in different physics components
+	
 	public PhysicsStaticTile(){
 		
 	}

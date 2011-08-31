@@ -8,10 +8,10 @@ public class Sprite{
 	RenderComponent renderable;
 	PhysicsComponent physics;
 	
-	float xVel;
-	float yVel;
-	
-	public static final int SPRITE_SIZE = 5;
+	public static final int VERTEX_SIZE = 2 + 2;
+	public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
+	//TODO put these 3 surrounding fields into render components
+	private float[] vertices = new float[SPRITE_SIZE];
 	
 	public Sprite(Context context){
 		super();
