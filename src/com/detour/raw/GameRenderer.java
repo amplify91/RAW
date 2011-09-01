@@ -17,7 +17,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	
 	GameManager gameManager = GameManager.getGameManager();
 	
-	//private static final String TAG = "GameRenderer";
+	private static final String TAG = "GameRenderer";
 	static Context mContext;
 	Bitmap bitmap;
 	
@@ -72,9 +72,9 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 		
 		GLES20.glUseProgram(program);
-		
+		//Log.i(TAG, "" + GLES20.glGetError());
 		gameManager.draw();
-		
+		//Log.i(TAG, "" + GLES20.glGetError());
 		fps.calculate();
 		
 	}
@@ -94,13 +94,12 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		
-		/*int error = GLES20.glGetError();
-		Log.d(LOG_TAG, ""+error);*/
+		Log.i(TAG, "" + GLES20.glGetError());
 		
 		shader = new Shader(R.raw.sprite_vs, R.raw.sprite_fs, mContext);
 		program = shader.getProgram();
 		
-		GLES20.glEnable(GLES20.GL_TEXTURE_2D);
+		//GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 		GLES20.glEnable(GLES20.GL_BLEND);
 		GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
@@ -110,7 +109,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glEnable(GLES20.GL_CULL_FACE);
 		GLES20.glCullFace(GLES20.GL_BACK);
 		GLES20.glClearColor(red, green, blue, 1.0f);
-		
+		Log.i(TAG, "" + GLES20.glGetError());
 		System.gc();
 	}
 	

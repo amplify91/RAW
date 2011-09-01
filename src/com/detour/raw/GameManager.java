@@ -6,10 +6,11 @@ public class GameManager {
 	
 	private static GameManager gameManager = new GameManager();
 	
+	private Context mContext;
+	
 	LevelLoader levelLoader;
 	SpriteBatch spriteBatch;
-	
-	private Context mContext;
+	Texture mTileTexture;
 	
 	Tile[][] tileMap;
 	Sprite[] sprites;
@@ -40,15 +41,15 @@ public class GameManager {
 		
 		for(int y=0;y<tileMap.length;y++){
 			for(int x=0;x<tileMap[y].length;x++){
-				tileMap[y][x].draw();
-				//spriteBatch.draw(tileMap[y][x].getX(), tileMap[y][x].getY());
+				//tileMap[y][x].draw();
+				spriteBatch.draw(mTileTexture, tileMap[y][x].frame, -1f + (0.08f * ((float)y)), -1f + (0.08f * ((float)x)), tileMap[y][x].width, tileMap[y][x].height);
 			}
 		}
 		
 		spriteBatch.end();
 		
 		for(int x=0;x<sprites.length;x++){
-			sprites[x].draw();
+			//sprites[x].draw();
 			//sprites[x].translate(0.1f, 0.0f);
 		}
 		
@@ -62,6 +63,7 @@ public class GameManager {
 		this.mContext = context;
 		levelLoader = new LevelLoader(context, program, level);
 		tileMap = levelLoader.getTileMap();
+		mTileTexture = new Texture(mContext, R.drawable.spritesheet1, 1, 1);
 		
 		sprites = new Sprite[1];
 		sprites[0] = new Sprite(mContext);
@@ -69,7 +71,7 @@ public class GameManager {
 		sprites[0].loadGLTexture(R.drawable.raw1a);
 		sprites[0].translate(-1, -0.5f);
 		
-		spriteBatch = new SpriteBatch(tileMap.length);
+		spriteBatch = new SpriteBatch(tileMap.length * tileMap[0].length, program);
 	}
 	
 }

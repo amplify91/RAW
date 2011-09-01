@@ -7,6 +7,10 @@ public class Tile {
 	RenderComponent render;
 	PhysicsComponent physics;
 	
+	public float width;
+	public float height;
+	public int frame;
+	
 	private static final float SCALE_FACTOR = 1f/15f;
 	
 	public Tile(Context context, float ratio){
@@ -14,9 +18,16 @@ public class Tile {
 		render = new RenderVisible(context);
 		physics = new PhysicsStaticTile();
 		
+		width = (SCALE_FACTOR/*/2*/)*ratio;
+		height = (SCALE_FACTOR);
+		
 		scale(SCALE_FACTOR, SCALE_FACTOR);
 		translate((((-0.5f/SCALE_FACTOR)*ratio)+0.5f), ((-0.5f/SCALE_FACTOR)+0.5f)); //translate to bottom left corner of screen
 		
+	}
+	
+	public void setFrame(int frame){
+		this.frame = frame;
 	}
 	
 	public void draw(){

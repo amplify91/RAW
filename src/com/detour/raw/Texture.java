@@ -48,7 +48,7 @@ public class Texture{
 	}
 	
 	public float[] getFrameUV(int frame){
-		//TODO Check this method. Make sure values are correct.
+		//TODO Check this method. Make sure values are correct for multiple frames.
 		
 		float[] uv = new float[4];
 		

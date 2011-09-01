@@ -37,10 +37,10 @@ public class RenderVisible implements RenderComponent{
             };
 	
 	private float vertices[] = {
-			-1.0f,  1.0f, 0.0f, 1.0f,
-			-1.0f, -1.0f, 0.0f, 1.0f,
-			 1.0f, -1.0f, 0.0f, 1.0f,
-			 1.0f,  1.0f, 0.0f, 1.0f
+			-1.0f,  1.0f,// 0.0f, 1.0f,
+			-1.0f, -1.0f,// 0.0f, 1.0f,
+			 1.0f, -1.0f,// 0.0f, 1.0f,
+			 1.0f,  1.0f//, 0.0f, 1.0f
 		     };
 	
 	private short[] indices = {
@@ -100,7 +100,7 @@ public class RenderVisible implements RenderComponent{
 		
 		GLES20.glEnableVertexAttribArray(vertexHandle);
 		GLES20.glEnableVertexAttribArray(texCoordHandle);
-		GLES20.glVertexAttribPointer(vertexHandle, 4, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 		GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
 		GLES20.glUniform1i(textureHandle, 0);
 		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, mMVPMatrix, 0);

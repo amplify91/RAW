@@ -42,7 +42,7 @@ public class LevelLoader {
 	}
 	
 	private void createRandomTileMap(){
-		tiles = new Tile[15][50];
+		tiles = new Tile[15][25];
 		
 		Random rand = new Random();
 		
@@ -50,6 +50,7 @@ public class LevelLoader {
 			for(int x=0;x<tiles[y].length;x++){
 				tiles[y][x] = new Tile(mContext, GameRenderer.getScreenRatio());
 				tiles[y][x].setProgram(program);
+				tiles[y][x].setFrame((getRandomPlaceholder(rand.nextInt(4))));
 				tiles[y][x].loadGLTexture((getRandomPlaceholder(rand.nextInt(4))));
 				tiles[y][x].translate(x, y);
 			}
