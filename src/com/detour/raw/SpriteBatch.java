@@ -7,7 +7,6 @@ import java.nio.ShortBuffer;
 
 import android.opengl.GLES20;
 import android.opengl.Matrix;
-import android.util.Log;
 
 public class SpriteBatch {
 	
@@ -135,7 +134,6 @@ public class SpriteBatch {
 		indices[ii++] = (short)(3 + (ix*4));
 		ix++;
 		
-		//Log.i("SpriteBatch", "Finished draw()!!!");
 	}
 	
 	public void end(){
@@ -146,8 +144,6 @@ public class SpriteBatch {
 		
 		fillBuffers();
 		render();
-		
-		//Log.i("SpriteBatch", "Finished end()!!! ");
 		
 	}
 	
@@ -171,12 +167,10 @@ public class SpriteBatch {
 		GLES20.glEnableVertexAttribArray(texCoordHandle);
 		GLES20.glUniform1i(textureHandle, 0);
 		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, mMVPMatrix, 0);
-		
 		GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
 		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-		//Log.i("", "" + GLES20.glGetError());
-		GLES20.glDrawElements(GLES20.GL_TRIANGLES, ix*6, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
-		//Log.i("", "" + GLES20.glGetError());
+		
+		GLES20.glDrawElements(GLES20.GL_TRIANGLES, ii, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
 		
 	}
 	

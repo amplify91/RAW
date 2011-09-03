@@ -21,7 +21,7 @@ public class GameManager {
 		
 	}
 	
-	public static synchronized GameManager getGameManager(){ //TODO synchronized
+	public static synchronized GameManager getGameManager(){ //TODO synchronized?
 		return gameManager;
 	}
 	
@@ -41,7 +41,6 @@ public class GameManager {
 		
 		for(int y=0;y<tileMap.length;y++){
 			for(int x=0;x<tileMap[y].length;x++){
-				//tileMap[y][x].draw();
 				spriteBatch.draw(mTileTexture, tileMap[y][x].frame, x, y, tileMap[y][x].width, tileMap[y][x].height);
 			}
 		}

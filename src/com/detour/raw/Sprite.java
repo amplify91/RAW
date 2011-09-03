@@ -10,8 +10,7 @@ public class Sprite{
 	
 	public static final int VERTEX_SIZE = 2 + 2;
 	public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
-	//TODO put these 3 surrounding fields into render components
-	private float[] vertices = new float[SPRITE_SIZE];
+	//TODO put these 2 fields into render components
 	
 	public Sprite(Context context){
 		super();
