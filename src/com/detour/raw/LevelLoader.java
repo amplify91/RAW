@@ -50,7 +50,7 @@ public class LevelLoader {
 			for(int x=0;x<tiles[y].length;x++){
 				tiles[y][x] = new Tile(mContext, GameRenderer.getScreenRatio());
 				tiles[y][x].setProgram(program);
-				tiles[y][x].setFrame((getRandomPlaceholder(rand.nextInt(4))));
+				tiles[y][x].setFrame(rand.nextInt(8));
 				tiles[y][x].loadGLTexture((getRandomPlaceholder(rand.nextInt(4))));
 				tiles[y][x].translate(x, y);
 			}

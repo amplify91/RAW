@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
+import android.util.Log;
 
 public class Texture{
 	
@@ -52,17 +53,24 @@ public class Texture{
 		
 		float[] uv = new float[4];
 		
+		if(frame>=numberOfFrames || frame<0){
+			Log.d("", "Invalid frame number.");
+		}
+		while(frame>=numberOfFrames){
+			frame -= numberOfFrames;
+		}
+		
 		if(numberOfFrames>1){
-			float width = ((float)framesWide / (float)mBitmap.getWidth()) / (float)mBitmap.getWidth();
-			float height = ((float)framesHigh / (float)mBitmap.getHeight()) / (float)mBitmap.getHeight();
+			float width = ((float)mBitmap.getWidth() / (float)framesWide) / (float)mBitmap.getWidth();
+			float height = ((float)mBitmap.getHeight() / (float)framesHigh) / (float)mBitmap.getHeight();
 			float u = 0;
 			float v = 0;
 			if(frame<framesWide){
 				u = (float)frame * width;
-				v = height;
+				v = 1f;
 			}else{
-				u = /*(float)*/(frame%framesWide) * width;
-				v = /*(float)*/(frame/framesWide) * height;
+				u = (float)(frame%framesWide) * width;
+				v = 1f - (float)(frame/framesWide) * height;
 			}
 			
 			uv[0] = u;
