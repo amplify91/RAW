@@ -11,14 +11,14 @@ public class Tile {
 	public float height;
 	public int frame;
 	
-	private static final float SCALE_FACTOR = 1f/15f;
+	private static final float SCALE_FACTOR = 2f/15f;
 	
 	public Tile(Context context, float ratio){
 		
 		render = new RenderVisible(context);
 		physics = new PhysicsStaticTile();
 		
-		width = (SCALE_FACTOR/*/2*/)*ratio;
+		width = (SCALE_FACTOR);
 		height = (SCALE_FACTOR);
 		
 		scale(SCALE_FACTOR, SCALE_FACTOR);

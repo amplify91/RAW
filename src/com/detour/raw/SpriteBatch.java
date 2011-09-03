@@ -96,6 +96,11 @@ public class SpriteBatch {
 			texture.bind();
 		}
 		
+		x *= 2f/15f;
+		y *= 2f/15f;
+		x -= 1f * GameRenderer.getScreenRatio();
+		y -= 1f;
+		
 		uvArr = texture.getFrameUV(frame);
 		u = uvArr[0];
 		v = uvArr[1];
@@ -162,9 +167,6 @@ public class SpriteBatch {
 	
 	private void render(){
 		
-		//TODO add shader and other OpenGLES20 stuff. not necessarily right here.
-		//render - 
-		
 		GLES20.glEnableVertexAttribArray(vertexHandle);
 		GLES20.glEnableVertexAttribArray(texCoordHandle);
 		GLES20.glUniform1i(textureHandle, 0);
@@ -173,7 +175,7 @@ public class SpriteBatch {
 		GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
 		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 		//Log.i("", "" + GLES20.glGetError());
-		GLES20.glDrawElements(GLES20.GL_TRIANGLES, ix/2, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+		GLES20.glDrawElements(GLES20.GL_TRIANGLES, ix*6, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
 		//Log.i("", "" + GLES20.glGetError());
 		
 	}

@@ -42,7 +42,7 @@ public class GameManager {
 		for(int y=0;y<tileMap.length;y++){
 			for(int x=0;x<tileMap[y].length;x++){
 				//tileMap[y][x].draw();
-				spriteBatch.draw(mTileTexture, tileMap[y][x].frame, tileMap[y][x].width * ((float)x), tileMap[y][x].height * ((float)y), tileMap[y][x].width, tileMap[y][x].height);
+				spriteBatch.draw(mTileTexture, tileMap[y][x].frame, x, y, tileMap[y][x].width, tileMap[y][x].height);
 			}
 		}
 		
