@@ -12,6 +12,12 @@ public class Sprite{
 	public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 	//TODO put these 2 fields into render components
 	
+	public float width;
+	public float height;
+	public int frame = 0;
+	
+	private static final float SCALE_FACTOR = 2f/15f;
+	
 	public Sprite(Context context){
 		super();
 		
@@ -19,10 +25,17 @@ public class Sprite{
 		physics = new PhysicsStaticTile();
 		scale(0.5f, 0.5f);
 		
+		width = (SCALE_FACTOR);
+		height = (SCALE_FACTOR);
+		
 	}
 	
 	public void draw(){
 		renderable.draw(physics.getX(), physics.getY());
+	}
+	
+	public void draw(SpriteBatch sb, Texture t){
+		sb.draw(t, frame, getX(), getY(), width, height);
 	}
 	
 	public float getX(){
@@ -42,12 +55,13 @@ public class Sprite{
 		renderable.createAnitmationFrames(id, frameWidth, frameHeight, program);
 	}
 	
-	public void selectFrame(int frameIndex){
-		renderable.selectFrame(frameIndex);
+	public void setFrame(int frame){
+		this.frame = frame;
 	}
 	
 	public void scale(float sx, float sy){
-		renderable.scale(sx, sy);
+		width *= sx;
+		height *= sy;
 	}
 	
 	public void translate(float tx, float ty){

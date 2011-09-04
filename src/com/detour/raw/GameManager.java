@@ -11,14 +11,16 @@ public class GameManager {
 	LevelLoader levelLoader;
 	SpriteBatch spriteBatch;
 	Texture mTileTexture;
+	Texture mHeroTexture;
+	Input input;
 	
 	Tile[][] tileMap;
-	Sprite[] sprites;
+	Sprite hero;
 	
 	int speed = 1;
 	
 	private GameManager(){
-		
+		input = new Input();
 	}
 	
 	public static synchronized GameManager getGameManager(){ //TODO synchronized?
@@ -41,16 +43,18 @@ public class GameManager {
 		
 		for(int y=0;y<tileMap.length;y++){
 			for(int x=0;x<tileMap[y].length;x++){
-				spriteBatch.draw(mTileTexture, tileMap[y][x].frame, x, y, tileMap[y][x].width, tileMap[y][x].height);
+				tileMap[y][x].draw(spriteBatch, mTileTexture);
+				//spriteBatch.draw(mTileTexture, tileMap[y][x].frame, x, y, tileMap[y][x].width, tileMap[y][x].height);
 			}
 		}
 		
 		spriteBatch.end();
 		
-		for(int x=0;x<sprites.length;x++){
-			//sprites[x].draw();
-			//sprites[x].translate(0.1f, 0.0f);
-		}
+		spriteBatch.begin();
+		
+		hero.draw(spriteBatch, mHeroTexture);
+		
+		spriteBatch.end();
 		
 	}
 	
@@ -64,13 +68,21 @@ public class GameManager {
 		tileMap = levelLoader.getTileMap();
 		mTileTexture = new Texture(mContext, R.drawable.spritesheet1, 4, 2);
 		
-		sprites = new Sprite[1];
-		sprites[0] = new Sprite(mContext);
-		sprites[0].setProgram(program);
-		sprites[0].loadGLTexture(R.drawable.raw1a);
-		sprites[0].translate(-1, -0.5f);
+		hero = new Sprite(mContext);
+		mHeroTexture = new Texture(mContext, R.drawable.raw1, 1, 1);
+		hero.setFrame(0);
+		hero.translate(2, 2);
+		hero.scale(2, 2);
 		
 		spriteBatch = new SpriteBatch(tileMap.length * tileMap[0].length, program);
+	}
+	
+	public Input getInput(){
+		return input;
+	}
+	
+	public Sprite getHero(){
+		return hero;
 	}
 	
 }

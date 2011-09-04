@@ -22,7 +22,7 @@ public class Tile {
 		height = (SCALE_FACTOR);
 		
 		scale(SCALE_FACTOR, SCALE_FACTOR);
-		translate((((-0.5f/SCALE_FACTOR)*ratio)+0.5f), ((-0.5f/SCALE_FACTOR)+0.5f)); //translate to bottom left corner of screen
+		//translate((((-0.5f/SCALE_FACTOR)*ratio)+0.5f), ((-0.5f/SCALE_FACTOR)+0.5f)); //translate to bottom left corner of screen
 		
 	}
 	
@@ -32,6 +32,10 @@ public class Tile {
 	
 	public void draw(){
 		render.draw(physics.getX(), physics.getY());
+	}
+	
+	public void draw(SpriteBatch sb, Texture t){
+		sb.draw(t, frame, getX(), getY(), width, height);
 	}
 	
 	public float getX(){

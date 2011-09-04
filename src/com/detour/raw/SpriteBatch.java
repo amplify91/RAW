@@ -90,6 +90,11 @@ public class SpriteBatch {
 			throw new IllegalStateException("Haven't started drawing. Call begin() first.");
 		}
 		
+		if(x+width+1<0 || x>25 || y+height+1<0 || y>15){
+			//off screen, don't draw
+			return;
+		}
+		
 		if(texture != mTexture){
 			mTexture = texture;
 			texture.bind();

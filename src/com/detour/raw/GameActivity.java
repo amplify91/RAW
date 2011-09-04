@@ -2,6 +2,7 @@ package com.detour.raw;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -10,6 +11,7 @@ public class GameActivity extends Activity{
 	//private static final String LOG_TAG = "GameActivity";
     private GameView gameView;
     private GameLoopThread thread;
+    private Input input;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,7 @@ public class GameActivity extends Activity{
         
         gameView = new GameView(this.getApplicationContext());
         thread = new GameLoopThread(gameView, gameView.getContext());
+        input = GameManager.getGameManager().getInput();
         
         setContentView(gameView);
     }
@@ -46,5 +49,13 @@ public class GameActivity extends Activity{
             }
         }
 	}
-
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		
+		input.onTouchInput(event);
+		
+		return super.onTouchEvent(event);
+	}
+	
 }

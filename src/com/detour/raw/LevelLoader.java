@@ -42,7 +42,7 @@ public class LevelLoader {
 	}
 	
 	private void createRandomTileMap(){
-		tiles = new Tile[15][25];
+		tiles = new Tile[15][250];
 		
 		Random rand = new Random();
 		
