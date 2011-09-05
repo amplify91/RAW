@@ -21,21 +21,20 @@ public class Sprite{
 	public Sprite(Context context){
 		super();
 		
-		renderable = new RenderVisible(context);
-		physics = new PhysicsStaticTile();
-		scale(0.5f, 0.5f);
+		//renderable = new RenderVisible(context);
+		physics = new PhysicsHero();
 		
 		width = (SCALE_FACTOR);
 		height = (SCALE_FACTOR);
 		
 	}
 	
-	public void draw(){
-		renderable.draw(physics.getX(), physics.getY());
-	}
-	
 	public void draw(SpriteBatch sb, Texture t){
 		sb.draw(t, frame, getX(), getY(), width, height);
+	}
+	
+	public void update(int speed){
+		physics.update(speed);
 	}
 	
 	public float getX(){
@@ -46,14 +45,10 @@ public class Sprite{
 		return physics.getY();
 	}
 	
-	public void loadGLTexture(int id) {
+	/*public void loadGLTexture(int id) {
 		Log.d("Sprite", "TODO!!!"); //TODO get rid of this and load tex coord from a texture atlas
 		renderable.loadGLTexture(id);
-	}
-	
-	public void createAnitmationFrames(int id, int frameWidth, int frameHeight, int program){
-		renderable.createAnitmationFrames(id, frameWidth, frameHeight, program);
-	}
+	}*/
 	
 	public void setFrame(int frame){
 		this.frame = frame;
@@ -66,10 +61,6 @@ public class Sprite{
 	
 	public void translate(float tx, float ty){
 		physics.translate(tx, ty);
-	}
-	
-	public void setProgram(int program){
-		renderable.setProgram(program);
 	}
 	
 }

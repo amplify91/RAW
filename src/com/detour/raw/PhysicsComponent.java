@@ -2,6 +2,8 @@ package com.detour.raw;
 
 public interface PhysicsComponent {
 	
+	public void update(int speed);
+	
 	public float getX();
 	
 	public float getY();
@@ -11,5 +13,7 @@ public interface PhysicsComponent {
 	public void setY(float y);
 	
 	public void translate(float x, float y);
+	
+	public void jump();
 	
 }

@@ -10,7 +10,7 @@ import android.opengl.Matrix;
 
 public class SpriteBatch {
 	
-	Texture mTexture;
+	private Texture mTexture;
 	
 	private float[] vertices;
 	private float[] uvCoords;
@@ -22,10 +22,18 @@ public class SpriteBatch {
 	private int MVPMatrixHandle;
 	
 	private boolean drawing = false;
+	private int prevFrame = 0;
+	
 	private int vi = 0;
 	private int ti = 0;
 	private int ii = 0;
 	private int ix = 0;
+	
+	private float[] uvArr;
+	private float u;
+	private float v;
+	private float u2;
+	private float v2;
 	
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer textureBuffer;
@@ -79,25 +87,23 @@ public class SpriteBatch {
 		ix = 0;
 	}
 	
-	float[] uvArr;
-	float u;
-	float v;
-	float u2;
-	float v2;
-	
 	public void draw(Texture texture, int frame, float x, float y, float width, float height){
 		if(!drawing){
 			throw new IllegalStateException("Haven't started drawing. Call begin() first.");
 		}
 		
-		if(x+width+1<0 || x>25 || y+height+1<0 || y>15){
-			//off screen, don't draw
-			return;
-		}
-		
 		if(texture != mTexture){
 			mTexture = texture;
 			texture.bind();
+			prevFrame = 0;
+		}
+		
+		if(frame==0){
+			//invisible, don't draw
+			return;
+		}else if(x+width+1<0 || x>25 || y+height+1<0 || y>15){ //TODO make better
+			//off screen, don't draw
+			return;
 		}
 		
 		x *= 2f/15f;
@@ -105,11 +111,13 @@ public class SpriteBatch {
 		x -= 1f * GameRenderer.getScreenRatio();
 		y -= 1f;
 		
-		uvArr = texture.getFrameUV(frame);
-		u = uvArr[0];
-		v = uvArr[1];
-		u2 = uvArr[2];
-		v2 = uvArr[3];
+		if(frame!=prevFrame){ //Small optimization. Don't load new UV data if using same frame.
+			uvArr = mTexture.getFrameUV(frame);
+			u = uvArr[0];
+			v = uvArr[1];
+			u2 = uvArr[2];
+			v2 = uvArr[3];
+		}
 		
 		vertices[vi++] = x;
 		vertices[vi++] = y + height;
@@ -139,6 +147,7 @@ public class SpriteBatch {
 		indices[ii++] = (short)(3 + (ix*4));
 		ix++;
 		
+		prevFrame = frame;
 	}
 	
 	public void end(){

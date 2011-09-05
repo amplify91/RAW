@@ -10,14 +10,14 @@ public class Input {
 	
 	public void onTouchInput(MotionEvent event){
 		
-		if(event.getAction()==MotionEvent.ACTION_UP){
+		if(event.getAction()==MotionEvent.ACTION_DOWN){
 			jump();
 		}
 		
 	}
 	
 	private void jump(){
-		GameManager.getGameManager().getHero().translate(0, 2);
+		GameManager.getGameManager().getHero().physics.jump();
 	}
 	
 	private void shoot(float x, float y){

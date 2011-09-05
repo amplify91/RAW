@@ -42,16 +42,15 @@ public class LevelLoader {
 	}
 	
 	private void createRandomTileMap(){
-		tiles = new Tile[15][250];
+		tiles = new Tile[2][250];
 		
 		Random rand = new Random();
 		
 		for(int y=0;y<tiles.length;y++){
 			for(int x=0;x<tiles[y].length;x++){
 				tiles[y][x] = new Tile(mContext, GameRenderer.getScreenRatio());
-				tiles[y][x].setProgram(program);
-				tiles[y][x].setFrame(rand.nextInt(8));
-				tiles[y][x].loadGLTexture((getRandomPlaceholder(rand.nextInt(4))));
+				tiles[y][x].setFrame(rand.nextInt(9));
+				//tiles[y][x].loadGLTexture((getRandomPlaceholder(rand.nextInt(4))));
 				tiles[y][x].translate(x, y);
 			}
 		}
@@ -219,8 +218,8 @@ public class LevelLoader {
 		}
 		
 		Tile t = new Tile(mContext, GameRenderer.getScreenRatio());
-		t.setProgram(program);
-		t.loadGLTexture(id);
+		//t.setProgram(program);
+		//t.loadGLTexture(id);
 		return t;
 	}
 

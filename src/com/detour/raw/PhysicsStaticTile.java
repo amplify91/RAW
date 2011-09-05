@@ -5,9 +5,6 @@ public class PhysicsStaticTile implements PhysicsComponent{
 	private float x = 0;
 	private float y = 0;
 	
-	float xVel; // TODO static tiles don't move and don't need velocity.
-	float yVel; // Put these in different physics components
-	
 	public PhysicsStaticTile(){
 		
 	}
@@ -16,6 +13,11 @@ public class PhysicsStaticTile implements PhysicsComponent{
 		this();
 		setX(x);
 		setY(y);
+	}
+	
+	@Override
+	public void update(int speed) {
+		translate(-0.1f*(float)speed, 0f);
 	}
 	
 	@Override
@@ -42,6 +44,11 @@ public class PhysicsStaticTile implements PhysicsComponent{
 	public void translate(float x, float y) {
 		this.x += x;
 		this.y += y;
+	}
+
+	@Override
+	public void jump() {
+		//do nothing
 	}
 
 }

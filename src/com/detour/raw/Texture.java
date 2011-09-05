@@ -15,6 +15,7 @@ public class Texture{
 	private int framesWide;
 	private int framesHigh;
 	
+	private float[][] frames;
 	private int[] tex = new int[1];
 	
 	public Texture(Context context, int id){
@@ -30,6 +31,7 @@ public class Texture{
 		numberOfFrames = framesHorizontal * framesVertical;
 		framesWide = framesHorizontal;
 		framesHigh = framesVertical;
+		frames = createFrames();
 	}
 	
 	public int getWidth(){
@@ -49,6 +51,20 @@ public class Texture{
 	}
 	
 	public float[] getFrameUV(int frame){
+		return frames[frame-1];
+	}
+	
+	private float[][] createFrames(){
+		float[][] f = new float[numberOfFrames][4];
+		
+		for(int i=0;i<numberOfFrames;i++){
+			f[i] = createFrameUV(i);
+		}
+		
+		return f;
+	}
+	
+	private float[] createFrameUV(int frame){
 		//TODO Check this method. Make sure values are correct for multiple frames.
 		
 		float[] uv = new float[4];

@@ -17,6 +17,8 @@ public class GameManager {
 	Tile[][] tileMap;
 	Sprite hero;
 	
+	boolean levelLoaded = false;
+	
 	int speed = 1;
 	
 	private GameManager(){
@@ -28,33 +30,34 @@ public class GameManager {
 	}
 	
 	public void update(){
-		if(tileMap!=null){
-			for(int y=0;y<tileMap.length;y++){
-				for(int x=0;x<tileMap[y].length;x++){
-					tileMap[y][x].translate(-0.1f*(float)speed, 0f);
+		if(levelLoaded){
+			if(tileMap!=null){
+				for(int y=0;y<tileMap.length;y++){
+					for(int x=0;x<tileMap[y].length;x++){
+						tileMap[y][x].update(speed);
+					}
 				}
+				hero.update(speed);
 			}
 		}
 	}
 	
 	public void draw(){
 		
-		spriteBatch.begin();
-		
-		for(int y=0;y<tileMap.length;y++){
-			for(int x=0;x<tileMap[y].length;x++){
-				tileMap[y][x].draw(spriteBatch, mTileTexture);
-				//spriteBatch.draw(mTileTexture, tileMap[y][x].frame, x, y, tileMap[y][x].width, tileMap[y][x].height);
+		if(levelLoaded){
+			spriteBatch.begin();
+			for(int y=0;y<tileMap.length;y++){
+				for(int x=0;x<tileMap[y].length;x++){
+					tileMap[y][x].draw(spriteBatch, mTileTexture);
+					//spriteBatch.draw(mTileTexture, tileMap[y][x].frame, x, y, tileMap[y][x].width, tileMap[y][x].height);
+				}
 			}
+			spriteBatch.end();
+			
+			spriteBatch.begin();
+			hero.draw(spriteBatch, mHeroTexture);
+			spriteBatch.end();
 		}
-		
-		spriteBatch.end();
-		
-		spriteBatch.begin();
-		
-		hero.draw(spriteBatch, mHeroTexture);
-		
-		spriteBatch.end();
 		
 	}
 	
@@ -69,12 +72,14 @@ public class GameManager {
 		mTileTexture = new Texture(mContext, R.drawable.spritesheet1, 4, 2);
 		
 		hero = new Sprite(mContext);
-		mHeroTexture = new Texture(mContext, R.drawable.raw1, 1, 1);
-		hero.setFrame(0);
+		mHeroTexture = new Texture(mContext, R.drawable.raw1a, 1, 1);
+		hero.setFrame(1);
 		hero.translate(2, 2);
 		hero.scale(2, 2);
 		
 		spriteBatch = new SpriteBatch(tileMap.length * tileMap[0].length, program);
+		
+		levelLoaded = true;
 	}
 	
 	public Input getInput(){

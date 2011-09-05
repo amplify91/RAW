@@ -21,6 +21,8 @@ public class FPSCounter {
     public static Canvas canvas;
 	Paint paint;
 	
+	public static final String TAG = "FPSCounter";
+	
 	public FPSCounter(){
 		bitmap = Bitmap.createBitmap(256, 256, Bitmap.Config.ARGB_4444);
 		canvas = new Canvas(bitmap);
@@ -49,8 +51,8 @@ public class FPSCounter {
         }
         mLastTime = now;
         
-        if(avg_samples == 10){
-        	avg_fps = (int)(avg_fps_sample/10);
+        if(avg_samples == 5){
+        	avg_fps = (int)(avg_fps_sample/5);
         	setCountBitmap(avg_fps);
         	avg_fps_sample = 0;
         	avg_samples = 0;
@@ -62,7 +64,7 @@ public class FPSCounter {
 		//TODO why don't these canvas calls work?
 		//canvas.drawColor(0); //transparent
 		//canvas.drawText("FPS: "+f, 0, 0, paint);
-		Log.i("FPS", ""+f);
+		Log.i(TAG, ""+f);
 	}
 	
 	public void draw(GL10 gl){
