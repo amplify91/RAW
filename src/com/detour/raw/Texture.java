@@ -51,6 +51,7 @@ public class Texture{
 	}
 	
 	public float[] getFrameUV(int frame){
+		//Frame numbers start at 1.
 		return frames[frame-1];
 	}
 	

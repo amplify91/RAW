@@ -101,7 +101,7 @@ public class SpriteBatch {
 		if(frame==0){
 			//invisible, don't draw
 			return;
-		}else if(x+width+1<0 || x>25 || y+height+1<0 || y>15){ //TODO make better
+		}else if(x>25 || y>15 || x+(width*Sprite.SCALE_FACTOR_INV)<0 || y+(height*Sprite.SCALE_FACTOR_INV)<0){ //TODO make better
 			//off screen, don't draw
 			return;
 		}

@@ -16,7 +16,8 @@ public class Sprite{
 	public float height;
 	public int frame = 0;
 	
-	private static final float SCALE_FACTOR = 2f/15f;
+	public static final float SCALE_FACTOR = 2f/15f;
+	public static final float SCALE_FACTOR_INV = 15f/2f;
 	
 	public Sprite(Context context){
 		super();
