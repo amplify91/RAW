@@ -5,8 +5,9 @@ import android.util.Log;
 
 public class Sprite{
 	
-	RenderComponent renderable;
-	PhysicsComponent physics;
+	RenderComponent mRenderable;
+	PhysicsComponent mPhysics;
+	AnimationComponent mAnimation;
 	
 	public static final int VERTEX_SIZE = 2 + 2;
 	public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
@@ -14,7 +15,6 @@ public class Sprite{
 	
 	public float width;
 	public float height;
-	public int frame = 0;
 	
 	public static final float SCALE_FACTOR = 2f/15f;
 	public static final float SCALE_FACTOR_INV = 15f/2f;
@@ -23,7 +23,8 @@ public class Sprite{
 		super();
 		
 		//renderable = new RenderVisible(context);
-		physics = new PhysicsHero();
+		mPhysics = new PhysicsHero();
+		mAnimation = new AnimationComponent();
 		
 		width = (SCALE_FACTOR);
 		height = (SCALE_FACTOR);
@@ -31,19 +32,20 @@ public class Sprite{
 	}
 	
 	public void draw(SpriteBatch sb, Texture t){
-		sb.draw(t, frame, getX(), getY(), width, height);
+		sb.draw(t, mAnimation.getFrame(), mPhysics.getX(), mPhysics.getY(), width, height);
 	}
 	
 	public void update(int speed){
-		physics.update(speed);
+		mPhysics.update(speed);
+		mAnimation.update(speed);
 	}
 	
 	public float getX(){
-		return physics.getX();
+		return mPhysics.getX();
 	}
 	
 	public float getY(){
-		return physics.getY();
+		return mPhysics.getY();
 	}
 	
 	/*public void loadGLTexture(int id) {
@@ -51,9 +53,9 @@ public class Sprite{
 		renderable.loadGLTexture(id);
 	}*/
 	
-	public void setFrame(int frame){
-		this.frame = frame;
-	}
+	/*public void setFrame(int frame){
+		mAnimation.setFrame(frame);
+	}*/
 	
 	public void scale(float sx, float sy){
 		width *= sx;
@@ -61,7 +63,7 @@ public class Sprite{
 	}
 	
 	public void translate(float tx, float ty){
-		physics.translate(tx, ty);
+		mPhysics.translate(tx, ty);
 	}
 	
 }

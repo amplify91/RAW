@@ -72,8 +72,8 @@ public class GameManager {
 		mTileTexture = new Texture(mContext, R.drawable.spritesheet1, 4, 2);
 		
 		hero = new Sprite(mContext);
-		mHeroTexture = new Texture(mContext, R.drawable.raw1a, 1, 1);
-		hero.setFrame(1);
+		mHeroTexture = new Texture(mContext, Animation.HERO_TEXTURE, 8, 1);
+		//hero.setFrame(1);
 		hero.translate(2, 2);
 		hero.scale(2, 2);
 		

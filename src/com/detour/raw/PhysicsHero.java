@@ -71,7 +71,7 @@ public class PhysicsHero implements PhysicsComponent{
 	@Override
 	public void jump(){
 		acc += jumpVel;
-		if(acc>=jumpVel){
+		if(acc>jumpVel){
 			acc = jumpVel;
 		}
 		translate(0f, acc);

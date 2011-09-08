@@ -17,7 +17,7 @@ public class Input {
 	}
 	
 	private void jump(){
-		GameManager.getGameManager().getHero().physics.jump();
+		GameManager.getGameManager().getHero().mPhysics.jump();
 	}
 	
 	private void shoot(float x, float y){
