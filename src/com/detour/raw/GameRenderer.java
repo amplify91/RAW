@@ -83,6 +83,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		
 		GLES20.glViewport(0, 0, width, height);
+		gameManager.getCamera();// = new Camera(); TODO
 		ratio = ((float)(width))/((float)(height));
 		Matrix.orthoM(mProjMatrix, 0, -ratio, ratio, -1, 1, 0.5f, 10);
 		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);

@@ -8,6 +8,7 @@ public class GameManager {
 	
 	private Context mContext;
 	
+	Camera camera;
 	LevelLoader levelLoader;
 	SpriteBatch spriteBatch;
 	Texture mTileTexture;
@@ -84,6 +85,10 @@ public class GameManager {
 	
 	public Input getInput(){
 		return input;
+	}
+	
+	public Camera getCamera(){
+		return camera;
 	}
 	
 	public Sprite getHero(){
