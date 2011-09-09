@@ -41,7 +41,7 @@ public class GameLoopThread extends Thread{
 	            next_game_tick += TICK_DURARTION;
 	            loops++;
 	        }
-	        interpolation = ((float)(System.nanoTime() + TICK_DURARTION - next_game_tick))/((float)TICK_DURARTION);
+	        interpolation = ((float)(System.nanoTime() + TICK_DURARTION - next_game_tick))/((float)TICK_DURARTION); //TODO change floats to longs
 	        displayGame(interpolation);
 	    }
 	}

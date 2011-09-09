@@ -6,6 +6,8 @@ import android.util.Log;
 public class Camera {
 	
 	private static float mRatio = 0;
+	private float cameraX = 0;
+	private float cameraY = 0;
 	
 	private float[] mViewMatrix = new float[16];
 	private float[] mProjMatrix = new float[16];
@@ -14,8 +16,12 @@ public class Camera {
 	private float[] mMVMatrix = new float[16];
 	private static float[] mMVPMatrix = new float[16];
 	
-	public static final float HERO_X = 2f;
-	public static final float HERO_Y = 2f;
+	public static final float HERO_X = 2f;//TODO make these two relative to the ground,
+	public static final float HERO_Y = 2f;//instead of world coordinates.
+	public static final float HERO_X_MAX = HERO_X;
+	public static final float HERO_Y_MAX = 6f;
+	public static final float CAMERA_OFFSET_X = -2f * Sprite.SCALE_FACTOR;
+	public static final float CAMERA_OFFSET_Y = -2f * Sprite.SCALE_FACTOR;
 	
 	public static final String TAG = "Camera";
 	
@@ -62,20 +68,24 @@ public class Camera {
 		}
 	}
 	
-	public void update(float x, float y){
+	public void update(float heroX, float heroY){
 		//Move camera according to where Hero is.
 		
-		x = Sprite.SCALE_FACTOR * (x - HERO_X);
-		y = Sprite.SCALE_FACTOR * (y - HERO_Y);
-		/*if(y1<1){
-			y1 = 0;
-		}*/
+		if(heroX>HERO_X_MAX){
+			heroX -= HERO_X_MAX - HERO_X;
+		}else if(heroX>HERO_X && heroX<=HERO_X_MAX){
+			heroX = HERO_X;
+		}
+		if(heroY>HERO_Y_MAX){
+			heroY -= HERO_Y_MAX - HERO_Y;
+		}else if(heroY>HERO_Y && heroY<=HERO_Y_MAX){
+			heroY = HERO_Y;
+		}
 		
-		Matrix.setIdentityM(mViewMatrix, 0);
-		Matrix.setIdentityM(mMVMatrix, 0);
-		Matrix.setIdentityM(mMVPMatrix, 0);
+		cameraX = (heroX * Sprite.SCALE_FACTOR) + CAMERA_OFFSET_X;
+		cameraY = (heroY * Sprite.SCALE_FACTOR) + CAMERA_OFFSET_Y;
 		
-		Matrix.setLookAtM(mViewMatrix, 0, x, y, 1.0f, x, y, 0f, 0f, 1.0f, 0.0f);
+		Matrix.setLookAtM(mViewMatrix, 0, cameraX, cameraY, 1.0f, cameraX, cameraY, 0f, 0f, 1.0f, 0.0f);
 		
 		Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjMatrix, 0, mMVMatrix, 0);
