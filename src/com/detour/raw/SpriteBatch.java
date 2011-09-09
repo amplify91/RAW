@@ -39,10 +39,6 @@ public class SpriteBatch {
 	private FloatBuffer textureBuffer;
 	private ShortBuffer indexBuffer;
 	
-	private float[] mModelMatrix = new float[16];
-	private float[] mMVMatrix = new float[16];
-	private float[] mMVPMatrix = new float[16];
-	
 	public SpriteBatch(int size, int program){
 		
 		vertices = new float[size * 2 * 4];
@@ -69,10 +65,6 @@ public class SpriteBatch {
 		indexBuffer = ibb.asShortBuffer();
 		indexBuffer.position(0);
 		
-		Matrix.setIdentityM(mModelMatrix, 0);
-		Matrix.multiplyMM(mMVMatrix, 0, GameRenderer.getViewMatrix(), 0, mModelMatrix, 0);
-        Matrix.multiplyMM(mMVPMatrix, 0, GameRenderer.getProjMatrix(), 0, mMVMatrix, 0);
-		
 	}
 	
 	public void begin(){
@@ -92,23 +84,24 @@ public class SpriteBatch {
 			throw new IllegalStateException("Haven't started drawing. Call begin() first.");
 		}
 		
+		if(frame==0){
+			//invisible, don't draw
+			return;
+		}//TODO Make these coordinates based on hero's position, not world position.
+		/*else if(x>25 || y>15 || x+(width*Sprite.SCALE_FACTOR_INV)<0 || y+(height*Sprite.SCALE_FACTOR_INV)<0){ //TODO make better
+			//off screen, don't draw
+			return;
+		}*/
+		
 		if(texture != mTexture){
 			mTexture = texture;
 			texture.bind();
 			prevFrame = 0;
 		}
 		
-		if(frame==0){
-			//invisible, don't draw
-			return;
-		}else if(x>25 || y>15 || x+(width*Sprite.SCALE_FACTOR_INV)<0 || y+(height*Sprite.SCALE_FACTOR_INV)<0){ //TODO make better
-			//off screen, don't draw
-			return;
-		}
-		
 		x *= 2f/15f;
 		y *= 2f/15f;
-		x -= 1f * GameRenderer.getScreenRatio();
+		x -= 1f * Camera.getScreenRatio();
 		y -= 1f;
 		
 		if(frame!=prevFrame){ //Small optimization. Don't load new UV data if using same frame.
@@ -180,7 +173,7 @@ public class SpriteBatch {
 		GLES20.glEnableVertexAttribArray(vertexHandle);
 		GLES20.glEnableVertexAttribArray(texCoordHandle);
 		GLES20.glUniform1i(textureHandle, 0);
-		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, mMVPMatrix, 0);
+		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, Camera.getMVPMatrix(), 0);
 		GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
 		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 		

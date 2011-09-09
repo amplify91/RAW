@@ -48,7 +48,7 @@ public class LevelLoader {
 		
 		for(int y=0;y<tiles.length;y++){
 			for(int x=0;x<tiles[y].length;x++){
-				tiles[y][x] = new Tile(mContext, GameRenderer.getScreenRatio());
+				tiles[y][x] = new Tile(mContext, Camera.getScreenRatio());
 				tiles[y][x].setFrame(rand.nextInt(9));
 				//tiles[y][x].loadGLTexture((getRandomPlaceholder(rand.nextInt(4))));
 				tiles[y][x].translate(x, y);
@@ -217,7 +217,7 @@ public class LevelLoader {
 			id = R.drawable.t93;
 		}
 		
-		Tile t = new Tile(mContext, GameRenderer.getScreenRatio());
+		Tile t = new Tile(mContext, Camera.getScreenRatio());
 		//t.setProgram(program);
 		//t.loadGLTexture(id);
 		return t;

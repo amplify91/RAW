@@ -23,6 +23,8 @@ public class PhysicsHero implements PhysicsComponent{
 	@Override
 	public void update(int speed) {
 		
+		translate(0.2f*(float)speed, 0f);
+		
 		acc += gravity;
 		if(acc<termVel){
 			acc = termVel;

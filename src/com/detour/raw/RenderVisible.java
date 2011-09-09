@@ -52,14 +52,8 @@ public class RenderVisible implements RenderComponent{
 	private FloatBuffer textureBuffer;
 	private ShortBuffer indexBuffer;
 	
-	private float[] mModelMatrix = new float[16];
-	private float[] mMVMatrix = new float[16];
-	private float[] mMVPMatrix = new float[16];
-	
 	private float mScaleX = 1.0f;
 	private float mScaleY = 1.0f;
-	private float mTransX = 0;
-	private float mTransY = 0;
 	//private float mRotate = 0;
 	
 	public RenderVisible(Context context){
@@ -84,26 +78,20 @@ public class RenderVisible implements RenderComponent{
 		vertexBuffer.put(vertices);
 		vertexBuffer.position(0);
 		
-		Matrix.setIdentityM(mModelMatrix, 0);
 	}
 	
 	@Override
 	public void draw(float x, float y) { //TODO draw at x,y
 		
-		Matrix.setIdentityM(mModelMatrix, 0);
 		scale(mScaleX, mScaleY);
 		translate(x, y);
-		
-		//Matrix.rotateM(mModelMatrix, 0, mRotate, 0, 0, 0);
-		Matrix.multiplyMM(mMVMatrix, 0, GameRenderer.getViewMatrix(), 0, mModelMatrix, 0);
-        Matrix.multiplyMM(mMVPMatrix, 0, GameRenderer.getProjMatrix(), 0, mMVMatrix, 0);
 		
 		GLES20.glEnableVertexAttribArray(vertexHandle);
 		GLES20.glEnableVertexAttribArray(texCoordHandle);
 		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 		GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
 		GLES20.glUniform1i(textureHandle, 0);
-		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, mMVPMatrix, 0);
+		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, Camera.getMVPMatrix(), 0);
 		
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textures[0]);
@@ -199,18 +187,20 @@ public class RenderVisible implements RenderComponent{
 		
 	}
 	
-	public void scale(float sx, float sy){
-		mScaleX = sx;
-		mScaleY = sy;
-		Matrix.scaleM(mModelMatrix, 0, mScaleX, mScaleY, 1);
-	}
-	
-	public void translate(float tx, float ty){
-		Matrix.translateM(mModelMatrix, 0, tx*2f, ty*2f, 0);
-	}
-	
 	public void setProgram(int program){
 		this.program = program;
+	}
+
+	@Override
+	public void scale(float sx, float sy) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void translate(float tx, float ty) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

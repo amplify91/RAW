@@ -8,7 +8,7 @@ public class GameManager {
 	
 	private Context mContext;
 	
-	Camera camera;
+	public static Camera camera;
 	LevelLoader levelLoader;
 	SpriteBatch spriteBatch;
 	Texture mTileTexture;
@@ -24,6 +24,7 @@ public class GameManager {
 	
 	private GameManager(){
 		input = new Input();
+		camera = new Camera();
 	}
 	
 	public static synchronized GameManager getGameManager(){ //TODO synchronized?
@@ -39,6 +40,7 @@ public class GameManager {
 					}
 				}
 				hero.update(speed);
+				camera.update(hero.getX(), hero.getY());
 			}
 		}
 	}
@@ -54,6 +56,10 @@ public class GameManager {
 				}
 			}
 			spriteBatch.end();
+			
+			//TODO Improve the time it takes to switch textures with spritebatch
+			//or atlas all graphics on one spritesheet or both.
+			//This is where the bottleneck in framerate is coming from!
 			
 			spriteBatch.begin();
 			hero.draw(spriteBatch, mHeroTexture);
@@ -87,7 +93,7 @@ public class GameManager {
 		return input;
 	}
 	
-	public Camera getCamera(){
+	public static Camera getCamera(){
 		return camera;
 	}
 	

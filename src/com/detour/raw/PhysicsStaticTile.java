@@ -17,7 +17,7 @@ public class PhysicsStaticTile implements PhysicsComponent{
 	
 	@Override
 	public void update(int speed) {
-		translate(-0.1f*(float)speed, 0f);
+		//translate(-0.1f*(float)speed, 0f);
 	}
 	
 	@Override
