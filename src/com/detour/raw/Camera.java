@@ -20,7 +20,7 @@ public class Camera {
 	public static final float HERO_Y = 2f;//instead of world coordinates.
 	public static final float HERO_X_MAX = HERO_X;
 	public static final float HERO_Y_MAX = 6f;
-	public static final float CAMERA_OFFSET_X = -2f * Sprite.SCALE_FACTOR;
+	public static final float CAMERA_OFFSET_X = -4f * Sprite.SCALE_FACTOR;
 	public static final float CAMERA_OFFSET_Y = -2f * Sprite.SCALE_FACTOR;
 	
 	public static final String TAG = "Camera";
@@ -89,6 +89,22 @@ public class Camera {
 		
 		Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjMatrix, 0, mMVMatrix, 0);
+	}
+	
+	public float getCameraX(){
+		return cameraX;
+	}
+	
+	public float getCameraY(){
+		return cameraY;
+	}
+	
+	public float getOriginX(){
+		return cameraX - mRatio;
+	}
+	
+	public float getOriginY(){
+		return cameraY - 1f;
 	}
 	
 	public static float getScreenRatio(){

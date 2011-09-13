@@ -20,7 +20,6 @@ public class Sprite{
 	public static final float SCALE_FACTOR_INV = 15f/2f;
 	
 	public Sprite(Context context){
-		super();
 		
 		//renderable = new RenderVisible(context);
 		mPhysics = new PhysicsHero();
@@ -28,6 +27,8 @@ public class Sprite{
 		
 		width = (SCALE_FACTOR);
 		height = (SCALE_FACTOR);
+		
+		mAnimation.setAnimation(Animation.RUNNING);
 		
 	}
 	
@@ -48,19 +49,24 @@ public class Sprite{
 		return mPhysics.getY();
 	}
 	
-	/*public void loadGLTexture(int id) {
-		Log.d("Sprite", "TODO!!!"); //TODO get rid of this and load tex coord from a texture atlas
-		renderable.loadGLTexture(id);
-	}*/
-	
-	/*public void setFrame(int frame){
+	public void setFrame(int frame){
 		mAnimation.setFrame(frame);
-	}*/
+	}
 	
 	public void scale(float sx, float sy){
 		width *= sx;
 		height *= sy;
 	}
+	
+	/*public void scaleGraphics(float sx, float sy){
+		width *= sx;
+		height *= sy;
+	}
+	
+	public void scalePhysics(float sx, float sy){
+		width *= sx;
+		height *= sy;
+	}*/
 	
 	public void translate(float tx, float ty){
 		mPhysics.translate(tx, ty);

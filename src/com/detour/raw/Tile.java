@@ -13,7 +13,7 @@ public class Tile {
 	
 	private static final float SCALE_FACTOR = 2f/15f;
 	
-	public Tile(Context context, float ratio){
+	public Tile(Context context){
 		
 		//render = new RenderVisible(context);
 		physics = new PhysicsStaticTile();

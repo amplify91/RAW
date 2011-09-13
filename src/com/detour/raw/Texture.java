@@ -18,6 +18,8 @@ public class Texture{
 	private float[][] frames;
 	private int[] tex = new int[1];
 	
+	private static final String TAG = "Texture";
+	
 	public Texture(Context context, int id){
 		this(context, id, 1, 1);
 	}

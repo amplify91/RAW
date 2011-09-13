@@ -9,11 +9,13 @@ public class GameManager {
 	private Context mContext;
 	
 	public static Camera camera;
+	Input input;
+	HUD mHUD;
+	
 	LevelLoader levelLoader;
 	SpriteBatch spriteBatch;
 	Texture mTileTexture;
 	Texture mHeroTexture;
-	Input input;
 	
 	Tile[][] tileMap;
 	Sprite hero;
@@ -23,8 +25,9 @@ public class GameManager {
 	int speed = 1;
 	
 	private GameManager(){
-		input = new Input();
+		input = new Input(this);
 		camera = new Camera();
+		mHUD = new HUD(camera);
 	}
 	
 	public static synchronized GameManager getGameManager(){ //TODO synchronized?
@@ -41,6 +44,7 @@ public class GameManager {
 				}
 				hero.update(speed);
 				camera.update(hero.getX(), hero.getY());
+				//mHUD.update(camera.getOriginX(), camera.getOriginY());
 			}
 		}
 	}
@@ -62,6 +66,7 @@ public class GameManager {
 			//This is where the bottleneck in framerate is coming from!
 			
 			spriteBatch.begin();
+			//mHUD.draw(spriteBatch, mHeroTexture);
 			hero.draw(spriteBatch, mHeroTexture);
 			spriteBatch.end();
 		}
@@ -76,17 +81,21 @@ public class GameManager {
 		this.mContext = context;
 		levelLoader = new LevelLoader(context, program, level);
 		tileMap = levelLoader.getTileMap();
-		mTileTexture = new Texture(mContext, R.drawable.spritesheet1, 4, 2);
+		mTileTexture = new Texture(mContext, R.drawable.tilesheet, 16, 4);
 		
 		hero = new Sprite(mContext);
-		mHeroTexture = new Texture(mContext, Animation.HERO_TEXTURE, 8, 1);
+		mHeroTexture = new Texture(mContext, Animation.HERO_TEXTURE, 8, 2);
 		//hero.setFrame(1);
 		hero.translate(2, 2);
 		hero.scale(2, 2);
 		
-		spriteBatch = new SpriteBatch(tileMap.length * tileMap[0].length, program);
+		spriteBatch = new SpriteBatch(levelLoader.getNumberOfSprites()+1, program);
 		
 		levelLoaded = true;
+	}
+	
+	public HUD getHUD(){
+		return mHUD;
 	}
 	
 	public Input getInput(){

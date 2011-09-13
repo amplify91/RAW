@@ -24,6 +24,7 @@ public class LevelLoader {
 	int program;
 	int levelWidth = 0;
 	int levelHeight = 0;
+	int sprites = 0;
 	
 	Tile[][] tiles;
 	
@@ -35,10 +36,16 @@ public class LevelLoader {
 		}else{
 			createLevelFromFile(level);
 		}
+		
+		sprites += HUD.HUD_SPRITES;
 	}
 	
 	public Tile[][] getTileMap(){
 		return tiles;
+	}
+	
+	public int getNumberOfSprites(){
+		return sprites;
 	}
 	
 	private void createRandomTileMap(){
@@ -48,8 +55,9 @@ public class LevelLoader {
 		
 		for(int y=0;y<tiles.length;y++){
 			for(int x=0;x<tiles[y].length;x++){
-				tiles[y][x] = new Tile(mContext, Camera.getScreenRatio());
-				tiles[y][x].setFrame(rand.nextInt(9));
+				sprites++;
+				tiles[y][x] = new Tile(mContext);
+				tiles[y][x].setFrame(2/*rand.nextInt(9)*/);
 				//tiles[y][x].loadGLTexture((getRandomPlaceholder(rand.nextInt(4))));
 				tiles[y][x].translate(x, y);
 			}
@@ -206,20 +214,8 @@ public class LevelLoader {
 	}
 	
 	private Tile createTile(int type) {
-		int id = 0;
-		if(type==0){
-			id = R.drawable.t9;
-		}else if(type==1){
-			id = R.drawable.t91;
-		}else if(type==2){
-			id = R.drawable.t92;
-		}else{
-			id = R.drawable.t93;
-		}
-		
-		Tile t = new Tile(mContext, Camera.getScreenRatio());
-		//t.setProgram(program);
-		//t.loadGLTexture(id);
+		sprites++;
+		Tile t = new Tile(mContext);
 		return t;
 	}
 
