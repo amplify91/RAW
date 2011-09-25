@@ -2,7 +2,7 @@ package com.detour.raw;
 
 import android.content.Context;
 
-public class RenderInvisible {//implements Renderable{
+public class RenderInvisible {/*//implements Renderable{
 
 	//TODO remove all commented out code after Renderable interface has been fixed
 	//@Override
@@ -17,4 +17,4 @@ public class RenderInvisible {//implements Renderable{
 		
 	}
 
-}
+*/}

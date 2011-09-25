@@ -5,7 +5,6 @@ import android.util.Log;
 
 public class Sprite{
 	
-	RenderComponent mRenderable;
 	PhysicsComponent mPhysics;
 	AnimationComponent mAnimation;
 	
@@ -19,10 +18,10 @@ public class Sprite{
 	public static final float SCALE_FACTOR = 2f/15f;
 	public static final float SCALE_FACTOR_INV = 15f/2f;
 	
-	public Sprite(Context context){
+	public Sprite(PhysicsComponent p){
 		
 		//renderable = new RenderVisible(context);
-		mPhysics = new PhysicsHero();
+		mPhysics = p;
 		mAnimation = new AnimationComponent();
 		
 		width = (SCALE_FACTOR);
@@ -70,6 +69,14 @@ public class Sprite{
 	
 	public void translate(float tx, float ty){
 		mPhysics.translate(tx, ty);
+	}
+	
+	public void pauseAnimation(){
+		mAnimation.pause();
+	}
+	
+	public void resumeAnimation(){
+		mAnimation.resume();
 	}
 	
 }

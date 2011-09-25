@@ -1,6 +1,6 @@
 package com.detour.raw;
 
-public interface RenderComponent {
+public interface RenderComponent {/*
 	
 	void loadGLTexture(int id);
 	
@@ -16,4 +16,4 @@ public interface RenderComponent {
 	
 	void setProgram(int program);
 	
-}
+*/}

@@ -83,8 +83,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		
 		GLES20.glViewport(0, 0, width, height);
-		GameManager.getCamera().initialize(width, height);
-		
+		gameManager.getCamera().initialize(width, height);
 		gameManager.loadLevel(mContext, program, 0);
 		
 	}

@@ -13,7 +13,7 @@ public class PhysicsHero implements PhysicsComponent{
 	
 	private float gravity = -0.17f;
 	private float acc = 0f;
-	private float jumpVel = 1.4f;
+	private float jumpVel = 1.6f;
 	private float termVel = -0.5f;
 	
 	public PhysicsHero(){
@@ -36,12 +36,12 @@ public class PhysicsHero implements PhysicsComponent{
 			y = 2f;
 		}
 		
-		xVel = x - xPrev;
+		/*xVel = x - xPrev;
 		yVel = y - yPrev;
 		slope = yVel / xVel;
 		
 		xPrev = x;
-		yPrev = y;
+		yPrev = y;*/
 	}
 	
 	@Override
@@ -73,10 +73,9 @@ public class PhysicsHero implements PhysicsComponent{
 	@Override
 	public void jump(){
 		acc += jumpVel;
-		if(acc>jumpVel){
+		if(!isOnGround()){
 			acc = jumpVel;
 		}
-		translate(0f, acc);
 	}
 	
 	private void fall(){

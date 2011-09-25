@@ -5,7 +5,7 @@ import android.util.Log;
 
 public class Camera {
 	
-	private static float mRatio = 0;
+	private float mRatio = 0;
 	private float cameraX = 0;
 	private float cameraY = 0;
 	
@@ -30,30 +30,18 @@ public class Camera {
 	}
 	
 	public void initialize(){
-		if(mRatio==0){
-			mRatio = 1;
-			createMatrices();
-		}else{
-			Log.d(TAG, "Already initialized.");
-		}
+		mRatio = 1;
+		createMatrices();
 	}
 	
 	public void initialize(float ratio){
-		if(mRatio==0){
-			mRatio = ratio;
-			createMatrices();
-		}else{
-			Log.d(TAG, "Already initialized.");
-		}
+		mRatio = ratio;
+		createMatrices();
 	}
 	
 	public void initialize(float width, float height){
-		if(mRatio==0){
-			mRatio = width / height;
-			createMatrices();
-		}else{
-			Log.d(TAG, "Already initialized.");
-		}
+		mRatio = width / height;
+		createMatrices();
 	}
 	
 	public void createMatrices(){
@@ -100,14 +88,14 @@ public class Camera {
 	}
 	
 	public float getOriginX(){
-		return cameraX - mRatio;
+		return (cameraX)/Sprite.SCALE_FACTOR;
 	}
 	
 	public float getOriginY(){
 		return cameraY - 1f;
 	}
 	
-	public static float getScreenRatio(){
+	public float getScreenRatio(){
 		return mRatio;
 	}
 	
@@ -140,7 +128,7 @@ public class Camera {
 		mProjMatrix = proj;
 	}
 	
-	public static float[] getMVPMatrix(){
+	public float[] getMVPMatrix(){
 		return mMVPMatrix;
 	}
 	

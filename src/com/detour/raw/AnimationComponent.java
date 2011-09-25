@@ -12,7 +12,7 @@ public class AnimationComponent {
 	private int duration = 0;
 	
 	public AnimationComponent(){
-		mFrame = Animation.RUNNING_INDEX;
+		//mFrame = Animation.RUNNING_INDEX;
 		nextFrame = FRAME_DURATION;
 	}
 	

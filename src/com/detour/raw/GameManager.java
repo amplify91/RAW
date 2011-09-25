@@ -8,7 +8,7 @@ public class GameManager {
 	
 	private Context mContext;
 	
-	public static Camera camera;
+	Camera camera;
 	Input input;
 	HUD mHUD;
 	
@@ -44,7 +44,7 @@ public class GameManager {
 				}
 				hero.update(speed);
 				camera.update(hero.getX(), hero.getY());
-				//mHUD.update(camera.getOriginX(), camera.getOriginY());
+				mHUD.update();
 			}
 		}
 	}
@@ -59,16 +59,17 @@ public class GameManager {
 					//spriteBatch.draw(mTileTexture, tileMap[y][x].frame, x, y, tileMap[y][x].width, tileMap[y][x].height);
 				}
 			}
-			spriteBatch.end();
+			spriteBatch.end(camera);
 			
 			//TODO Improve the time it takes to switch textures with spritebatch
 			//or atlas all graphics on one spritesheet or both.
 			//This is where the bottleneck in framerate is coming from!
 			
 			spriteBatch.begin();
-			//mHUD.draw(spriteBatch, mHeroTexture);
+			
+			mHUD.draw(spriteBatch, mHeroTexture);
 			hero.draw(spriteBatch, mHeroTexture);
-			spriteBatch.end();
+			spriteBatch.end(camera);
 		}
 		
 	}
@@ -79,19 +80,21 @@ public class GameManager {
 	
 	public void loadLevel(Context context, int program, int level){
 		this.mContext = context;
-		levelLoader = new LevelLoader(context, program, level);
+		levelLoader = new LevelLoader(context, level);
 		tileMap = levelLoader.getTileMap();
 		mTileTexture = new Texture(mContext, R.drawable.tilesheet, 16, 4);
 		
-		hero = new Sprite(mContext);
+		hero = new Hero();
 		mHeroTexture = new Texture(mContext, Animation.HERO_TEXTURE, 8, 2);
 		//hero.setFrame(1);
 		hero.translate(2, 2);
 		hero.scale(2, 2);
 		
-		spriteBatch = new SpriteBatch(levelLoader.getNumberOfSprites()+1, program);
+		spriteBatch = new SpriteBatch(levelLoader.getNumberOfSprites()+1, program, camera.getScreenRatio());
 		
 		levelLoaded = true;
+		
+		System.gc();
 	}
 	
 	public HUD getHUD(){
@@ -102,7 +105,7 @@ public class GameManager {
 		return input;
 	}
 	
-	public static Camera getCamera(){
+	public Camera getCamera(){
 		return camera;
 	}
 	

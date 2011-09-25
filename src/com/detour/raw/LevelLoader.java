@@ -21,16 +21,14 @@ public class LevelLoader {
 	 */
 	
 	Context mContext;
-	int program;
 	int levelWidth = 0;
 	int levelHeight = 0;
 	int sprites = 0;
 	
 	Tile[][] tiles;
 	
-	public LevelLoader(Context c, int program, int level){
+	public LevelLoader(Context c, int level){
 		mContext = c;
-		this.program = program;
 		if(level==0){
 			createRandomTileMap();
 		}else{
@@ -56,10 +54,7 @@ public class LevelLoader {
 		for(int y=0;y<tiles.length;y++){
 			for(int x=0;x<tiles[y].length;x++){
 				sprites++;
-				tiles[y][x] = new Tile(mContext);
-				tiles[y][x].setFrame(2/*rand.nextInt(9)*/);
-				//tiles[y][x].loadGLTexture((getRandomPlaceholder(rand.nextInt(4))));
-				tiles[y][x].translate(x, y);
+				tiles[y][x] = new Tile(2,x,y);
 			}
 		}
 	}
@@ -128,13 +123,12 @@ public class LevelLoader {
 			
 			
 			for(int x=0, y = levelHeight;x<gridArr.length;x++){
-				Tile t = createTile(gridArr[x]);
 				if(x<levelWidth){
 					y = levelHeight - 1;
-					tiles[y][x] = t;
+					tiles[y][x] = createTile(gridArr[x], x, y);
 				}else{
 					y = levelHeight - (x/levelWidth) - 1;
-					tiles[y][(x%levelWidth)] = t;
+					tiles[y][(x%levelWidth)] = createTile(gridArr[x], x, y);
 				}
 			}
 			
@@ -213,9 +207,9 @@ public class LevelLoader {
 		
 	}
 	
-	private Tile createTile(int type) {
+	private Tile createTile(int frame, float x, float y) {
 		sprites++;
-		Tile t = new Tile(mContext);
+		Tile t = new Tile(frame, x, y);
 		return t;
 	}
 

@@ -35,11 +35,16 @@ public class SpriteBatch {
 	private float u2;
 	private float v2;
 	
+	private float mRatio;
+	private float[] MVPMatrix = new float[16];
+	
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer textureBuffer;
 	private ShortBuffer indexBuffer;
 	
-	public SpriteBatch(int size, int program){
+	public SpriteBatch(int size, int program, float ratio){
+		
+		mRatio = ratio;
 		
 		vertices = new float[size * 2 * 4];
 		uvCoords = new float[size * 2 * 4];
@@ -101,7 +106,7 @@ public class SpriteBatch {
 		
 		x *= 2f/15f;
 		y *= 2f/15f;
-		x -= 1f * Camera.getScreenRatio();
+		x -= 1f * mRatio;
 		y -= 1f;
 		
 		if(frame!=prevFrame){ //Small optimization. Don't load new UV data if using same frame.
@@ -143,11 +148,13 @@ public class SpriteBatch {
 		prevFrame = frame;
 	}
 	
-	public void end(){
+	public void end(Camera camera){
 		if(!drawing){
 			throw new IllegalStateException("Haven't started drawing. Call begin() first.");
 		}
 		drawing = false;
+		
+		MVPMatrix = camera.getMVPMatrix();
 		
 		fillBuffers();
 		render();
@@ -173,7 +180,7 @@ public class SpriteBatch {
 		GLES20.glEnableVertexAttribArray(vertexHandle);
 		GLES20.glEnableVertexAttribArray(texCoordHandle);
 		GLES20.glUniform1i(textureHandle, 0);
-		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, Camera.getMVPMatrix(), 0);
+		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, MVPMatrix, 0);
 		GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
 		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 		

@@ -14,7 +14,7 @@ import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
 
-public class RenderVisible implements RenderComponent{
+public class RenderVisible implements RenderComponent{/*
 	
 	Context mContext;
 	Bitmap bitmap;
@@ -111,16 +111,7 @@ public class RenderVisible implements RenderComponent{
 		textureHandle = GLES20.glGetUniformLocation(program, "u_texture");
 		MVPMatrixHandle = GLES20.glGetUniformLocation(program, "u_MVPMatrix");
 		
-		/*InputStream is = mContext.getResources().openRawResource(id);
-		try {
-			bitmap = BitmapFactory.decodeStream(is);
-		} finally {
-			try {
-				is.close();
-				is = null;
-			} catch (IOException e) {
-			}
-		}*/
+		
 		
 		GLES20.glGenTextures(1, textures, 0);
 		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -203,4 +194,4 @@ public class RenderVisible implements RenderComponent{
 		
 	}
 	
-}
+*/}

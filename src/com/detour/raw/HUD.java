@@ -19,16 +19,16 @@ public class HUD {
 	
 	public HUD(Camera c){
 		mCamera = c;
-		
+		originX = mCamera.getOriginX();
+		originY = 0f;
 	}
 	
-	public void update(float origX, float origY){
-		originX = origX;
-		originY = origY;
+	public void update(){
+		originX = mCamera.getOriginX();
 	}
 	
 	public void draw(SpriteBatch sb, Texture t){
-		//sb.draw(t, Animation.JUMP_BUTTON, originX, originY, 1f, 1f);
+		sb.draw(t, Animation.JUMP_BUTTON, originX, originY, 0.5f, 0.5f);
 	}
 	
 }
