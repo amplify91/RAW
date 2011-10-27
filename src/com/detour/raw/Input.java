@@ -1,5 +1,6 @@
 package com.detour.raw;
 
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class Input {
@@ -39,6 +40,7 @@ public class Input {
 	
 	private void jump(){
 		mGameManager.getHero().mPhysics.jump();
+		Log.i("Input", "jump!");
 	}
 	
 	private void shoot(float x, float y){

@@ -1,9 +1,7 @@
 package com.detour.raw;
 
-import android.content.Context;
-import android.util.Log;
 
-public class Sprite{
+public class Sprite extends BaseEntity{
 	
 	PhysicsComponent mPhysics;
 	AnimationComponent mAnimation;
@@ -35,9 +33,9 @@ public class Sprite{
 		sb.draw(t, mAnimation.getFrame(), mPhysics.getX(), mPhysics.getY(), width, height);
 	}
 	
-	public void update(int speed){
-		mPhysics.update(speed);
-		mAnimation.update(speed);
+	public void update(){
+		mPhysics.update();
+		mAnimation.update();
 	}
 	
 	public float getX(){

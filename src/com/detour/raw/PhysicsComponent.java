@@ -2,7 +2,7 @@ package com.detour.raw;
 
 public interface PhysicsComponent {
 	
-	public void update(int speed);
+	public void update();
 	
 	public float getX();
 	

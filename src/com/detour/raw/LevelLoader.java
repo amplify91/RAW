@@ -98,8 +98,8 @@ public class LevelLoader {
 		
 		if(line1!=null){
 			String[] str = line1.split("[ ]");
-			levelWidth = (int)(Double.parseDouble(str[0]));
-			levelHeight = (int)(Double.parseDouble(str[1]));
+			levelWidth = Integer.parseInt(str[0]);
+			levelHeight = (int)(Double.parseDouble(str[1])); //TODO double or int?
 			//grid = new int[levelHeight][levelWidth];
 			/*for(int y=0;y<levelHeight;y++){
 				for(int x=0;x<levelWidth;x++){

@@ -16,7 +16,7 @@ public class AnimationComponent {
 		nextFrame = FRAME_DURATION;
 	}
 	
-	public void update(int speed){
+	public void update(){
 		 
 		if(animating){
 			if(tick>GameLoopThread.TICKS_PER_SECOND-1){
