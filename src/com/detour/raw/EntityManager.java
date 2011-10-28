@@ -24,7 +24,7 @@ public class EntityManager {
 			mEntityList.get(i).update();
 			mGrid.updateCurrentCell(mEntityList.get(i));
 		}
-		Log.i("EntityManager", ""+GameManager.getGameManager().getHero().cellx);
+		//Log.i("EntityManager", ""+GameManager.getGameManager().getHero().cellx);
 	}
 	
 	public void add(BaseEntity b){

@@ -13,17 +13,17 @@ public class GameLoopThread extends Thread{
     float interpolation;
     boolean game_is_running;
     
-    Context mContext;
+    //Context mContext;
 
     private GameView gameView;
     private GameManager gameManager;
     private FPSCounter fps;
 	
-	public GameLoopThread(GameView gv, Context context){
+	public GameLoopThread(GameView gv){
 		super();
 		next_game_tick = System.nanoTime();
 		gameView = gv;
-		mContext = context;
+		//mContext = context;
 		gameManager = GameManager.getGameManager();
 		
 		game_is_running = false;

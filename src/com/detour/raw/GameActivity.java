@@ -2,7 +2,7 @@ package com.detour.raw;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -19,9 +19,12 @@ public class GameActivity extends Activity{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
-        gameView = new GameView(this.getApplicationContext());
-        thread = new GameLoopThread(gameView, gameView.getContext());
         input = GameManager.getGameManager().getInput();
+        Display display = getWindowManager().getDefaultDisplay(); 
+        input.setPixelDimensions(display.getWidth(), display.getHeight());
+        
+        gameView = new GameView(this.getApplicationContext(), input);
+        thread = new GameLoopThread(gameView/*, gameView.getContext()*/);
         
         setContentView(gameView);
     }
@@ -48,14 +51,6 @@ public class GameActivity extends Activity{
                 // try again shutting down the thread
             }
         }
-	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		
-		input.onTouchInput(event);
-		
-		return super.onTouchEvent(event);
 	}
 	
 }
