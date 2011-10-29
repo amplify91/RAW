@@ -4,9 +4,12 @@ import java.util.*;
 
 public class GridCell {
 	
-	ArrayList<BaseEntity> list = new ArrayList<BaseEntity>();
+	ArrayList<BaseEntity> mEntities = new ArrayList<BaseEntity>();
+	ArrayList<BaseEntity> mNotTiles = new ArrayList<BaseEntity>();
 	int x;
 	int y;
+	int it;
+	int mSize;
 	
 	public GridCell(int x, int y){
 		this.x = x;
@@ -14,26 +17,46 @@ public class GridCell {
 	}
 	
 	public void add(BaseEntity b){
-		list.add(b);
-		b.setCellIndex(list.size()-1);
+		mEntities.add(b);
+		mNotTiles.add(b);
 		b.cellx = x;
 		b.celly = y;
 	}
 	
+	public void addTile(Tile t){
+		mEntities.add(t);
+		t.cellx = x;
+		t.celly = y;
+	}
+	
 	public void remove(int index){
-		list.remove(index);
+		mNotTiles.remove(index);
 	}
 	
 	public void remove(BaseEntity b){
-		list.remove(b);
+		mNotTiles.remove(b);
 	}
 	
 	public BaseEntity getElement(int index){
-		return list.get(index);
+		return mNotTiles.get(index);
 	}
 	
 	public int getNumberOfElements(){
-		return list.size();
+		return mNotTiles.size();
+	}
+	
+	public void updateContents(){
+		mSize = mNotTiles.size();
+		for(it=0;it<mSize;it++){
+			mNotTiles.get(it).update();
+		}
+	}
+	
+	public void drawContents(SpriteBatch sb, Texture t){
+		mSize = mEntities.size();
+		for(it=0;it<mSize;it++){
+			mEntities.get(it).draw(sb, t);
+		}
 	}
 	
 	/*public BaseEntity[] getAllElements(){

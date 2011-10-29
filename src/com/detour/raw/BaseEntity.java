@@ -6,7 +6,8 @@ public abstract class BaseEntity {
 	boolean isActive = true;
 	int cellx;
 	int celly;
-	int cellIndex;
+	
+	public abstract void draw(SpriteBatch sb, Texture t);
 	
 	public abstract void update();
 	
@@ -20,14 +21,6 @@ public abstract class BaseEntity {
 	
 	public void setIndex(int i){
 		index = i;
-	}
-	
-	public int getCellIndex(){
-		return cellIndex;
-	}
-	
-	public void setCellIndex(int i){
-		cellIndex = i;
 	}
 	
 }

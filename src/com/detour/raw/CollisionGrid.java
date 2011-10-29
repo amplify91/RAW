@@ -1,9 +1,11 @@
 package com.detour.raw;
 
+import android.util.Log;
+
 public class CollisionGrid {
 	
-	private int width; //TODO unnecessary?
-	private int height;
+	public int width;
+	public int height;
 	
 	private GridCell[][] cell;
 	
@@ -39,8 +41,21 @@ public class CollisionGrid {
 		}
 	}
 	
+	public void placeTileInGrid(Tile t){
+		if((int)t.getX() == 0 && (int)t.getY() == 0){
+			getCell(0, 0).addTile(t);
+		}else if((int)t.getX() == 0){
+			getCell(0, (int)t.getY() / CELL_HEIGHT).addTile(t);
+		}else if((int)t.getY() == 0){
+			getCell((int)t.getX() / CELL_WIDTH, 0).addTile(t);
+		}else{
+			getCell((int)t.getX() / CELL_WIDTH, (int)t.getY() / CELL_HEIGHT).addTile(t);
+		}
+	}
+	
 	public void updateCurrentCell(BaseEntity b){
 		//TODO make this better/more optimized because it's terrible right now.
+		// put it in entity class
 		getCell(b.cellx, b.celly).remove(b);
 		placeInGrid(b);
 	}

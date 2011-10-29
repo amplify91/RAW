@@ -44,6 +44,7 @@ public class GameLoopThread extends Thread{
 	        interpolation = ((float)(System.nanoTime() + TICK_DURARTION - next_game_tick))/((float)TICK_DURARTION); //TODO change floats to longs
 	        displayGame(interpolation);
 	    }
+	    System.gc();
 	}
 	
 	private void updateGame(){

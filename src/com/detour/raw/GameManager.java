@@ -1,6 +1,7 @@
 package com.detour.raw;
 
 import android.content.Context;
+import android.util.Log;
 
 public class GameManager {
 	
@@ -19,7 +20,7 @@ public class GameManager {
 	Texture mTileTexture;
 	Texture mHeroTexture;
 	
-	Tile[][] tileMap;
+	Tile[] tileMap;
 	Sprite hero;
 	
 	boolean levelLoaded = false;
@@ -62,7 +63,8 @@ public class GameManager {
 			spriteBatch.begin();
 			
 			mHUD.draw(spriteBatch, mHeroTexture);
-			hero.draw(spriteBatch, mHeroTexture);
+			//hero.draw(spriteBatch, mHeroTexture);
+			mEntityManager.draw(spriteBatch, mHeroTexture);
 			spriteBatch.end(camera);
 		}
 		
@@ -80,26 +82,24 @@ public class GameManager {
 		hero.translate(2, 2);
 		hero.scale(2, 2);
 		
-		spriteBatch = new SpriteBatch(levelLoader.getNumberOfSprites()+1, program, camera.getScreenRatio());
+		spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio());
 		
 		int extraCellsH = 2;
 		int extraCellsW = 2;
-		if(tileMap[0].length%CollisionGrid.CELL_WIDTH != 0){
+		if(levelLoader.levelWidth%CollisionGrid.CELL_WIDTH != 0){
 			extraCellsH += 1;
 		}
-		if(tileMap.length%CollisionGrid.CELL_HEIGHT != 0){
+		if(levelLoader.levelHeight%CollisionGrid.CELL_HEIGHT != 0){
 			extraCellsW += 1;
 		}
-		cGrid = new CollisionGrid(tileMap[0].length/CollisionGrid.CELL_WIDTH + extraCellsH, /*tileMap.length/CollisionGrid.CELL_HEIGHT*/20/*TODO*/ + extraCellsW);
+		cGrid = new CollisionGrid(levelLoader.levelWidth/CollisionGrid.CELL_WIDTH + extraCellsH, /*tileMap.length/CollisionGrid.CELL_HEIGHT*/20/*TODO*/ + extraCellsW);
 		mEntityManager = new EntityManager(cGrid);
 		
 		mEntityManager.add(hero);
 		
 		if(tileMap!=null){
-			for(int y=0;y<tileMap.length;y++){
-				for(int x=0;x<tileMap[y].length;x++){
-					mEntityManager.add(tileMap[y][x]);
-				}
+			for(int i=0;i<tileMap.length;i++){
+				mEntityManager.addTile(tileMap[i]);
 			}
 		}
 		

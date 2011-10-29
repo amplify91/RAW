@@ -25,7 +25,7 @@ public class LevelLoader {
 	int levelHeight = 0;
 	int sprites = 0;
 	
-	Tile[][] tiles;
+	Tile[] tiles;
 	
 	public LevelLoader(Context c, int level){
 		mContext = c;
@@ -38,7 +38,7 @@ public class LevelLoader {
 		sprites += HUD.HUD_SPRITES;
 	}
 	
-	public Tile[][] getTileMap(){
+	public Tile[] getTileMap(){
 		return tiles;
 	}
 	
@@ -47,16 +47,32 @@ public class LevelLoader {
 	}
 	
 	private void createRandomTileMap(){
-		tiles = new Tile[2][250];
+		levelWidth = 2500;
+		levelHeight = 60;
+		Tile[] ph_tiles = new Tile[levelWidth*levelHeight];
 		
 		Random rand = new Random();
 		
-		for(int y=0;y<tiles.length;y++){
-			for(int x=0;x<tiles[y].length;x++){
-				sprites++;
-				tiles[y][x] = new Tile(2,x,y);
+		int chance;
+		
+		for(int y=0;y<levelHeight;y++){
+			for(int x=0;x<levelWidth;x++){
+				chance = rand.nextInt(2);
+				if(chance==0){
+					ph_tiles[sprites] = new Tile(1,x,y);
+					sprites++;
+				}else{
+					//don't put a tile here
+				}
+				
 			}
 		}
+		
+		tiles = new Tile[sprites];
+		for(int i = 0;i<sprites;i++){
+			tiles[i] = ph_tiles[i];
+		}
+		ph_tiles = null;
 	}
 	
 	public void createLevelFromFile(int ln){
@@ -108,7 +124,7 @@ public class LevelLoader {
 			}*/ //Not necessary
 		}
 		
-		tiles = new Tile[levelHeight][levelWidth];
+		//tiles = new Tile[levelHeight][levelWidth];
 		
 		if(line4!=null){
 			String[] str = line4.split("[ ]");
@@ -121,20 +137,17 @@ public class LevelLoader {
 				gridArr[x] = (int)(Double.parseDouble(str[x]));
 			}
 			
-			
+			tiles = new Tile[gridArr.length];
 			for(int x=0, y = levelHeight;x<gridArr.length;x++){
+				if(gridArr[x]==0){
+					continue; //Don't create a non-existant tile.
+				}
 				if(x<levelWidth){
 					y = levelHeight - 1;
-					tiles[y][x] = createTile(gridArr[x], x, y);
+					tiles[x] = createTile(gridArr[x], x, y);
 				}else{
 					y = levelHeight - (x/levelWidth) - 1;
-					tiles[y][(x%levelWidth)] = createTile(gridArr[x], x, y);
-				}
-			}
-			
-			for(int y=0;y<tiles.length;y++){
-				for(int x=0;x<tiles[y].length;x++){
-					tiles[y][x].translate(x, y);
+					tiles[x] = createTile(gridArr[x], (x%levelWidth), y);
 				}
 			}
 			
