@@ -7,8 +7,6 @@ public class GameManager {
 	
 	private static GameManager gameManager = new GameManager();
 	
-	private Context mContext;
-	
 	Camera camera;
 	Input input;
 	HUD mHUD;
@@ -17,7 +15,6 @@ public class GameManager {
 	
 	LevelLoader levelLoader;
 	SpriteBatch spriteBatch;
-	Texture mTileTexture;
 	Texture mHeroTexture;
 	
 	Tile[] tileMap;
@@ -60,50 +57,50 @@ public class GameManager {
 			//or atlas all graphics on one spritesheet or both.
 			//This is where the bottleneck in framerate is coming from!
 			
-			spriteBatch.begin();
+			spriteBatch.begin(mHeroTexture);
 			
-			mHUD.draw(spriteBatch, mHeroTexture);
-			//hero.draw(spriteBatch, mHeroTexture);
-			mEntityManager.draw(spriteBatch, mHeroTexture);
+			mHUD.draw(spriteBatch);
+			mEntityManager.draw(spriteBatch);
 			spriteBatch.end(camera);
 		}
 		
 	}
 	
 	public void loadLevel(Context context, int program, int level){
-		this.mContext = context;
-		levelLoader = new LevelLoader(context, level);
-		tileMap = levelLoader.getTileMap();
-		mTileTexture = new Texture(mContext, R.drawable.tilesheet, 16, 4);
-		
-		hero = new Hero();
-		mHeroTexture = new Texture(mContext, Animation.HERO_TEXTURE, 8, 2);
-		//hero.setFrame(1);
-		hero.translate(2, 2);
-		hero.scale(2, 2);
-		
-		spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio());
-		
-		int extraCellsH = 2;
-		int extraCellsW = 2;
-		if(levelLoader.levelWidth%CollisionGrid.CELL_WIDTH != 0){
-			extraCellsH += 1;
-		}
-		if(levelLoader.levelHeight%CollisionGrid.CELL_HEIGHT != 0){
-			extraCellsW += 1;
-		}
-		cGrid = new CollisionGrid(levelLoader.levelWidth/CollisionGrid.CELL_WIDTH + extraCellsH, /*tileMap.length/CollisionGrid.CELL_HEIGHT*/20/*TODO*/ + extraCellsW);
-		mEntityManager = new EntityManager(cGrid);
-		
-		mEntityManager.add(hero);
-		
-		if(tileMap!=null){
-			for(int i=0;i<tileMap.length;i++){
-				mEntityManager.addTile(tileMap[i]);
+		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 8, 2);
+		if(!levelLoaded){
+			levelLoader = new LevelLoader(context, level);
+			tileMap = levelLoader.getTileMap();
+			
+			hero = new Hero();
+			
+			//hero.setFrame(1);
+			hero.translate(2, 2);
+			hero.scale(2, 2);
+			
+			spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio());
+			
+			int extraCellsH = 2;
+			int extraCellsW = 2;
+			if(levelLoader.levelWidth%CollisionGrid.CELL_WIDTH != 0){
+				extraCellsH += 1;
 			}
+			if(levelLoader.levelHeight%CollisionGrid.CELL_HEIGHT != 0){
+				extraCellsW += 1;
+			}
+			cGrid = new CollisionGrid(levelLoader.levelWidth/CollisionGrid.CELL_WIDTH + extraCellsH, /*tileMap.length/CollisionGrid.CELL_HEIGHT*/20/*TODO*/ + extraCellsW);
+			mEntityManager = new EntityManager(cGrid);
+			
+			mEntityManager.add(hero);
+			
+			if(tileMap!=null){
+				for(int i=0;i<tileMap.length;i++){
+					mEntityManager.addTile(tileMap[i]);
+				}
+			}
+			
+			levelLoaded = true;
 		}
-		
-		levelLoaded = true;
 		
 		System.gc();
 	}

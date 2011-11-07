@@ -72,11 +72,18 @@ public class SpriteBatch {
 		
 	}
 	
-	public void begin(){
+	public void begin(Texture texture){
 		if(drawing){
 			throw new IllegalStateException("Already drawing. Call end() first.");
 		}
 		drawing = true;
+		
+		//Texture binding takes way too long for a draw call so have it take place here.
+		if(texture != mTexture){
+			mTexture = texture;
+			texture.bind();
+			prevFrame = 0;
+		}
 		
 		vi = 0;
 		ti = 0;
@@ -84,7 +91,7 @@ public class SpriteBatch {
 		ix = 0;
 	}
 	
-	public void draw(Texture texture, int frame, float x, float y, float width, float height){
+	public void draw(int frame, float x, float y, float width, float height){
 		if(!drawing){
 			throw new IllegalStateException("Haven't started drawing. Call begin() first.");
 		}
@@ -97,12 +104,6 @@ public class SpriteBatch {
 			//off screen, don't draw
 			return;
 		}*/
-		
-		if(texture != mTexture){
-			mTexture = texture;
-			texture.bind();
-			prevFrame = 0;
-		}
 		
 		x *= 2f/15f;
 		y *= 2f/15f;

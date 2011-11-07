@@ -7,7 +7,7 @@ public abstract class BaseEntity {
 	int cellx;
 	int celly;
 	
-	public abstract void draw(SpriteBatch sb, Texture t);
+	public abstract void draw(SpriteBatch sb);
 	
 	public abstract void update();
 	

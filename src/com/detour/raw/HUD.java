@@ -27,8 +27,8 @@ public class HUD {
 		originX = mCamera.getOriginX();
 	}
 	
-	public void draw(SpriteBatch sb, Texture t){
-		sb.draw(t, Animation.JUMP_BUTTON, originX, originY, 0.5f, 0.5f);
+	public void draw(SpriteBatch sb){
+		sb.draw(Animation.JUMP_BUTTON, originX, originY, 0.5f, 0.5f);
 	}
 	
 }

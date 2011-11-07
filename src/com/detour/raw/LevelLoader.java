@@ -32,7 +32,7 @@ public class LevelLoader {
 		if(level==0){
 			createRandomTileMap();
 		}else{
-			createLevelFromFile(level);
+			createLevelFromFile(mContext, level);
 		}
 		
 		sprites += HUD.HUD_SPRITES;
@@ -48,7 +48,7 @@ public class LevelLoader {
 	
 	private void createRandomTileMap(){
 		levelWidth = 2500;
-		levelHeight = 60;
+		levelHeight = 20;
 		Tile[] ph_tiles = new Tile[levelWidth*levelHeight];
 		
 		Random rand = new Random();
@@ -61,10 +61,7 @@ public class LevelLoader {
 				if(chance==0){
 					ph_tiles[sprites] = new Tile(1,x,y);
 					sprites++;
-				}else{
-					//don't put a tile here
 				}
-				
 			}
 		}
 		
@@ -75,7 +72,7 @@ public class LevelLoader {
 		ph_tiles = null;
 	}
 	
-	public void createLevelFromFile(int ln){
+	public void createLevelFromFile(Context context, int ln){
 		int fileId = getFileName(ln);
 		//String file;
 		//int[][] pieceInfo = null;
@@ -89,7 +86,7 @@ public class LevelLoader {
 		//String line6 = null;
 		
 		try{
-			InputStream inputStream = mContext.getResources().openRawResource(fileId);
+			InputStream inputStream = context.getResources().openRawResource(fileId);
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream), inputStream.toString().length());
 			
 			String line = in.readLine();

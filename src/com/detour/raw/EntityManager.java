@@ -52,7 +52,7 @@ public class EntityManager {
 		//Log.i("EntityManager", ""+GameManager.getGameManager().getHero().cellx);
 	}
 	
-	public void draw(SpriteBatch sb, Texture t){
+	public void draw(SpriteBatch sb){
 		for(int x = mHeroCellX-8/CollisionGrid.CELL_WIDTH;x<mHeroCellX+32/CollisionGrid.CELL_WIDTH && x!=mGridW;x++){
 			if(x<0){
 				x=0;
@@ -66,7 +66,7 @@ public class EntityManager {
 					break;
 				}
 				//Log.i("EntityManager", "cellX = "+x+", cellY = "+y+" herox = "+GameManager.getGameManager().getHero().cellx);
-				mGrid.getCell(x, y).drawContents(sb, t);
+				mGrid.getCell(x, y).drawContents(sb);
 			}
 		}
 	}
