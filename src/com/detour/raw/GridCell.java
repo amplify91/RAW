@@ -11,6 +11,7 @@ public class GridCell {
 	int it;
 	int mSize;
 	int mAllSize;
+	private int id = 0;
 	
 	public GridCell(int x, int y){
 		this.x = x;
@@ -22,6 +23,7 @@ public class GridCell {
 		mUpdatables.add(b);
 		b.cellx = x;
 		b.celly = y;
+		b.cellIndex = id++;
 		mSize = mUpdatables.size();
 		mAllSize = mEntities.size();
 	}
@@ -43,17 +45,25 @@ public class GridCell {
 		mSize = mUpdatables.size();
 	}
 	
-	public BaseEntity getElement(int index){
+	public BaseEntity getEntity(int index){
+		return mEntities.get(index);
+	}
+	
+	public BaseEntity getUpdateable(int index){
 		return mUpdatables.get(index);
 	}
 	
-	public int getNumberOfElements(){
+	public int getNumberOfEntities(){
+		return mEntities.size();
+	}
+	
+	public int getNumberOfUpdateables(){
 		return mUpdatables.size();
 	}
 	
 	public void updateContents(){
 		for(it=0;it<mSize;it++){
-			mUpdatables.get(it).update();
+			mUpdatables.get(it).update(this, mUpdatables.get(it).cellIndex);
 		}
 	}
 	

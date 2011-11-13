@@ -57,7 +57,7 @@ public class LevelLoader {
 		
 		for(int y=0;y<levelHeight;y++){
 			for(int x=0;x<levelWidth;x++){
-				chance = rand.nextInt(2);
+				chance = rand.nextInt(8);
 				if(chance==0){
 					ph_tiles[sprites] = new Tile(1,x,y);
 					sprites++;

@@ -36,7 +36,7 @@ public class GameManager {
 	public void update(){
 		if(levelLoaded){
 			mEntityManager.update();
-			camera.update(hero.getX(), hero.getY());
+			camera.update((float)hero.getX(), (float)hero.getY());
 			mHUD.update();
 		}
 	}

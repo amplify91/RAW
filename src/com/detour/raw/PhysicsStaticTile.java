@@ -1,12 +1,9 @@
 package com.detour.raw;
 
-public class PhysicsStaticTile implements PhysicsComponent{
-	
-	private float x = 0;
-	private float y = 0;
+public class PhysicsStaticTile extends PhysicsComponent{
 	
 	public PhysicsStaticTile(){
-		
+		super();
 	}
 	
 	public PhysicsStaticTile(float x, float y){
@@ -16,17 +13,17 @@ public class PhysicsStaticTile implements PhysicsComponent{
 	}
 	
 	@Override
-	public void update() {
+	public void update(GridCell gc, int i) {
 		//translate(-0.1f*(float)speed, 0f);
 	}
 	
 	@Override
-	public float getX() {
+	public double getX() {
 		return x;
 	}
 
 	@Override
-	public float getY() {
+	public double getY() {
 		return y;
 	}
 
@@ -44,6 +41,12 @@ public class PhysicsStaticTile implements PhysicsComponent{
 	public void translate(float x, float y) {
 		this.x += x;
 		this.y += y;
+		mModel.translate(x, y);
+	}
+	
+	@Override
+	public void scale(double sx, double sy) {
+		mModel.scale(sx, sy);
 	}
 
 	@Override

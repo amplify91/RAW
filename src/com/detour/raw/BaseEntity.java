@@ -6,14 +6,15 @@ public abstract class BaseEntity {
 	boolean isActive = true;
 	int cellx;
 	int celly;
+	int cellIndex; //not necessarily an actual index
 	
 	public abstract void draw(SpriteBatch sb);
 	
-	public abstract void update();
+	public abstract void update(GridCell gc, int i);
 	
-	public abstract float getX();
+	public abstract double getX();
 	
-	public abstract float getY();
+	public abstract double getY();
 	
 	public int getIndex(){
 		return index;

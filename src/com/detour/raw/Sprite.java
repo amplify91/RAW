@@ -30,19 +30,23 @@ public class Sprite extends BaseEntity{
 	}
 	
 	public void draw(SpriteBatch sb){
-		sb.draw(mAnimation.getFrame(), mPhysics.getX(), mPhysics.getY(), width, height);
+		sb.draw(mAnimation.getFrame(), (float)mPhysics.getX(), (float)mPhysics.getY(), width, height);
 	}
 	
-	public void update(){
-		mPhysics.update();
+	public void update(GridCell gc, int i){
+		mPhysics.update(gc, i);
 		mAnimation.update();
 	}
 	
-	public float getX(){
+	public boolean isColliding(Sprite sprite) {
+		return mPhysics.isCollidingSAT(sprite);
+	}
+	
+	public double getX(){
 		return mPhysics.getX();
 	}
 	
-	public float getY(){
+	public double getY(){
 		return mPhysics.getY();
 	}
 	
@@ -53,6 +57,7 @@ public class Sprite extends BaseEntity{
 	public void scale(float sx, float sy){
 		width *= sx;
 		height *= sy;
+		mPhysics.scale(sx, sy);
 	}
 	
 	/*public void scaleGraphics(float sx, float sy){

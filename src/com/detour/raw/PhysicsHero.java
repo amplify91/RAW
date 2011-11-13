@@ -1,12 +1,12 @@
 package com.detour.raw;
 
-public class PhysicsHero implements PhysicsComponent{
+import android.util.Log;
+
+public class PhysicsHero extends PhysicsComponent{
 	
-	private float x = 0;
-	private float y = 0;
-	private float xPrev = x;
+	/*private float xPrev = x;
 	private float yPrev = y;
-	private float slope;
+	private float slope;*/
 	
 	float xVel;
 	float yVel;
@@ -17,11 +17,21 @@ public class PhysicsHero implements PhysicsComponent{
 	private float termVel = -0.5f;
 	
 	public PhysicsHero(){
+		super();
 		
 	}
 	
 	@Override
-	public void update() {
+	public void update(GridCell gc, int i) {
+		
+		for(int i2 = 0;i2<gc.getNumberOfEntities();i2++){
+			if(i==gc.getEntity(i2).cellIndex){continue;}
+			if(isCollidingSAT((Sprite) gc.getEntity(i2))){
+				Log.i("YEAH!", "Collision! Collides with: "+i2);
+			}/*else{
+				Log.i("NONE!", "No collision with: "+i2);
+			}*/
+		}
 		
 		translate(0.2f, 0f);
 		
@@ -33,7 +43,7 @@ public class PhysicsHero implements PhysicsComponent{
 		fall();
 		
 		if(isOnGround()){
-			y = 2f;
+			translate(0f, (float)(2f - y));
 		}
 		
 		/*xVel = x - xPrev;
@@ -45,12 +55,12 @@ public class PhysicsHero implements PhysicsComponent{
 	}
 	
 	@Override
-	public float getX() {
+	public double getX() {
 		return x;
 	}
 
 	@Override
-	public float getY() {
+	public double getY() {
 		return y;
 	}
 
@@ -68,6 +78,12 @@ public class PhysicsHero implements PhysicsComponent{
 	public void translate(float x, float y) {
 		this.x += x;
 		this.y += y;
+		mModel.translate(x, y);
+	}
+	
+	@Override
+	public void scale(double sx, double sy) {
+		mModel.scale(sx, sy);
 	}
 	
 	@Override
