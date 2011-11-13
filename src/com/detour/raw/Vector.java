@@ -14,6 +14,13 @@ public class Vector {
     public double mLength;
     public double mTheta; //Radians. use Math.toDegrees() to convert.
     
+    public Vector(){
+    	Ax = 0;
+    	Ay = 0;
+    	mLength = 0;
+    	mTheta = 0;
+    }
+    
     public Vector(double xComponentMag, double yComponentTheta, boolean polar){
     	setVector(xComponentMag, yComponentTheta, polar);
     }

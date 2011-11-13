@@ -23,11 +23,12 @@ public class PhysicsHero extends PhysicsComponent{
 	
 	@Override
 	public void update(GridCell gc, int i) {
-		
+		isColliding = false;
 		for(int i2 = 0;i2<gc.getNumberOfEntities();i2++){
 			if(i==gc.getEntity(i2).cellIndex){continue;}
 			if(isCollidingSAT((Sprite) gc.getEntity(i2))){
-				Log.i("YEAH!", "Collision! Collides with: "+i2);
+				handleSATCollision(resolvingVector);
+				//Log.i("YEAH!", "Collision! Collides with: "+i2);
 			}/*else{
 				Log.i("NONE!", "No collision with: "+i2);
 			}*/

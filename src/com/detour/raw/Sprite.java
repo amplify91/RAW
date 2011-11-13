@@ -36,6 +36,9 @@ public class Sprite extends BaseEntity{
 	public void update(GridCell gc, int i){
 		mPhysics.update(gc, i);
 		mAnimation.update();
+		/*if(mPhysics.isColliding==true){
+			mAnimation.setFrame(0);
+		}*/
 	}
 	
 	public boolean isColliding(Sprite sprite) {
