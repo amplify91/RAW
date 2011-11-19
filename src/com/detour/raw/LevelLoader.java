@@ -59,7 +59,7 @@ public class LevelLoader {
 			for(int x=0;x<levelWidth;x++){
 				chance = rand.nextInt(8);
 				if(chance==0){
-					ph_tiles[sprites] = new Tile(1,x,y);
+					ph_tiles[sprites] = new Tile(rand.nextInt(91)+1,x,y);
 					sprites++;
 				}
 			}
@@ -227,7 +227,7 @@ public class LevelLoader {
 		int levelID = 0;
 		
 		if(ln==1){
-			levelID = R.raw.rawtest1;
+			levelID = R.raw.rawtestlevel1;
 		}
 		
 		return levelID;

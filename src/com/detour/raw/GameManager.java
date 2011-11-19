@@ -67,7 +67,7 @@ public class GameManager {
 	}
 	
 	public void loadLevel(Context context, int program, int level){
-		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 8, 2);
+		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 3, new int[]{3,1,5}, new int[]{8,8,4,0,7,16,16,16,16}, new int[]{128,1024,64}, new int[]{128,320,64});
 		if(!levelLoaded){
 			levelLoader = new LevelLoader(context, level);
 			tileMap = levelLoader.getTileMap();

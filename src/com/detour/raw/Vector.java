@@ -74,8 +74,16 @@ public class Vector {
     	// OR return (mLength * v.mLength * cos(mTheta - v.mTheta));
     }
     
+    boolean isParallelTo(Vector v){
+    	if(abs(mTheta) == abs(v.mTheta)){ //not sure if this is mathematically true.
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
     double projectPoint(double x, double y){
-    	//The dot product of this vector's [normalized?] normal and the given point equals the projected value of the point (value relative to this vector, not world space). 
+    	//The dot product of this vector's normal and the given point equals the projected value of the point (value relative to this vector, not world space). 
 		return ((-Ay * x) + (Ax * y)) / mLength;
 	}
     

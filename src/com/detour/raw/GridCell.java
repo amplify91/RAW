@@ -4,6 +4,7 @@ import java.util.*;
 
 public class GridCell {
 	
+	CollisionGrid mCollisionGrid;
 	ArrayList<BaseEntity> mEntities = new ArrayList<BaseEntity>();
 	ArrayList<BaseEntity> mUpdatables = new ArrayList<BaseEntity>();
 	int x;
@@ -13,7 +14,8 @@ public class GridCell {
 	int mAllSize;
 	private int id = 0;
 	
-	public GridCell(int x, int y){
+	public GridCell(CollisionGrid cg, int x, int y){
+		mCollisionGrid = cg;
 		this.x = x;
 		this.y = y;
 	}
@@ -63,7 +65,7 @@ public class GridCell {
 	
 	public void updateContents(){
 		for(it=0;it<mSize;it++){
-			mUpdatables.get(it).update(this, mUpdatables.get(it).cellIndex);
+			mUpdatables.get(it).update(mCollisionGrid);
 		}
 	}
 	

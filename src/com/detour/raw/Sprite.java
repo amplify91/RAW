@@ -33,8 +33,8 @@ public class Sprite extends BaseEntity{
 		sb.draw(mAnimation.getFrame(), (float)mPhysics.getX(), (float)mPhysics.getY(), width, height);
 	}
 	
-	public void update(GridCell gc, int i){
-		mPhysics.update(gc, i);
+	public void update(CollisionGrid cg){
+		mPhysics.update(cg, cellIndex);
 		mAnimation.update();
 		/*if(mPhysics.isColliding==true){
 			mAnimation.setFrame(0);

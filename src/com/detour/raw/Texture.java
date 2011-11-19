@@ -12,28 +12,43 @@ public class Texture{
 	
 	private Bitmap mBitmap;
 	private int numberOfFrames;
-	private int framesWide;
-	private int framesHigh;
 	
 	private float[][] frames;
 	private int[] tex = new int[1];
 	
 	private static final String TAG = "Texture";
 	
-	public Texture(Context context, int id){
+	/*public Texture(Context context, int id){
 		this(context, id, 1, 1);
-	}
+	}*/
 	
-	public Texture(Context context, int id, int framesHorizontal, int framesVertical){
+	public Texture(Context context, int id, int sections, int[] linesInSection, int[] framesInLine, int[] frameWidths, int[] frameHeights){
+		
+		numberOfFrames = 0;
+		//Check that the texture parameters are correct.
+		int lines = 0;
+		for(int i = 0;i<linesInSection.length;i++){
+			lines += linesInSection[i];
+		}
+		if(sections!=linesInSection.length || lines!= framesInLine.length || frameWidths.length != sections || frameHeights.length != sections){
+			Log.i("Texture", "Improper Texture. Check constructor parameters.");
+			return;
+		}
+		
+		//load texture bitmap
 		if(id!=0){
 			Options opts = new Options();
 			opts.inScaled = false; //Trying to not allow Android to do its stupid screen density pixel fucking.
 			mBitmap = BitmapFactory.decodeResource(context.getResources(), id, opts);
+		}else{
+			return;
 		}
-		numberOfFrames = framesHorizontal * framesVertical;
-		framesWide = framesHorizontal;
-		framesHigh = framesVertical;
-		frames = createFrames();
+		
+		//begin building texture.
+		for(int i = 0;i<framesInLine.length;i++){
+			numberOfFrames += framesInLine[i];
+		}
+		frames = createFrames(sections, linesInSection, framesInLine, frameWidths, frameHeights);
 	}
 	
 	public int getWidth(){
@@ -57,40 +72,51 @@ public class Texture{
 		return frames[frame-1];
 	}
 	
-	private float[][] createFrames(){
-		float[][] f = new float[numberOfFrames][4];
+	private float[][] createFrames(int sections, int[] linesInSection, int[] framesInLine, int[] frameWidths, int[] frameHeights){
 		
-		for(int i=0;i<numberOfFrames;i++){
-			f[i] = createFrameUV(i);
+		int x = 0;
+		int y = 0;
+		float[][] f = new float[numberOfFrames][4];
+		int frameNum = 0;
+		
+		for(int i=0;i<sections;i++){
+			for(int line=0;line<linesInSection[i];line++){
+				x = 0;
+				for(int frame=0;frame<framesInLine[line];frame++){
+					x = frame * frameWidths[i];
+					f[frameNum] = createFrameUV(frameWidths[i],frameHeights[i],x,y);
+					frameNum++;
+				}
+				y += frameHeights[i];
+			}
 		}
 		
 		return f;
 	}
 	
-	private float[] createFrameUV(int frame){
-		//TODO Check this method. Make sure values are correct for multiple frames.
+	private float[] createFrameUV(int frameWidth, int frameHeight, int x, int y){
 		
 		float[] uv = new float[4];
 		
-		if(frame>=numberOfFrames || frame<0){
-			Log.d("", "Invalid frame number.");
+		/*if(frame>=numberOfFrames || frame<0){
+			Log.d("Texture", "Invalid frame number.");
 		}
 		while(frame>=numberOfFrames){
 			frame -= numberOfFrames;
-		}
+		}*/
 		
 		if(numberOfFrames>1){
-			float width = ((float)mBitmap.getWidth() / (float)framesWide) / (float)mBitmap.getWidth();
-			float height = ((float)mBitmap.getHeight() / (float)framesHigh) / (float)mBitmap.getHeight();
-			float u = 0;
-			float v = 0;
-			if(frame<framesWide){
+			float width = (float)frameWidth / (float)mBitmap.getWidth();
+			float height = (float)frameHeight / (float)mBitmap.getHeight();
+			float u = (float)x / (float)mBitmap.getWidth();
+			float v = (float)y / (float)mBitmap.getHeight();
+			/*if(frame<framesWide){
 				u = (float)frame * width;
 				v = 1f;
 			}else{
 				u = (float)(frame%framesWide) * width;
 				v = 1f - (float)(frame/framesWide) * height;
-			}
+			}*/
 			
 			uv[0] = u;
 			uv[1] = v;

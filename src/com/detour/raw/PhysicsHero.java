@@ -8,6 +8,9 @@ public class PhysicsHero extends PhysicsComponent{
 	private float yPrev = y;
 	private float slope;*/
 	
+	int cellx = -1;
+	int celly = -1;
+	
 	float xVel;
 	float yVel;
 	
@@ -22,17 +25,8 @@ public class PhysicsHero extends PhysicsComponent{
 	}
 	
 	@Override
-	public void update(GridCell gc, int i) {
+	public void update(CollisionGrid cg, int i) {
 		isColliding = false;
-		for(int i2 = 0;i2<gc.getNumberOfEntities();i2++){
-			if(i==gc.getEntity(i2).cellIndex){continue;}
-			if(isCollidingSAT((Sprite) gc.getEntity(i2))){
-				handleSATCollision(resolvingVector);
-				//Log.i("YEAH!", "Collision! Collides with: "+i2);
-			}/*else{
-				Log.i("NONE!", "No collision with: "+i2);
-			}*/
-		}
 		
 		translate(0.2f, 0f);
 		
@@ -53,6 +47,9 @@ public class PhysicsHero extends PhysicsComponent{
 		
 		xPrev = x;
 		yPrev = y;*/
+		
+		collisions(cg, i);
+		
 	}
 	
 	@Override
@@ -105,6 +102,47 @@ public class PhysicsHero extends PhysicsComponent{
 		}else{
 			return true;
 		}
+	}
+	
+	private void collisions(CollisionGrid cg, int i){
+		cellx = (int) x / CollisionGrid.CELL_WIDTH;
+		celly = (int) y / CollisionGrid.CELL_HEIGHT;
+		
+		GridCell gc = cg.getCell(cellx, celly);
+		
+		//update current cell
+		for(int i2 = 0;i2<gc.getNumberOfEntities();i2++){
+			if(i==gc.getEntity(i2).cellIndex){continue;}
+			if(isCollidingSAT((Sprite) gc.getEntity(i2))){
+				handleSATCollision(resolvingVector);
+				//Log.i("YEAH!", "Collision! Collides with: "+i2);
+			}/*else{
+				Log.i("NONE!", "No collision with: "+i2);
+			}*/
+		}
+		
+		//then, update surrounding cells. TODO cull depending on position within cell.
+		/*int x2 = 0;
+		int y2 = 0;
+		for(int ix = -1;ix<2;ix++){
+			x2 = cellx + ix;
+			for(int iy = -1;iy<2;iy++){
+				if(ix == 0 && iy == 0){
+					continue;
+				}
+				y2 = celly + iy;
+				
+				if(x2<0) x2 = 0;
+				if(y2<0) y2 = 0;
+				gc = cg.getCell(x2, y2);
+				for(int i2 = 0;i2<gc.getNumberOfEntities();i2++){
+					if(isCollidingSAT((Sprite) gc.getEntity(i2))){
+						handleSATCollision(resolvingVector);
+						//Log.i("YEAH!", "Collision! Collides with: "+i2);
+					}
+				}
+			}
+		}*/
 	}
 	
 }

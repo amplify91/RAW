@@ -6,9 +6,12 @@ public abstract class PhysicsComponent {
 	
 	double x = 0;
 	double y = 0;
+	int cellx;
+	int celly;
 	boolean isColliding = false;
 	
 	Vector resolvingVector;
+	private Vector minPenetration = new Vector();
 	
 	PhysicsModel mModel;
 	
@@ -21,7 +24,7 @@ public abstract class PhysicsComponent {
 		});
 	}
 	
-	public abstract void update(GridCell gc, int i);
+	public abstract void update(CollisionGrid cg, int i);
 	
 	public boolean isCollidingSAT(Sprite sprite){
 		
@@ -33,7 +36,7 @@ public abstract class PhysicsComponent {
 		Vector[] edges2 = sprite.mPhysics.getEdges();
 		//int totalVertices = vertices.length + vertices2.length;
 		//int totalEdges = edges.length + edges2.length;
-		Vector minPenetration = new Vector();
+		
 		double pen = Double.POSITIVE_INFINITY;
 		double tempPen;
 		

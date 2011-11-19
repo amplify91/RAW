@@ -13,7 +13,7 @@ public class PhysicsStaticTile extends PhysicsComponent{
 	}
 	
 	@Override
-	public void update(GridCell gc, int i) {
+	public void update(CollisionGrid cg, int i) {
 		//translate(-0.1f*(float)speed, 0f);
 	}
 	

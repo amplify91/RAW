@@ -10,7 +10,7 @@ public abstract class BaseEntity {
 	
 	public abstract void draw(SpriteBatch sb);
 	
-	public abstract void update(GridCell gc, int i);
+	public abstract void update(CollisionGrid cg);
 	
 	public abstract double getX();
 	
