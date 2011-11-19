@@ -78,9 +78,10 @@ public class Texture{
 		int y = 0;
 		float[][] f = new float[numberOfFrames][4];
 		int frameNum = 0;
+		int line = 0;
 		
 		for(int i=0;i<sections;i++){
-			for(int line=0;line<linesInSection[i];line++){
+			for(int i2=0;i2<linesInSection[i];i2++){
 				x = 0;
 				for(int frame=0;frame<framesInLine[line];frame++){
 					x = frame * frameWidths[i];
@@ -88,6 +89,7 @@ public class Texture{
 					frameNum++;
 				}
 				y += frameHeights[i];
+				line++;
 			}
 		}
 		
