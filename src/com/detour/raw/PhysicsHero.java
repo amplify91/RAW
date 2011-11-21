@@ -26,7 +26,6 @@ public class PhysicsHero extends PhysicsComponent{
 	
 	@Override
 	public void update(CollisionGrid cg, int i) {
-		isColliding = false;
 		
 		translate(0.2f, 0f);
 		

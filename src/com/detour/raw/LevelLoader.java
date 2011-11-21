@@ -47,6 +47,7 @@ public class LevelLoader {
 	}
 	
 	private void createRandomTileMap(){
+		sprites = 0;
 		levelWidth = 2500;
 		levelHeight = 20;
 		Tile[] ph_tiles = new Tile[levelWidth*levelHeight];
@@ -112,7 +113,7 @@ public class LevelLoader {
 		if(line1!=null){
 			String[] str = line1.split("[ ]");
 			levelWidth = Integer.parseInt(str[0]);
-			levelHeight = (int)(Double.parseDouble(str[1])); //TODO double or int?
+			levelHeight = Integer.parseInt(str[1]);
 			//grid = new int[levelHeight][levelWidth];
 			/*for(int y=0;y<levelHeight;y++){
 				for(int x=0;x<levelWidth;x++){
@@ -131,22 +132,27 @@ public class LevelLoader {
 			}
 			//int tile;
 			for(int x=0;x<gridArr.length;x++){
-				gridArr[x] = (int)(Double.parseDouble(str[x]));
+				gridArr[x] = Integer.parseInt(str[x]);
 			}
 			
-			tiles = new Tile[gridArr.length];
-			for(int x=0, y = levelHeight;x<gridArr.length;x++){
-				if(gridArr[x]==0){
-					continue; //Don't create a non-existant tile.
-				}
-				if(x<levelWidth){
-					y = levelHeight - 1;
-					tiles[x] = createTile(gridArr[x], x, y);
-				}else{
-					y = levelHeight - (x/levelWidth) - 1;
-					tiles[x] = createTile(gridArr[x], (x%levelWidth), y);
+			sprites = 0;
+			int i = 0;
+			Tile[] ph_tiles = new Tile[gridArr.length];
+			for(int y=levelHeight-1;y>-1;y--){
+				for(int x=0;x<levelWidth;x++){
+					if(gridArr[i]!=0){
+						ph_tiles[sprites] = createTile(gridArr[i], x, y);
+						sprites++;
+					}
+					i++;
 				}
 			}
+			
+			tiles = new Tile[sprites];
+			for(int i2 = 0;i2<sprites;i2++){
+				tiles[i2] = ph_tiles[i2];
+			}
+			ph_tiles = null;
 			
 		}
 		
@@ -218,9 +224,19 @@ public class LevelLoader {
 	}
 	
 	private Tile createTile(int frame, float x, float y) {
-		sprites++;
-		Tile t = new Tile(frame, x, y);
+		int frame2 = convertTileFrame(frame);
+		Tile t = new Tile(frame2, x, y);
 		return t;
+	}
+	
+	private int convertTileFrame(int f){
+		int frame = 0;
+		if(f>0&&f<65){
+			frame = Animation.TEST_TILES[f-1];
+		}else{
+			frame = f;
+		}
+		return frame;
 	}
 
 	private int getFileName(int ln){

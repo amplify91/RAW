@@ -34,7 +34,7 @@ public class EntityManager {
 		for(int x = mHeroCellX-10;x<mHeroCellX+30 && x!=mGridW;x++){
 			if(x<0){
 				x=0;
-			}else if(x+40>=mGridW){
+			}else if(x>=mGridW){
 				break;
 			}
 			for(int y = 0;y<mGridH;y++){ //TODO pad closer to hero's y if game design allows
@@ -56,13 +56,13 @@ public class EntityManager {
 		for(int x = mHeroCellX-8/CollisionGrid.CELL_WIDTH;x<mHeroCellX+32/CollisionGrid.CELL_WIDTH && x!=mGridW;x++){
 			if(x<0){
 				x=0;
-			}else if(x+10>=mGridW){
+			}else if(x>=mGridW){
 				break;
 			}
 			for(int y = mHeroCellY-16/CollisionGrid.CELL_HEIGHT;y<mHeroCellY+16/CollisionGrid.CELL_HEIGHT;y++){ //TODO pad closer to hero's y if game design allows
 				if(y<0){
 					y=0;
-				}else if(y+4>=mGridH){
+				}else if(y>=mGridH){
 					break;
 				}
 				//Log.i("EntityManager", "cellX = "+x+", cellY = "+y+" herox = "+GameManager.getGameManager().getHero().cellx);

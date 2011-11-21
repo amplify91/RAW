@@ -84,7 +84,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		GLES20.glViewport(0, 0, width, height);
 		gameManager.getCamera().initialize(width, height);
-		gameManager.loadLevel(mContext, program, 0);
+		gameManager.loadLevel(mContext, program, 1);
 		
 	}
 

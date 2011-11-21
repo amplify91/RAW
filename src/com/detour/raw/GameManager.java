@@ -75,7 +75,7 @@ public class GameManager {
 			hero = new Hero();
 			
 			//hero.setFrame(1);
-			hero.translate(2, 2);
+			hero.translate(2, 3);
 			hero.scale(2, 2);
 			
 			spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio());
