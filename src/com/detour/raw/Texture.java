@@ -100,25 +100,11 @@ public class Texture{
 		
 		float[] uv = new float[4];
 		
-		/*if(frame>=numberOfFrames || frame<0){
-			Log.d("Texture", "Invalid frame number.");
-		}
-		while(frame>=numberOfFrames){
-			frame -= numberOfFrames;
-		}*/
-		
 		if(numberOfFrames>1){
 			float width = (float)frameWidth / (float)mBitmap.getWidth();
 			float height = (float)frameHeight / (float)mBitmap.getHeight();
 			float u = (float)x / (float)mBitmap.getWidth();
 			float v = (float)y / (float)mBitmap.getHeight();
-			/*if(frame<framesWide){
-				u = (float)frame * width;
-				v = 1f;
-			}else{
-				u = (float)(frame%framesWide) * width;
-				v = 1f - (float)(frame/framesWide) * height;
-			}*/
 			
 			uv[0] = u;
 			uv[1] = v;
