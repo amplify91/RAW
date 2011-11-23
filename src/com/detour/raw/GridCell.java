@@ -25,7 +25,7 @@ public class GridCell {
 		mUpdatables.add(b);
 		b.cellx = x;
 		b.celly = y;
-		b.cellIndex = id++;
+		b.cellIndex = id++; //TODOS straight up wrong. only right if no objects are ever removed.
 		mSize = mUpdatables.size();
 		mAllSize = mEntities.size();
 	}

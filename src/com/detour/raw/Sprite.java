@@ -36,9 +36,6 @@ public class Sprite extends BaseEntity{
 	public void update(CollisionGrid cg){
 		mPhysics.update(cg, cellIndex);
 		mAnimation.update();
-		/*if(mPhysics.isColliding==true){
-			mAnimation.setFrame(0);
-		}*/
 	}
 	
 	public boolean isColliding(Sprite sprite) {

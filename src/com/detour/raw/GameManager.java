@@ -59,8 +59,8 @@ public class GameManager {
 			
 			spriteBatch.begin(mHeroTexture);
 			
-			mHUD.draw(spriteBatch);
 			mEntityManager.draw(spriteBatch);
+			mHUD.draw(spriteBatch);
 			spriteBatch.end(camera);
 		}
 		

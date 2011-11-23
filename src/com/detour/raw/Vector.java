@@ -57,6 +57,11 @@ public class Vector {
     	}
     }
     
+    void normalize(){
+    	mLength = 1;
+    	updateRectangularForm();
+    }
+    
     Vector add(Vector v){
     	return new Vector((Ax + v.Ax), (Ay + v.Ay), false);
     }
@@ -67,6 +72,10 @@ public class Vector {
     
     Vector getNormal(){
     	return new Vector(-Ay, Ax, false);
+    }
+    
+    Vector getNormalizedVector(){
+    	return new Vector(1, mTheta, true);
     }
     
     double dotProduct(Vector v){

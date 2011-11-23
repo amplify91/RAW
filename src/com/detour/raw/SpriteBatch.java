@@ -7,6 +7,7 @@ import java.nio.ShortBuffer;
 
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+import android.util.Log;
 
 public class SpriteBatch {
 	
@@ -55,17 +56,17 @@ public class SpriteBatch {
 		textureHandle = GLES20.glGetUniformLocation(program, "u_texture");
 		MVPMatrixHandle = GLES20.glGetUniformLocation(program, "u_MVPMatrix");
 		
-		ByteBuffer byteBuf = ByteBuffer.allocateDirect(size * 8 * 4);
-		byteBuf.order(ByteOrder.nativeOrder());
-		textureBuffer = byteBuf.asFloatBuffer();
-		textureBuffer.position(0);
-		
-		ByteBuffer vbb = ByteBuffer.allocateDirect(size * 8 * 4);
+		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * (Float.SIZE / Byte.SIZE));
 		vbb.order(ByteOrder.nativeOrder());
 		vertexBuffer = vbb.asFloatBuffer();
 		vertexBuffer.position(0);
 		
-		ByteBuffer ibb = ByteBuffer.allocateDirect(size * 6 * 2);
+		ByteBuffer byteBuf = ByteBuffer.allocateDirect(uvCoords.length * (Float.SIZE / Byte.SIZE));
+		byteBuf.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuf.asFloatBuffer();
+		textureBuffer.position(0);
+		
+		ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * (Short.SIZE / Byte.SIZE));
 		ibb.order(ByteOrder.nativeOrder());
 		indexBuffer = ibb.asShortBuffer();
 		indexBuffer.position(0);
@@ -99,11 +100,7 @@ public class SpriteBatch {
 		if(frame==0){
 			//invisible, don't draw
 			return;
-		}//TODO Make these coordinates based on hero's position, not world position.
-		/*else if(x>25 || y>15 || x+(width*Sprite.SCALE_FACTOR_INV)<0 || y+(height*Sprite.SCALE_FACTOR_INV)<0){ //TODO make better
-			//off screen, don't draw
-			return;
-		}*/
+		}
 		
 		x *= 2f/15f;
 		y *= 2f/15f;
@@ -160,6 +157,7 @@ public class SpriteBatch {
 		fillBuffers();
 		render();
 		
+		//Log.i("SpriteBatch", "ix = "+ix);
 	}
 	
 	private void fillBuffers(){
