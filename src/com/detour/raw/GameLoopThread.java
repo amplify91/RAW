@@ -21,7 +21,7 @@ public class GameLoopThread extends Thread{
 	
 	public GameLoopThread(GameView gv){
 		super();
-		next_game_tick = System.nanoTime();
+		//next_game_tick = System.nanoTime();
 		gameView = gv;
 		//mContext = context;
 		gameManager = GameManager.getGameManager();
@@ -33,6 +33,8 @@ public class GameLoopThread extends Thread{
 	
 	@Override
 	public void run(){
+		
+		next_game_tick = System.nanoTime();
 		
 	    while(game_is_running){
 	        loops = 0;

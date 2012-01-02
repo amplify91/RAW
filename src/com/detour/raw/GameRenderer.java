@@ -65,7 +65,6 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		return renderer;
 	}
 	
-	@Override
 	public void onDrawFrame(GL10 gl) {
 		
 		GLES20.glClearColor(red, green, blue, 1.0f);
@@ -79,16 +78,14 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 	}
 	
-	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		
 		GLES20.glViewport(0, 0, width, height);
 		gameManager.getCamera().initialize(width, height);
-		gameManager.loadLevel(mContext, program, -1);
+		gameManager.loadLevel(mContext, program, 1);
 		
 	}
 
-	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		
 		Log.i(TAG, "" + GLES20.glGetError());
