@@ -1,7 +1,12 @@
 package com.detour.raw;
 
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.World;
+
 import android.content.Context;
-import android.util.Log;
 
 public class GameManager {
 	
@@ -67,6 +72,22 @@ public class GameManager {
 	}
 	
 	public void loadLevel(Context context, int program, int level){
+		
+		//<Practice> TODO
+		Vec2 gravity = new Vec2(0.0f, 10.0f);
+		World world = new World(gravity, true);
+		world.setContinuousPhysics(true);
+		
+		BodyDef groundBodyDef = new BodyDef();
+		groundBodyDef.position.set(0.0f, -10.0f);
+		
+		Body groundBody = world.createBody(groundBodyDef);
+		
+		PolygonShape groundBox = new PolygonShape();
+		groundBox.setAsBox(50.0f, 10.0f);
+		groundBody.createFixture(groundBox, 0.0f);
+		//</Practice>
+		
 		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 3, new int[]{3,1,5}, new int[]{8,8,4,0,7,16,16,16,16}, new int[]{128,1024,64}, new int[]{128,320,64});
 		if(!levelLoaded){
 			levelLoader = new LevelLoader(context, level);

@@ -1,7 +1,5 @@
 package com.detour.raw;
 
-import android.content.Context;
-
 public class Tile extends Sprite{
 	
 	public Tile(int frame, float x, float y){

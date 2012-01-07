@@ -6,8 +6,6 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import android.opengl.GLES20;
-import android.opengl.Matrix;
-import android.util.Log;
 
 public class SpriteBatch {
 	

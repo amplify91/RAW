@@ -1,7 +1,5 @@
 package com.detour.raw;
 
-import android.util.Log;
-
 public abstract class PhysicsComponent {
 	
 	double x = 0;

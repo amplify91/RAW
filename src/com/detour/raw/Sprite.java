@@ -29,10 +29,12 @@ public class Sprite extends BaseEntity{
 		
 	}
 	
+	@Override
 	public void draw(SpriteBatch sb){
 		sb.draw(mAnimation.getFrame(), (float)mPhysics.getX(), (float)mPhysics.getY(), width, height);
 	}
 	
+	@Override
 	public void update(CollisionGrid cg){
 		mPhysics.update(cg, cellIndex);
 		mAnimation.update();
@@ -42,10 +44,12 @@ public class Sprite extends BaseEntity{
 		return mPhysics.isCollidingSAT(sprite);
 	}
 	
+	@Override
 	public double getX(){
 		return mPhysics.getX();
 	}
 	
+	@Override
 	public double getY(){
 		return mPhysics.getY();
 	}

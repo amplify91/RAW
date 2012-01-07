@@ -1,7 +1,5 @@
 package com.detour.raw;
 
-import android.util.Log;
-
 public class PhysicsHero extends PhysicsComponent{
 	
 	/*private float xPrev = x;

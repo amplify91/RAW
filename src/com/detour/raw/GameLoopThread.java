@@ -1,7 +1,5 @@
 package com.detour.raw;
 
-import android.content.Context;
-
 public class GameLoopThread extends Thread{
 	
 	public static final int TICKS_PER_SECOND = 25; //UPS

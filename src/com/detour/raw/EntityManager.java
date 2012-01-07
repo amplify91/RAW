@@ -2,8 +2,6 @@ package com.detour.raw;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 public class EntityManager {
 	
 	ArrayList<BaseEntity> mEntityList = new ArrayList<BaseEntity>();

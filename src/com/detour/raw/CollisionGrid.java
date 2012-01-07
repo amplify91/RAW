@@ -1,7 +1,5 @@
 package com.detour.raw;
 
-import android.util.Log;
-
 public class CollisionGrid {
 	
 	public int width;
