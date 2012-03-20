@@ -33,6 +33,7 @@ public class GameLoopThread extends Thread{
 	@Override
 	public void run(){
 		
+		//gameManager.loadLevel(mContext, program, 1);
 		next_game_tick = System.nanoTime();
 		
 	    while(game_is_running){

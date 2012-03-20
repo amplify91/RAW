@@ -30,7 +30,7 @@ public class LevelLoader {
 	public LevelLoader(Context c, int level){
 		mContext = c;
 		if(level==0){
-			createRandomTileMap();
+			//createRandomTileMap(); TODO
 		}else{
 			createLevelFromFile(mContext, level);
 		}
@@ -46,7 +46,7 @@ public class LevelLoader {
 		return sprites;
 	}
 	
-	private void createRandomTileMap(){
+	/*private void createRandomTileMap(){ TODO
 		sprites = 0;
 		levelWidth = 2500;
 		levelHeight = 20;
@@ -71,7 +71,7 @@ public class LevelLoader {
 			tiles[i] = ph_tiles[i];
 		}
 		ph_tiles = null;
-	}
+	}*/
 	
 	public void createLevelFromFile(Context context, int ln){
 		int fileId = getFileName(ln);
@@ -141,7 +141,7 @@ public class LevelLoader {
 			for(int y=levelHeight-1;y>-1;y--){
 				for(int x=0;x<levelWidth;x++){
 					if(gridArr[i]!=0){
-						ph_tiles[sprites] = createTile(gridArr[i], x, y);
+						//ph_tiles[sprites] = createTile(gridArr[i], x, y); TODO
 						sprites++;
 					}
 					i++;
@@ -223,11 +223,11 @@ public class LevelLoader {
 		
 	}
 	
-	private Tile createTile(int frame, float x, float y) {
+	/*private Tile createTile(int frame, float x, float y) { TODO
 		int frame2 = convertTileFrame(frame);
 		Tile t = new Tile(frame2, x, y);
 		return t;
-	}
+	}*/
 	
 	private int convertTileFrame(int f){
 		int frame = 0;

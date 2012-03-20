@@ -1,15 +1,9 @@
 package com.detour.raw;
 
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
 import android.content.Context;
-import android.util.Log;
 
 public class GameManager {
 	
@@ -18,8 +12,6 @@ public class GameManager {
 	Camera camera;
 	Input input;
 	HUD mHUD;
-	CollisionGrid cGrid;
-	EntityManager mEntityManager;
 	
 	World mWorld;
 	
@@ -29,6 +21,7 @@ public class GameManager {
 	
 	Tile[] tileMap;
 	Sprite hero;
+	Sprite ground;
 	
 	boolean levelLoaded = false;
 	
@@ -45,13 +38,13 @@ public class GameManager {
 	
 	public void update(float deltaTime){
 		if(levelLoaded){
-			mEntityManager.update();
 			camera.update((float)hero.getX(), (float)hero.getY());
 			mHUD.update();
+			hero.update();
 			mWorld.step(deltaTime, 8, 3);
-			Vec2 position = body.getPosition();
+			/*Vec2 position = body.getPosition();
             float angle = body.getAngle();
-            Log.i("Test", position.x +" "+ position.y +" "+ angle);
+            Log.i("Test", position.x +" "+ position.y +" "+ angle);*/
 		}
 	}
 	
@@ -72,76 +65,33 @@ public class GameManager {
 			//This is where the bottleneck in framerate is coming from!
 			
 			spriteBatch.begin(mHeroTexture);
-			
-			mEntityManager.draw(spriteBatch);
 			mHUD.draw(spriteBatch);
+			hero.draw(spriteBatch);
 			spriteBatch.end(camera);
 		}
 		
 	}
 	
-	Body body;//TODO practice
-	
 	public void loadLevel(Context context, int program, int level){
+		
+		levelLoaded = false;
 		
 		//<Practice> TODO
 		Vec2 gravity = new Vec2(0.0f, -10.0f);
 		mWorld = new World(gravity, true);
 		mWorld.setContinuousPhysics(true);
 		
-		BodyDef groundBodyDef = new BodyDef();
-		groundBodyDef.position.set(0.0f, -10.0f);
-		
-		Body groundBody = mWorld.createBody(groundBodyDef);
-		
-		PolygonShape groundBox = new PolygonShape();
-		groundBox.setAsBox(50.0f, 10.0f);
-		groundBody.createFixture(groundBox, 0.0f);
-		
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.DYNAMIC;
-		bodyDef.position.set(0.0f, 4.0f);
-		body = mWorld.createBody(bodyDef);
-		PolygonShape dynamicBox = new PolygonShape();
-		dynamicBox.setAsBox(1.0f, 1.0f);
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = dynamicBox;
-		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.3f;
-		body.createFixture(fixtureDef);
-		//</Practice>
-		
 		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 3, new int[]{3,1,5}, new int[]{8,8,4,0,7,16,16,16,16}, new int[]{128,1024,64}, new int[]{128,320,64});
 		if(!levelLoaded){
 			levelLoader = new LevelLoader(context, level);
 			tileMap = levelLoader.getTileMap();
 			
-			hero = new Hero();
-			
-			//hero.setFrame(1);
-			hero.translate(2, 3);
-			hero.scale(2, 2);
+			hero = new Sprite();
+			hero.create(mWorld, 2, 3, 2, 2, true);
+			ground = new Sprite();
+			ground.create(mWorld, 0, 0, 10, 2, false);
 			
 			spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio());
-			
-			int extraCellsH = 2;
-			int extraCellsW = 2;
-			if(levelLoader.levelWidth%CollisionGrid.CELL_WIDTH != 0){
-				extraCellsH += 1;
-			}
-			if(levelLoader.levelHeight%CollisionGrid.CELL_HEIGHT != 0){
-				extraCellsW += 1;
-			}
-			cGrid = new CollisionGrid(levelLoader.levelWidth/CollisionGrid.CELL_WIDTH + extraCellsH, /*tileMap.length/CollisionGrid.CELL_HEIGHT*/20/*TODO*/ + extraCellsW);
-			mEntityManager = new EntityManager(cGrid);
-			
-			mEntityManager.add(hero);
-			
-			if(tileMap!=null){
-				for(int i=0;i<tileMap.length;i++){
-					mEntityManager.addTile(tileMap[i]);
-				}
-			}
 			
 			levelLoaded = true;
 		}
