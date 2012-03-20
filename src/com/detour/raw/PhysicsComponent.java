@@ -8,7 +8,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
-public class PhysicsComponent {
+public abstract class PhysicsComponent {
 	
 	Body mBody;
 	
@@ -53,20 +53,13 @@ public class PhysicsComponent {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = dynamicBox;
 		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.3f;
+		fixtureDef.friction = 0.0f;
 		mBody.createFixture(fixtureDef);
+		mBody.setFixedRotation(true);
 		
 	}
 	
-	public void jump(){
-		Vec2 jump = new Vec2(0, 40);
-		mBody.applyLinearImpulse(jump, mBody.getWorldCenter());
-	}
-	
-	public void dash(){
-		Vec2 dash = new Vec2(30, 0);
-		mBody.applyLinearImpulse(dash, mBody.getWorldCenter());
-	}
+	public abstract void update();
 	
 	public void destroy(){
 		//TODO

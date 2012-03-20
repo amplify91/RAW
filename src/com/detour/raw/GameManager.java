@@ -13,7 +13,7 @@ public class GameManager {
 	Input input;
 	HUD mHUD;
 	
-	World mWorld;
+	Level mLevel;
 	
 	LevelLoader levelLoader;
 	SpriteBatch spriteBatch;
@@ -39,29 +39,13 @@ public class GameManager {
 		if(levelLoaded){
 			camera.update((float)hero.getX(), (float)hero.getY());
 			mHUD.update();
-			hero.update();
-			mWorld.step(deltaTime, 8, 3);
-			/*Vec2 position = body.getPosition();
-            float angle = body.getAngle();
-            Log.i("Test", position.x +" "+ position.y +" "+ angle);*/
+			mLevel.update(deltaTime, 8, 3);
 		}
 	}
 	
 	public void draw(){
 		
 		if(levelLoaded){
-			/*spriteBatch.begin();
-			for(int y=0;y<tileMap.length;y++){
-				for(int x=0;x<tileMap[y].length;x++){
-					tileMap[y][x].draw(spriteBatch, mTileTexture);
-					//spriteBatch.draw(mTileTexture, tileMap[y][x].frame, x, y, tileMap[y][x].width, tileMap[y][x].height);
-				}
-			}
-			spriteBatch.end(camera);*/
-			
-			//TODO Improve the time it takes to switch textures with spritebatch
-			//or atlas all graphics on one spritesheet or both.
-			//This is where the bottleneck in framerate is coming from!
 			
 			spriteBatch.begin(mHeroTexture);
 			for(int i=0;i<tileMap.length;i++){
@@ -79,17 +63,15 @@ public class GameManager {
 		levelLoaded = false;
 		
 		//<Practice> TODO
-		Vec2 gravity = new Vec2(0.0f, -10.0f);
-		mWorld = new World(gravity, true);
-		mWorld.setContinuousPhysics(true);
+		mLevel = new Level();
 		
 		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 3, new int[]{3,1,5}, new int[]{8,8,4,0,7,16,16,16,16}, new int[]{128,1024,64}, new int[]{128,320,64});
 		if(!levelLoaded){
-			levelLoader = new LevelLoader(context, level, mWorld);
+			levelLoader = new LevelLoader(context, level, mLevel);
 			tileMap = levelLoader.getTileMap();
 			
 			hero = new Hero();
-			hero.create(mWorld, 2, 3, 2, 2, true);
+			mLevel.create(hero, 2, 3, 2, 2, true);
 			
 			spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio());
 			

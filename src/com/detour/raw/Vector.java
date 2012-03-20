@@ -4,6 +4,8 @@ import static java.lang.Math.*;
 
 public class Vector {
     
+	//TODO Get rid of this class, if it's not needed
+	
     //origin
     //public double mOriginX;
     //public double mOriginY;

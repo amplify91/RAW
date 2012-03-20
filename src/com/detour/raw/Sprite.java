@@ -22,11 +22,11 @@ public class Sprite extends BaseEntity{
 	public static final float SCALE_FACTOR = 2f/15f;
 	public static final float SCALE_FACTOR_INV = 15f/2f;
 	
-	public Sprite(){
+	public Sprite(PhysicsComponent p, AnimationComponent a){
 		
 		//renderable = new RenderVisible(context);
-		mPhysics = new PhysicsComponent();
-		mAnimation = new AnimationComponent();
+		mPhysics = p;
+		mAnimation = a;
 		
 	}
 	
@@ -48,6 +48,7 @@ public class Sprite extends BaseEntity{
 	
 	public void update(){
 		mAnimation.update();
+		mPhysics.update();
 	}
 	
 	public void getInput(){

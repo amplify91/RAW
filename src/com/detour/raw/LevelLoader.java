@@ -29,12 +29,12 @@ public class LevelLoader {
 	
 	Tile[] tiles;
 	
-	public LevelLoader(Context c, int level, World world){
+	public LevelLoader(Context c, int lvln, Level level){
 		mContext = c;
-		if(level==0){
+		if(lvln==0){
 			//createRandomTileMap(); TODO
 		}else{
-			createLevelFromFile(mContext, level, world);
+			createLevelFromFile(mContext, lvln, level);
 		}
 		
 		sprites += HUD.HUD_SPRITES;
@@ -75,7 +75,7 @@ public class LevelLoader {
 		ph_tiles = null;
 	}*/
 	
-	public void createLevelFromFile(Context context, int ln, World world){
+	public void createLevelFromFile(Context context, int ln, Level level){
 		int fileId = getFileName(ln);
 		//String file;
 		//int[][] pieceInfo = null;
@@ -143,7 +143,7 @@ public class LevelLoader {
 			for(int y=levelHeight-1;y>-1;y--){
 				for(int x=0;x<levelWidth;x++){
 					if(gridArr[i]!=0){
-						ph_tiles[sprites] = createTile(gridArr[i], x, y, world);
+						ph_tiles[sprites] = createTile(gridArr[i], x, y, level);
 						sprites++;
 					}
 					i++;
@@ -225,10 +225,10 @@ public class LevelLoader {
 		
 	}
 	
-	private Tile createTile(int frame, float x, float y, World world) {
+	private Tile createTile(int frame, float x, float y, Level level) {
 		int frame2 = convertTileFrame(frame);
 		Tile t = new Tile(frame2);
-		t.create(world, x, y, 1, 1, false);
+		level.create(t, x, y, 1, 1, false);
 		return t;
 	}
 	
