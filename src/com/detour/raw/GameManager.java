@@ -20,8 +20,7 @@ public class GameManager {
 	Texture mHeroTexture;
 	
 	Tile[] tileMap;
-	Sprite hero;
-	Sprite ground;
+	Hero hero;
 	
 	boolean levelLoaded = false;
 	
@@ -65,6 +64,9 @@ public class GameManager {
 			//This is where the bottleneck in framerate is coming from!
 			
 			spriteBatch.begin(mHeroTexture);
+			for(int i=0;i<tileMap.length;i++){
+				tileMap[i].draw(spriteBatch);
+			}
 			mHUD.draw(spriteBatch);
 			hero.draw(spriteBatch);
 			spriteBatch.end(camera);
@@ -83,13 +85,11 @@ public class GameManager {
 		
 		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 3, new int[]{3,1,5}, new int[]{8,8,4,0,7,16,16,16,16}, new int[]{128,1024,64}, new int[]{128,320,64});
 		if(!levelLoaded){
-			levelLoader = new LevelLoader(context, level);
+			levelLoader = new LevelLoader(context, level, mWorld);
 			tileMap = levelLoader.getTileMap();
 			
-			hero = new Sprite();
+			hero = new Hero();
 			hero.create(mWorld, 2, 3, 2, 2, true);
-			ground = new Sprite();
-			ground.create(mWorld, 0, 0, 10, 2, false);
 			
 			spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio());
 			
@@ -111,7 +111,7 @@ public class GameManager {
 		return camera;
 	}
 	
-	public Sprite getHero(){
+	public Hero getHero(){
 		return hero;
 	}
 	

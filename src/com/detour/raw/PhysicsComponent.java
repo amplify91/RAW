@@ -21,6 +21,8 @@ public class PhysicsComponent {
 		BodyDef bodyDef = new BodyDef();
 		if(dynamic){
 			bodyDef.type = BodyType.DYNAMIC;
+		}else{
+			bodyDef.type = BodyType.STATIC;
 		}
 		bodyDef.position.set(x, y);
 		mBody = world.createBody(bodyDef);
@@ -40,6 +42,8 @@ public class PhysicsComponent {
 		BodyDef bodyDef = new BodyDef();
 		if(dynamic){
 			bodyDef.type = BodyType.DYNAMIC;
+		}else{
+			bodyDef.type = BodyType.STATIC;
 		}
 		bodyDef.position.set(x, y);
 		mBody = world.createBody(bodyDef);

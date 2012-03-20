@@ -2,13 +2,11 @@ package com.detour.raw;
 
 public class Tile extends Sprite{
 	
-	/*public Tile(int frame, float x, float y){
-		super(new PhysicsStaticTile());
+	public Tile(int frame){
+		super();
 		
-		setFrame(frame);
+		mAnimation.setFrame(frame);
 		pauseAnimation();
-		
-		translate(x,y);
-	}*/
+	}
 	
 }

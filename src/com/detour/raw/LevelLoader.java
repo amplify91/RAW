@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Random;
 
+import org.jbox2d.dynamics.World;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -27,12 +29,12 @@ public class LevelLoader {
 	
 	Tile[] tiles;
 	
-	public LevelLoader(Context c, int level){
+	public LevelLoader(Context c, int level, World world){
 		mContext = c;
 		if(level==0){
 			//createRandomTileMap(); TODO
 		}else{
-			createLevelFromFile(mContext, level);
+			createLevelFromFile(mContext, level, world);
 		}
 		
 		sprites += HUD.HUD_SPRITES;
@@ -73,7 +75,7 @@ public class LevelLoader {
 		ph_tiles = null;
 	}*/
 	
-	public void createLevelFromFile(Context context, int ln){
+	public void createLevelFromFile(Context context, int ln, World world){
 		int fileId = getFileName(ln);
 		//String file;
 		//int[][] pieceInfo = null;
@@ -141,7 +143,7 @@ public class LevelLoader {
 			for(int y=levelHeight-1;y>-1;y--){
 				for(int x=0;x<levelWidth;x++){
 					if(gridArr[i]!=0){
-						//ph_tiles[sprites] = createTile(gridArr[i], x, y); TODO
+						ph_tiles[sprites] = createTile(gridArr[i], x, y, world);
 						sprites++;
 					}
 					i++;
@@ -223,11 +225,12 @@ public class LevelLoader {
 		
 	}
 	
-	/*private Tile createTile(int frame, float x, float y) { TODO
+	private Tile createTile(int frame, float x, float y, World world) {
 		int frame2 = convertTileFrame(frame);
-		Tile t = new Tile(frame2, x, y);
+		Tile t = new Tile(frame2);
+		t.create(world, x, y, 1, 1, false);
 		return t;
-	}*/
+	}
 	
 	private int convertTileFrame(int f){
 		int frame = 0;

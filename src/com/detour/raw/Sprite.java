@@ -27,7 +27,6 @@ public class Sprite extends BaseEntity{
 		//renderable = new RenderVisible(context);
 		mPhysics = new PhysicsComponent();
 		mAnimation = new AnimationComponent();
-		mAnimation.setAnimation(Animation.RUNNING);
 		
 	}
 	
