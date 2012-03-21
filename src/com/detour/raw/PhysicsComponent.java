@@ -32,8 +32,9 @@ public abstract class PhysicsComponent {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = dynamicBox;
 		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.3f;
+		fixtureDef.friction = 0.0f;
 		mBody.createFixture(fixtureDef);
+		mBody.setFixedRotation(true);
 		
 	}
 	
