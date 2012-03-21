@@ -41,33 +41,37 @@ public class SpriteBatch {
 	private FloatBuffer textureBuffer;
 	private ShortBuffer indexBuffer;
 	
-	public SpriteBatch(int size, int program, float ratio){
+	public SpriteBatch(int size, int program, float ratio, boolean debug){
 		
 		mRatio = ratio;
 		
-		vertices = new float[size * 2 * 4];
-		uvCoords = new float[size * 2 * 4];
-		indices = new short[size * 6];
-		
-		vertexHandle = GLES20.glGetAttribLocation(program, "a_position");
-		texCoordHandle = GLES20.glGetAttribLocation(program, "a_texcoord");
-		textureHandle = GLES20.glGetUniformLocation(program, "u_texture");
-		MVPMatrixHandle = GLES20.glGetUniformLocation(program, "u_MVPMatrix");
-		
-		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * (Float.SIZE / Byte.SIZE));
-		vbb.order(ByteOrder.nativeOrder());
-		vertexBuffer = vbb.asFloatBuffer();
-		vertexBuffer.position(0);
-		
-		ByteBuffer byteBuf = ByteBuffer.allocateDirect(uvCoords.length * (Float.SIZE / Byte.SIZE));
-		byteBuf.order(ByteOrder.nativeOrder());
-		textureBuffer = byteBuf.asFloatBuffer();
-		textureBuffer.position(0);
-		
-		ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * (Short.SIZE / Byte.SIZE));
-		ibb.order(ByteOrder.nativeOrder());
-		indexBuffer = ibb.asShortBuffer();
-		indexBuffer.position(0);
+		if(debug){
+			//TODO debugDraw code
+		}else{
+			vertices = new float[size * 2 * 4];
+			uvCoords = new float[size * 2 * 4];
+			indices = new short[size * 6];
+			
+			vertexHandle = GLES20.glGetAttribLocation(program, "a_position");
+			texCoordHandle = GLES20.glGetAttribLocation(program, "a_texcoord");
+			textureHandle = GLES20.glGetUniformLocation(program, "u_texture");
+			MVPMatrixHandle = GLES20.glGetUniformLocation(program, "u_MVPMatrix");
+			
+			ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * (Float.SIZE / Byte.SIZE));
+			vbb.order(ByteOrder.nativeOrder());
+			vertexBuffer = vbb.asFloatBuffer();
+			vertexBuffer.position(0);
+			
+			ByteBuffer byteBuf = ByteBuffer.allocateDirect(uvCoords.length * (Float.SIZE / Byte.SIZE));
+			byteBuf.order(ByteOrder.nativeOrder());
+			textureBuffer = byteBuf.asFloatBuffer();
+			textureBuffer.position(0);
+			
+			ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * (Short.SIZE / Byte.SIZE));
+			ibb.order(ByteOrder.nativeOrder());
+			indexBuffer = ibb.asShortBuffer();
+			indexBuffer.position(0);
+		}
 		
 	}
 	

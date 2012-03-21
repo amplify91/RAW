@@ -54,6 +54,7 @@ public class GameManager {
 			mHUD.draw(spriteBatch);
 			hero.draw(spriteBatch);
 			spriteBatch.end(camera);
+			mLevel.drawDebug();
 		}
 		
 	}
@@ -73,7 +74,7 @@ public class GameManager {
 			hero = new Hero();
 			mLevel.create(hero, 2, 3, 2, 2, true);
 			
-			spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio());
+			spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio(), false);
 			
 			levelLoaded = true;
 		}

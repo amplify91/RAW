@@ -81,7 +81,7 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		GLES20.glViewport(0, 0, width, height);
 		gameManager.getCamera().initialize(width, height);
-		gameManager.loadLevel(mContext, program, 1);
+		gameManager.loadLevel(mContext, program, 1);//TODO change this to set game_is_running in game loop to true, then load level in game manager or somewhere else.
 		
 	}
 

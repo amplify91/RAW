@@ -33,7 +33,7 @@ public class GameActivity extends Activity{
 	protected void onResume(){
 		super.onResume();
 		gameView.onResume();
-		thread.setGameRunning(true);
+		thread.setGameRunning(true);//TODO may need to get rid of this if it starts game loop too early
 		thread.start();
 	}
 	
