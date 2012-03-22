@@ -14,23 +14,25 @@ import android.opengl.GLES20;
 public class SpriteBatch {
 	
 	private Texture mTexture;
-	private int mProgram;
 	
 	private float[] vertices;
-	private float[] uvCoords;
 	private short[] indices;
+	private float[] uvCoords;
+	private float[] colors;
 	
 	private int vertexHandle;
-	private int texCoordHandle;
 	private int textureHandle;
+	private int texCoordHandle;
+	private int colorHandle;
 	private int MVPMatrixHandle;
 	
 	private boolean drawing = false;
 	private int prevFrame = 0;
 	
 	private int vi = 0;
-	private int ti = 0;
 	private int ii = 0;
+	private int ti = 0;
+	private int ci = 0;
 	private int ix = 0;
 	
 	private float[] uvArr;
@@ -43,48 +45,66 @@ public class SpriteBatch {
 	private float[] MVPMatrix = new float[16];
 	
 	private FloatBuffer vertexBuffer;
-	private FloatBuffer textureBuffer;
 	private ShortBuffer indexBuffer;
+	private FloatBuffer textureBuffer;
+	private FloatBuffer colorBuffer;
+
+	private int mProgram;
+	private int mShaderType;
 	
 	public static final int SPRITE_SHADER = 0;
 	public static final int DEBUG_SHADER = 1;
 	
-	public SpriteBatch(int size, int shader, float ratio, Context context){
+	public SpriteBatch(int size, int shaderType, float ratio, Context context){
 		
 		mRatio = ratio;
+		mShaderType = shaderType;
 		
-		if(shader == SPRITE_SHADER){
-			Shader s = new Shader(R.raw.sprite_vs, R.raw.sprite_fs, context);
-			mProgram = s.getProgram();
+		if(mShaderType == SPRITE_SHADER){
+			Shader shader = new Shader(R.raw.sprite_vs, R.raw.sprite_fs, context);
+			mProgram = shader.getProgram();
 			
-			vertices = new float[size * 2 * 4];
 			uvCoords = new float[size * 2 * 4];
-			indices = new short[size * 6];
 			
-			vertexHandle = GLES20.glGetAttribLocation(mProgram, "a_position");
 			texCoordHandle = GLES20.glGetAttribLocation(mProgram, "a_texcoord");
 			textureHandle = GLES20.glGetUniformLocation(mProgram, "u_texture");
-			MVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
 			
-			ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * (Float.SIZE / Byte.SIZE));
-			vbb.order(ByteOrder.nativeOrder());
-			vertexBuffer = vbb.asFloatBuffer();
-			vertexBuffer.position(0);
-			
-			ByteBuffer byteBuf = ByteBuffer.allocateDirect(uvCoords.length * (Float.SIZE / Byte.SIZE));
-			byteBuf.order(ByteOrder.nativeOrder());
-			textureBuffer = byteBuf.asFloatBuffer();
+			ByteBuffer tbb = ByteBuffer.allocateDirect(uvCoords.length * (Float.SIZE / Byte.SIZE));
+			tbb.order(ByteOrder.nativeOrder());
+			textureBuffer = tbb.asFloatBuffer();
 			textureBuffer.position(0);
-			
-			ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * (Short.SIZE / Byte.SIZE));
-			ibb.order(ByteOrder.nativeOrder());
-			indexBuffer = ibb.asShortBuffer();
-			indexBuffer.position(0);
-		}else if(shader == DEBUG_SHADER){
+		}else if(shaderType == DEBUG_SHADER){
 			//TODO debug shader code
+			Shader shader = new Shader(R.raw.debug_vs, R.raw.debug_fs, context);
+			mProgram = shader.getProgram();
+			
+			colors = new float[size * 3];
+			
+			colorHandle = GLES20.glGetAttribLocation(mProgram, "a_color");
+			
+			ByteBuffer cbb = ByteBuffer.allocateDirect(colors.length * (Float.SIZE / Byte.SIZE));
+			cbb.order(ByteOrder.nativeOrder());
+			colorBuffer = cbb.asFloatBuffer();
+			colorBuffer.position(0);
 		}else{
 			throw new IllegalArgumentException("Invalid shader type.");
 		}
+		
+		vertices = new float[size * 2 * 4];
+		indices = new short[size * 6];
+		
+		vertexHandle = GLES20.glGetAttribLocation(mProgram, "a_position");
+		MVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
+
+		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * (Float.SIZE / Byte.SIZE));
+		vbb.order(ByteOrder.nativeOrder());
+		vertexBuffer = vbb.asFloatBuffer();
+		vertexBuffer.position(0);
+		
+		ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * (Short.SIZE / Byte.SIZE));
+		ibb.order(ByteOrder.nativeOrder());
+		indexBuffer = ibb.asShortBuffer();
+		indexBuffer.position(0);
 		
 	}
 	
@@ -104,8 +124,9 @@ public class SpriteBatch {
 		GLES20.glUseProgram(mProgram);
 		
 		vi = 0;
-		ti = 0;
 		ii = 0;
+		ti = 0;
+		ci = 0;
 		ix = 0;
 	}
 	
@@ -152,19 +173,44 @@ public class SpriteBatch {
 		uvCoords[ti++] = u2;
 		uvCoords[ti++] = v;
 		
-		indices[ii++] = (short)(0 + (ix*4));
-		indices[ii++] = (short)(1 + (ix*4));
-		indices[ii++] = (short)(2 + (ix*4));
-		indices[ii++] = (short)(0 + (ix*4));
-		indices[ii++] = (short)(2 + (ix*4));
-		indices[ii++] = (short)(3 + (ix*4));
-		ix++;
+		indices[ii++] = (short)(0 + ix);
+		indices[ii++] = (short)(1 + ix);
+		indices[ii++] = (short)(2 + ix);
+		indices[ii++] = (short)(0 + ix);
+		indices[ii++] = (short)(2 + ix);
+		indices[ii++] = (short)(3 + ix);
+		ix += 4;
 		
 		prevFrame = frame;
 	}
 	
 	public void drawPolygon(Vec2[] vertices, int vertexCount, Color3f color){
-		//TODO
+		
+	    //fill in vertex positions as directed by Box2D
+	    for (int i = 0; i < vertexCount; i++) {
+	      this.vertices[vi++]   = (vertices[i].x * 2f/15f) - (1f * mRatio);
+	      this.vertices[vi++] = (vertices[i].y * 2f/15f) - 1f;
+	    }
+	    
+	    for(int i=0;i<vertexCount-2;i++){
+	    	indices[ii++] = (short)(0 + ix);
+			indices[ii++] = (short)((i+1) + ix);
+			indices[ii++] = (short)((i+2) + ix);
+	    }
+	    ix += vertexCount;
+	    
+	    colors[ci++] = color.x;
+	    colors[ci++] = color.y;
+	    colors[ci++] = color.z;
+	    
+	    //draw solid area
+	    /*GLES20.glColor4f( color.x, color.y, color.z, 1);//GLES20.glBlendColor( color.x, color.y, color.z, 1);
+	    GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, vertexCount);
+	  
+	    //draw lines
+	    GLES20.glLineWidth(3); //fat lines
+	    GLES20.glBlendColor( 1, 0, 1, 1 ); //purple
+	    GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, vertexCount);*/
 	}
 	
 	public void end(Camera camera){
@@ -186,9 +232,15 @@ public class SpriteBatch {
 		vertexBuffer.position(0);
 		vertexBuffer.put(vertices);
 		vertexBuffer.position(0);
-		textureBuffer.position(0);
-		textureBuffer.put(uvCoords);
-		textureBuffer.position(0);
+		if(mShaderType==SPRITE_SHADER){
+			textureBuffer.position(0);
+			textureBuffer.put(uvCoords);
+			textureBuffer.position(0);
+		}else if(mShaderType==DEBUG_SHADER){
+			colorBuffer.position(0);
+			colorBuffer.put(colors);
+			colorBuffer.position(0);
+		}
 		indexBuffer.position(0);
 		indexBuffer.put(indices);
 		indexBuffer.position(0);
@@ -198,10 +250,15 @@ public class SpriteBatch {
 	private void render(){
 		
 		GLES20.glEnableVertexAttribArray(vertexHandle);
-		GLES20.glEnableVertexAttribArray(texCoordHandle);
-		GLES20.glUniform1i(textureHandle, 0);
+		if(mShaderType==SPRITE_SHADER){
+			GLES20.glEnableVertexAttribArray(texCoordHandle);
+			GLES20.glUniform1i(textureHandle, 0);
+			GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
+		}else if(mShaderType==DEBUG_SHADER){
+			GLES20.glEnableVertexAttribArray(colorHandle);
+			GLES20.glVertexAttribPointer(colorHandle, 3/*2*/, GLES20.GL_FLOAT, false, 0, colorBuffer);
+		}
 		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, MVPMatrix, 0);
-		GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
 		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 		
 		GLES20.glDrawElements(GLES20.GL_TRIANGLES, ii, GLES20.GL_UNSIGNED_SHORT, indexBuffer);

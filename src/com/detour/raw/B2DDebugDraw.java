@@ -28,8 +28,7 @@ public class B2DDebugDraw extends DebugDraw{
 	}
 
 	@Override
-	public void drawPoint(Vec2 argPoint, float argRadiusOnScreen,
-			Color3f argColor) {
+	public void drawPoint(Vec2 argPoint, float argRadiusOnScreen, Color3f argColor) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -38,26 +37,8 @@ public class B2DDebugDraw extends DebugDraw{
 	public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {
 		// TODO Auto-generated method stub
 		
-		//mSpriteBatch.drawPolygon(vertices, vertexCount, color);
+		mSpriteBatch.drawPolygon(vertices, vertexCount, color);
 		
-		/*float[] glverts = new float[16]; //allow for polygons up to 8 vertices
-		GLES20.glVertexPointer(2, GLES20.GL_FLOAT, 0, glverts); //tell OpenGL where to find vertices
-		GLES20.glEnableClientState(GLES20.GL_VERTEX_ATTRIB_ARRAY_ENABLED); //use vertices in subsequent calls to glDrawArrays
-	    
-	    //fill in vertex positions as directed by Box2D
-	    for (int i = 0; i < vertexCount; i++) {
-	      glverts[i*2]   = vertices[i].x;
-	      glverts[i*2+1] = vertices[i].y;
-	    }
-	    
-	    //draw solid area
-	    GLES20.glBlendColor( color.x, color.y, color.z, 1);//GLES20.glColor4f( color.x, color.y, color.z, 1);
-	    GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, vertexCount);
-	  
-	    //draw lines
-	    GLES20.glLineWidth(3); //fat lines
-	    GLES20.glBlendColor( 1, 0, 1, 1 ); //purple
-	    GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, vertexCount);*/
 	}
 
 	@Override

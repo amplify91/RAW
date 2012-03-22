@@ -30,9 +30,9 @@ public class Level {
 	}
 	
 	public void drawDebug(Camera camera){
-		//debug.beginSpriteBatch();
+		debug.beginSpriteBatch();
 		mWorld.drawDebugData();
-		//debug.endSpriteBatch(camera);
+		debug.endSpriteBatch(camera);
 		//Log.i("debugDraw", "success!!!!");
 	}
 	
