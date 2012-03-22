@@ -28,7 +28,7 @@ public class HUD {
 	}
 	
 	public void draw(SpriteBatch sb){
-		sb.draw(Animation.JUMP_BUTTON, originX, originY, 0.5f, 0.5f);
+		sb.drawSprite(Animation.JUMP_BUTTON, originX, originY, 0.5f, 0.5f);
 	}
 	
 }

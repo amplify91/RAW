@@ -5,11 +5,16 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import org.jbox2d.common.Color3f;
+import org.jbox2d.common.Vec2;
+
+import android.content.Context;
 import android.opengl.GLES20;
 
 public class SpriteBatch {
 	
 	private Texture mTexture;
+	private int mProgram;
 	
 	private float[] vertices;
 	private float[] uvCoords;
@@ -41,21 +46,25 @@ public class SpriteBatch {
 	private FloatBuffer textureBuffer;
 	private ShortBuffer indexBuffer;
 	
-	public SpriteBatch(int size, int program, float ratio, boolean debug){
+	public static final int SPRITE_SHADER = 0;
+	public static final int DEBUG_SHADER = 1;
+	
+	public SpriteBatch(int size, int shader, float ratio, Context context){
 		
 		mRatio = ratio;
 		
-		if(debug){
-			//TODO debugDraw code
-		}else{
+		if(shader == SPRITE_SHADER){
+			Shader s = new Shader(R.raw.sprite_vs, R.raw.sprite_fs, context);
+			mProgram = s.getProgram();
+			
 			vertices = new float[size * 2 * 4];
 			uvCoords = new float[size * 2 * 4];
 			indices = new short[size * 6];
 			
-			vertexHandle = GLES20.glGetAttribLocation(program, "a_position");
-			texCoordHandle = GLES20.glGetAttribLocation(program, "a_texcoord");
-			textureHandle = GLES20.glGetUniformLocation(program, "u_texture");
-			MVPMatrixHandle = GLES20.glGetUniformLocation(program, "u_MVPMatrix");
+			vertexHandle = GLES20.glGetAttribLocation(mProgram, "a_position");
+			texCoordHandle = GLES20.glGetAttribLocation(mProgram, "a_texcoord");
+			textureHandle = GLES20.glGetUniformLocation(mProgram, "u_texture");
+			MVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
 			
 			ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * (Float.SIZE / Byte.SIZE));
 			vbb.order(ByteOrder.nativeOrder());
@@ -71,6 +80,10 @@ public class SpriteBatch {
 			ibb.order(ByteOrder.nativeOrder());
 			indexBuffer = ibb.asShortBuffer();
 			indexBuffer.position(0);
+		}else if(shader == DEBUG_SHADER){
+			//TODO debug shader code
+		}else{
+			throw new IllegalArgumentException("Invalid shader type.");
 		}
 		
 	}
@@ -82,11 +95,13 @@ public class SpriteBatch {
 		drawing = true;
 		
 		//Texture binding takes way too long for a draw call so have it take place here.
-		if(texture != mTexture){
+		if(texture != null && texture != mTexture){
 			mTexture = texture;
 			texture.bind();
 			prevFrame = 0;
 		}
+		
+		GLES20.glUseProgram(mProgram);
 		
 		vi = 0;
 		ti = 0;
@@ -94,7 +109,7 @@ public class SpriteBatch {
 		ix = 0;
 	}
 	
-	public void draw(int frame, float x, float y, float width, float height){
+	public void drawSprite(int frame, float x, float y, float width, float height){
 		if(!drawing){
 			throw new IllegalStateException("Haven't started drawing. Call begin() first.");
 		}
@@ -146,6 +161,10 @@ public class SpriteBatch {
 		ix++;
 		
 		prevFrame = frame;
+	}
+	
+	public void drawPolygon(Vec2[] vertices, int vertexCount, Color3f color){
+		//TODO
 	}
 	
 	public void end(Camera camera){

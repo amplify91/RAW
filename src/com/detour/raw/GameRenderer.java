@@ -26,8 +26,6 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	
 	static float ratio;
 	
-	Shader shader;
-	int program;
 	FPSCounter fps;
 	
 	private static float[] mViewMatrix = new float[16];
@@ -69,7 +67,6 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		GLES20.glClearColor(red, green, blue, 1.0f);
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 		
-		GLES20.glUseProgram(program);
 		//Log.i(TAG, "" + GLES20.glGetError());
 		gameManager.draw();
 		//Log.i(TAG, "" + GLES20.glGetError());
@@ -81,16 +78,13 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 		
 		GLES20.glViewport(0, 0, width, height);
 		gameManager.getCamera().initialize(width, height);
-		gameManager.loadLevel(mContext, program, 1);//TODO change this to set game_is_running in game loop to true, then load level in game manager or somewhere else.
+		gameManager.loadLevel(mContext, 1);//TODO change this to set game_is_running in game loop to true, then load level in game manager or somewhere else.
 		
 	}
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		
 		Log.i(TAG, "" + GLES20.glGetError());
-		
-		shader = new Shader(R.raw.sprite_vs, R.raw.sprite_fs, mContext);
-		program = shader.getProgram();
 		
 		//GLES20.glEnable(GLES20.GL_TEXTURE_2D);
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);

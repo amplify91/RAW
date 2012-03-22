@@ -54,17 +54,17 @@ public class GameManager {
 			mHUD.draw(spriteBatch);
 			hero.draw(spriteBatch);
 			spriteBatch.end(camera);
-			mLevel.drawDebug();
+			mLevel.drawDebug(camera);
 		}
 		
 	}
 	
-	public void loadLevel(Context context, int program, int level){
+	public void loadLevel(Context context, int level){
 		
 		levelLoaded = false;
 		
 		//<Practice> TODO
-		mLevel = new Level();
+		mLevel = new Level(context);
 		
 		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 3, new int[]{3,1,5}, new int[]{8,8,4,0,7,16,16,16,16}, new int[]{128,1024,64}, new int[]{128,320,64});
 		if(!levelLoaded){
@@ -74,7 +74,7 @@ public class GameManager {
 			hero = new Hero();
 			mLevel.create(hero, 2, 3, 2, 2, true);
 			
-			spriteBatch = new SpriteBatch(1600, program, camera.getScreenRatio(), false);
+			spriteBatch = new SpriteBatch(1600, SpriteBatch.SPRITE_SHADER, camera.getScreenRatio(), context);
 			
 			levelLoaded = true;
 		}

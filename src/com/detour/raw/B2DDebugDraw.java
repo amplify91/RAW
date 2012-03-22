@@ -6,13 +6,25 @@ import org.jbox2d.common.IViewportTransform;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 
+import android.content.Context;
 import android.opengl.GLES20;
 
 public class B2DDebugDraw extends DebugDraw{
-
-	public B2DDebugDraw(IViewportTransform viewport) {
+	
+	SpriteBatch mSpriteBatch;
+	
+	public B2DDebugDraw(IViewportTransform viewport, Context context) {
 		super(viewport);
+		mSpriteBatch = new SpriteBatch(1600, SpriteBatch.DEBUG_SHADER, GameManager.getGameManager().getCamera().getScreenRatio(), context);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public void beginSpriteBatch(){
+		mSpriteBatch.begin(null);
+	}
+	
+	public void endSpriteBatch(Camera camera){
+		mSpriteBatch.end(camera);
 	}
 
 	@Override
@@ -25,6 +37,9 @@ public class B2DDebugDraw extends DebugDraw{
 	@Override
 	public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {
 		// TODO Auto-generated method stub
+		
+		//mSpriteBatch.drawPolygon(vertices, vertexCount, color);
+		
 		/*float[] glverts = new float[16]; //allow for polygons up to 8 vertices
 		GLES20.glVertexPointer(2, GLES20.GL_FLOAT, 0, glverts); //tell OpenGL where to find vertices
 		GLES20.glEnableClientState(GLES20.GL_VERTEX_ATTRIB_ARRAY_ENABLED); //use vertices in subsequent calls to glDrawArrays

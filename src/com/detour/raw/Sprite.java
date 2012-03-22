@@ -43,7 +43,7 @@ public class Sprite extends BaseEntity{
 	}
 	
 	public void draw(SpriteBatch sb){
-		sb.draw(mAnimation.getFrame(), mPhysics.getX(), mPhysics.getY(), mWidth, mHeight);
+		sb.drawSprite(mAnimation.getFrame(), mPhysics.getX(), mPhysics.getY(), mWidth, mHeight);
 	}
 	
 	public void update(){
