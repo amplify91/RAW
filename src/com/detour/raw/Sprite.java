@@ -1,10 +1,5 @@
 package com.detour.raw;
 
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
 
 
@@ -15,6 +10,9 @@ public class Sprite extends BaseEntity{
 	
 	public float mWidth;
 	public float mHeight;
+	
+	private float mDrawOffsetX;
+	private float mDrawOffsetY;
 	
 	public static final int VERTEX_SIZE = 2 + 2;
 	public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
@@ -34,6 +32,8 @@ public class Sprite extends BaseEntity{
 		
 		mWidth = width * SCALE_FACTOR;
 		mHeight = height * SCALE_FACTOR;
+		mDrawOffsetX = -width / 2;
+		mDrawOffsetY = -height / 2;
 		mPhysics.create(world, x, y, width, height, dynamic);
 		
 	}
@@ -43,7 +43,7 @@ public class Sprite extends BaseEntity{
 	}
 	
 	public void draw(SpriteBatch sb){
-		sb.drawSprite(mAnimation.getFrame(), mPhysics.getX(), mPhysics.getY(), mWidth, mHeight);
+		sb.drawSprite(mAnimation.getFrame(), mPhysics.getX()+mDrawOffsetX, mPhysics.getY()+mDrawOffsetY, mWidth, mHeight);
 	}
 	
 	public void update(){

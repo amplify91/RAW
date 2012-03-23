@@ -1,8 +1,5 @@
 package com.detour.raw;
 
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.World;
-
 import android.content.Context;
 
 public class GameManager {
@@ -54,7 +51,7 @@ public class GameManager {
 			mHUD.draw(spriteBatch);
 			hero.draw(spriteBatch);
 			spriteBatch.end(camera);
-			mLevel.drawDebug(camera);
+			//mLevel.drawDebug(camera);
 		}
 		
 	}
