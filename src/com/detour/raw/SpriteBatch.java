@@ -51,9 +51,13 @@ public class SpriteBatch {
 
 	private int mProgram;
 	private int mShaderType;
+	private int mDrawType = 0;
 	
 	public static final int SPRITE_SHADER = 0;
 	public static final int DEBUG_SHADER = 1;
+	private static final int DRAW_SPRITE = 1;
+	private static final int DRAW_POLYGON = 2;
+	private static final int DRAW_LINE = 3;
 	
 	public SpriteBatch(int size, int shaderType, float ratio, Context context){
 		
@@ -74,7 +78,6 @@ public class SpriteBatch {
 			textureBuffer = tbb.asFloatBuffer();
 			textureBuffer.position(0);
 		}else if(shaderType == DEBUG_SHADER){
-			//TODO debug shader code
 			Shader shader = new Shader(R.raw.debug_vs, R.raw.debug_fs, context);
 			mProgram = shader.getProgram();
 			
@@ -134,6 +137,14 @@ public class SpriteBatch {
 		if(!drawing){
 			throw new IllegalStateException("Haven't started drawing. Call begin() first.");
 		}
+		if(mShaderType != SPRITE_SHADER){
+			throw new IllegalStateException("Can't draw sprite without sprite shader.");
+		}
+		if(mDrawType==0){
+			mDrawType = DRAW_SPRITE;
+		}else if(mDrawType!=DRAW_SPRITE){
+			//TODO end() then begin() and continue
+		}
 		
 		if(frame==0){
 			//invisible, don't draw
@@ -186,6 +197,15 @@ public class SpriteBatch {
 	
 	public void drawPolygon(Vec2[] vertices, int vertexCount, Color3f color){
 		
+		if(mShaderType != DEBUG_SHADER){
+			throw new IllegalStateException("Can't draw debug without debug shader.");
+		}
+		if(mDrawType==0){
+			mDrawType = DRAW_POLYGON;
+		}else if(mDrawType!=DRAW_POLYGON){
+			//TODO end() then begin() and continue
+		}
+		
 	    //fill in vertex positions as directed by Box2D
 	    for (int i = 0; i < vertexCount; i++) {
 	      this.vertices[vi++]   = (vertices[i].x * 2f/15f) - (1f * mRatio);
@@ -202,15 +222,18 @@ public class SpriteBatch {
 	    colors[ci++] = color.x;
 	    colors[ci++] = color.y;
 	    colors[ci++] = color.z;
-	    
-	    //draw solid area
-	    /*GLES20.glColor4f( color.x, color.y, color.z, 1);//GLES20.glBlendColor( color.x, color.y, color.z, 1);
-	    GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, vertexCount);
-	  
-	    //draw lines
-	    GLES20.glLineWidth(3); //fat lines
-	    GLES20.glBlendColor( 1, 0, 1, 1 ); //purple
-	    GLES20.glDrawArrays(GLES20.GL_LINE_LOOP, 0, vertexCount);*/
+	}
+	
+	public void drawLine(Vec2 p1, Vec2 p2, Color3f color){
+		if(mShaderType != DEBUG_SHADER){
+			throw new IllegalStateException("Can't draw debug without debug shader.");
+		}
+		if(mDrawType==0){
+			mDrawType = DRAW_LINE;
+		}else if(mDrawType!=DRAW_LINE){
+			//TODO end() then begin() and continue
+		}
+		//TODO
 	}
 	
 	public void end(Camera camera){
@@ -223,6 +246,8 @@ public class SpriteBatch {
 		
 		fillBuffers();
 		render();
+		
+		mDrawType = 0;
 		
 		//Log.i("SpriteBatch", "ix = "+ix);
 	}
@@ -249,19 +274,30 @@ public class SpriteBatch {
 	
 	private void render(){
 		
-		GLES20.glEnableVertexAttribArray(vertexHandle);
-		if(mShaderType==SPRITE_SHADER){
-			GLES20.glEnableVertexAttribArray(texCoordHandle);
-			GLES20.glUniform1i(textureHandle, 0);
-			GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
-		}else if(mShaderType==DEBUG_SHADER){
+		if(mDrawType==DRAW_SPRITE || mDrawType==DRAW_POLYGON){
+			if(mShaderType==SPRITE_SHADER){
+				GLES20.glEnableVertexAttribArray(texCoordHandle);
+				GLES20.glUniform1i(textureHandle, 0);
+				GLES20.glVertexAttribPointer(texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
+			}else if(mShaderType==DEBUG_SHADER){
+				GLES20.glEnableVertexAttribArray(colorHandle);
+				GLES20.glVertexAttribPointer(colorHandle, 3/*2*/, GLES20.GL_FLOAT, false, 0, colorBuffer);
+			}
+			GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, MVPMatrix, 0);
+			GLES20.glEnableVertexAttribArray(vertexHandle);
+			GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+			
+			GLES20.glDrawElements(GLES20.GL_TRIANGLES, ii, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
+		}else if(mDrawType==DRAW_LINE){
 			GLES20.glEnableVertexAttribArray(colorHandle);
 			GLES20.glVertexAttribPointer(colorHandle, 3/*2*/, GLES20.GL_FLOAT, false, 0, colorBuffer);
+			
+			GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, MVPMatrix, 0);
+			GLES20.glEnableVertexAttribArray(vertexHandle);
+			GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+			
+			GLES20.glDrawArrays(GLES20.GL_LINES, 0, ii);
 		}
-		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, MVPMatrix, 0);
-		GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-		
-		GLES20.glDrawElements(GLES20.GL_TRIANGLES, ii, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
 		
 	}
 	

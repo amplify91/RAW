@@ -16,7 +16,7 @@ public class AnimationComponent {
 		nextFrame = FRAME_DURATION;
 	}
 	
-	public void update(){
+	public void update(float deltaTime){
 		 
 		if(animating){
 			if(tick>GameLoopThread.TICKS_PER_SECOND-1){

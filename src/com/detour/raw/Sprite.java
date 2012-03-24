@@ -46,8 +46,8 @@ public class Sprite extends BaseEntity{
 		sb.drawSprite(mAnimation.getFrame(), mPhysics.getX()+mDrawOffsetX, mPhysics.getY()+mDrawOffsetY, mWidth, mHeight);
 	}
 	
-	public void update(){
-		mAnimation.update();
+	public void update(float deltaTime){
+		mAnimation.update(deltaTime);
 		mPhysics.update();
 	}
 	

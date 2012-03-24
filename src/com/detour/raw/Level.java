@@ -13,7 +13,7 @@ public class Level {
 	World mWorld;
 	ArrayList<Sprite> mDynamicSprites;
 	
-	B2DDebugDraw debug;//TODO if debug drawing doesn't work, this null is probably why.
+	B2DDebugDraw debug;
 	
 	public Level(Context context){
 		
@@ -23,7 +23,7 @@ public class Level {
 		
 		mDynamicSprites = new ArrayList<Sprite>();
 		
-		debug = new B2DDebugDraw(null, context);
+		debug = new B2DDebugDraw(null, context);//TODO if debug drawing doesn't work, this null is probably why.
 		
 		mWorld.setDebugDraw(debug);
 		debug.setFlags(B2DDebugDraw.e_shapeBit);
@@ -38,7 +38,7 @@ public class Level {
 	
 	public void update(float deltaTime, int velocityIterations, int positionIterations){
 		for(int i=0;i<mDynamicSprites.size();i++){
-			mDynamicSprites.get(i).update();
+			mDynamicSprites.get(i).update(deltaTime);
 		}
 		mWorld.step(deltaTime, velocityIterations, positionIterations);
 	}

@@ -24,7 +24,7 @@ public abstract class PhysicsComponent {
 		}else{
 			bodyDef.type = BodyType.STATIC;
 		}
-		bodyDef.position.set(x, y);
+		bodyDef.position.set(x, y);//(x+(width/2f), y+(height/2f))
 		mBody = world.createBody(bodyDef);
 		
 		PolygonShape dynamicBox = new PolygonShape();
