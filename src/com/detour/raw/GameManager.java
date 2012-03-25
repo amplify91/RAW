@@ -49,8 +49,10 @@ public class GameManager {
 				tileMap[i].draw(spriteBatch);
 			}
 			mHUD.draw(spriteBatch);
+			spriteBatch.end();
+			spriteBatch.begin(mHeroTexture);
 			hero.draw(spriteBatch);
-			spriteBatch.end(camera);
+			spriteBatch.end();
 			//mLevel.drawDebug(camera);
 		}
 		
@@ -71,7 +73,7 @@ public class GameManager {
 			hero = new Hero();
 			mLevel.create(hero, 2, 3, 2, 2, true);
 			
-			spriteBatch = new SpriteBatch(1600, SpriteBatch.SPRITE_SHADER, camera.getScreenRatio(), context);
+			spriteBatch = new SpriteBatch(1600, SpriteBatch.SPRITE_SHADER, context, camera);
 			
 			levelLoaded = true;
 		}

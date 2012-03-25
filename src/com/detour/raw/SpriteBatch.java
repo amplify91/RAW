@@ -14,6 +14,7 @@ import android.opengl.GLES20;
 public class SpriteBatch {
 	
 	private Texture mTexture;
+	private Camera mCamera;
 	
 	private float[] vertices;
 	private short[] indices;
@@ -59,9 +60,10 @@ public class SpriteBatch {
 	private static final int DRAW_POLYGON = 2;
 	private static final int DRAW_LINE = 3;
 	
-	public SpriteBatch(int size, int shaderType, float ratio, Context context){
-		
-		mRatio = ratio;
+	public SpriteBatch(int size, int shaderType, Context context, Camera camera){
+
+		mCamera = camera;
+		mRatio = mCamera.getScreenRatio();
 		mShaderType = shaderType;
 		
 		if(mShaderType == SPRITE_SHADER){
@@ -143,7 +145,9 @@ public class SpriteBatch {
 		if(mDrawType==0){
 			mDrawType = DRAW_SPRITE;
 		}else if(mDrawType!=DRAW_SPRITE){
-			//TODO end() then begin() and continue
+			end();
+			begin(null);
+			mDrawType = DRAW_SPRITE;
 		}
 		
 		if(frame==0){
@@ -203,7 +207,9 @@ public class SpriteBatch {
 		if(mDrawType==0){
 			mDrawType = DRAW_POLYGON;
 		}else if(mDrawType!=DRAW_POLYGON){
-			//TODO end() then begin() and continue
+			end();
+			begin(null);
+			mDrawType = DRAW_POLYGON;
 		}
 		
 	    //fill in vertex positions as directed by Box2D
@@ -231,18 +237,32 @@ public class SpriteBatch {
 		if(mDrawType==0){
 			mDrawType = DRAW_LINE;
 		}else if(mDrawType!=DRAW_LINE){
-			//TODO end() then begin() and continue
+			end();
+			begin(null);
+			mDrawType = DRAW_LINE;
 		}
-		//TODO
+		vertices[vi++] = (p1.x * 2f/15f) - (1f * mRatio);;
+		vertices[vi++] = (p1.y * 2f/15f) - 1f;
+		vertices[vi++] = (p2.x * 2f/15f) - (1f * mRatio);;
+		vertices[vi++] = (p2.y * 2f/15f) - 1f;
+		
+		indices[ii++] = (short)(ix * 2);
+		indices[ii++] = (short)((ix * 2) + 1);
+		
+		ix++;
+		
+		colors[ci++] = color.x;
+	    colors[ci++] = color.y;
+	    colors[ci++] = color.z;
 	}
 	
-	public void end(Camera camera){
+	public void end(){
 		if(!drawing){
 			throw new IllegalStateException("Haven't started drawing. Call begin() first.");
 		}
 		drawing = false;
 		
-		MVPMatrix = camera.getMVPMatrix();
+		MVPMatrix = mCamera.getMVPMatrix();
 		
 		fillBuffers();
 		render();
@@ -296,7 +316,7 @@ public class SpriteBatch {
 			GLES20.glEnableVertexAttribArray(vertexHandle);
 			GLES20.glVertexAttribPointer(vertexHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 			
-			GLES20.glDrawArrays(GLES20.GL_LINES, 0, ii);
+			GLES20.glDrawElements(GLES20.GL_LINES, ii, GLES20.GL_UNSIGNED_SHORT, indexBuffer);
 		}
 		
 	}

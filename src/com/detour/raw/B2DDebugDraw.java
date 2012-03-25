@@ -15,16 +15,15 @@ public class B2DDebugDraw extends DebugDraw{
 	
 	public B2DDebugDraw(IViewportTransform viewport, Context context) {
 		super(viewport);
-		mSpriteBatch = new SpriteBatch(1600, SpriteBatch.DEBUG_SHADER, GameManager.getGameManager().getCamera().getScreenRatio(), context);
-		// TODO Auto-generated constructor stub
+		mSpriteBatch = new SpriteBatch(1600, SpriteBatch.DEBUG_SHADER, context, GameManager.getGameManager().getCamera());
 	}
 	
 	public void beginSpriteBatch(){
 		mSpriteBatch.begin(null);
 	}
 	
-	public void endSpriteBatch(Camera camera){
-		mSpriteBatch.end(camera);
+	public void endSpriteBatch(){
+		mSpriteBatch.end();
 	}
 
 	@Override
@@ -35,7 +34,6 @@ public class B2DDebugDraw extends DebugDraw{
 
 	@Override
 	public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {
-		// TODO Auto-generated method stub
 		
 		mSpriteBatch.drawPolygon(vertices, vertexCount, color);
 		
@@ -56,7 +54,8 @@ public class B2DDebugDraw extends DebugDraw{
 
 	@Override
 	public void drawSegment(Vec2 p1, Vec2 p2, Color3f color) {
-		// TODO Auto-generated method stub
+		
+		mSpriteBatch.drawLine(p1, p2, color);
 		
 	}
 

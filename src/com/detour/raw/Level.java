@@ -27,12 +27,13 @@ public class Level {
 		
 		mWorld.setDebugDraw(debug);
 		debug.setFlags(B2DDebugDraw.e_shapeBit);
+		//debug.setFlags(B2DDebugDraw.e_aabbBit);
 	}
 	
 	public void drawDebug(Camera camera){
 		debug.beginSpriteBatch();
 		mWorld.drawDebugData();
-		debug.endSpriteBatch(camera);
+		debug.endSpriteBatch();
 		//Log.i("debugDraw", "success!!!!");
 	}
 	
