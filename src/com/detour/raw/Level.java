@@ -51,6 +51,13 @@ public class Level {
 		}
 	}
 	
+	void create(Sprite sprite, float x, float y, Vec2 vertices[], boolean dynamic){
+		sprite.create(mWorld, x, y, vertices, dynamic);
+		if(dynamic){
+			mDynamicSprites.add(sprite);
+		}
+	}
+	
 	void step(float deltaTime){
 		mWorld.step(deltaTime, 8, 3);
 	}

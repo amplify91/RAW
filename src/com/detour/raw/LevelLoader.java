@@ -228,7 +228,7 @@ public class LevelLoader {
 	private Tile createTile(int frame, float x, float y, Level level) {
 		int frame2 = convertTileFrame(frame);
 		Tile t = new Tile(frame2);
-		level.create(t, x, y, 1, 1, false);
+		level.create(t, x, y, 0.5f, 0.5f, false);
 		return t;
 	}
 	

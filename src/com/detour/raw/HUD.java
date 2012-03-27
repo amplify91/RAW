@@ -25,10 +25,11 @@ public class HUD {
 	
 	public void update(){
 		originX = mCamera.getOriginX();
+		//originY = mCamera.getOriginY();
 	}
 	
 	public void draw(SpriteBatch sb){
-		sb.drawSprite(Animation.JUMP_BUTTON, originX, originY, 0.5f, 0.5f);
+		sb.drawSprite(Animation.JUMP_BUTTON, originX, originY, 2f * Sprite.SCALE_FACTOR, 2f * Sprite.SCALE_FACTOR);
 	}
 	
 }

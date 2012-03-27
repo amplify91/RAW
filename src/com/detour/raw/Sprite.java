@@ -1,5 +1,6 @@
 package com.detour.raw;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 
 
@@ -8,11 +9,10 @@ public class Sprite extends BaseEntity{
 	PhysicsComponent mPhysics;
 	AnimationComponent mAnimation;
 	
-	public float mWidth;
-	public float mHeight;
-	
-	private float mDrawOffsetX;
-	private float mDrawOffsetY;
+	private float mDrawWidth;
+	private float mDrawHeight;
+	private float mDrawOffsetX = 0;
+	private float mDrawOffsetY = 0;
 	
 	public static final int VERTEX_SIZE = 2 + 2;
 	public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
@@ -30,12 +30,21 @@ public class Sprite extends BaseEntity{
 	
 	public void create(World world, float x, float y, float width, float height, boolean dynamic){
 		
-		mWidth = width * SCALE_FACTOR;
-		mHeight = height * SCALE_FACTOR;
-		mDrawOffsetX = -width / 2;
-		mDrawOffsetY = -height / 2;
-		mPhysics.create(world, x, y, width, height, dynamic);
+		mDrawWidth = width * SCALE_FACTOR; //TODO change SCALE_FACTOR without breaking Camera class.
+		mDrawHeight = height * SCALE_FACTOR;
+		mDrawOffsetX = -width / 2f;
+		mDrawOffsetY = -height / 2f;
+		mPhysics.create(world, x/2f, y/2f, width, height, dynamic);
 		
+	}
+	
+	public void create(World world, float x, float y, Vec2 vertices[], boolean dynamic){
+		//TODO height and width are equal to 1 and so this method currently only works for tiles. Fix.
+		mDrawWidth = 0.5f * SCALE_FACTOR;
+		mDrawHeight = 0.5f * SCALE_FACTOR;
+		mDrawOffsetX = -mDrawWidth / 2f;
+		mDrawOffsetY = -mDrawHeight / 2f;
+		mPhysics.create(world, x/2f, y/2f, vertices, vertices.length, dynamic);
 	}
 	
 	public void destroy(){
@@ -43,7 +52,7 @@ public class Sprite extends BaseEntity{
 	}
 	
 	public void draw(SpriteBatch sb){
-		sb.drawSprite(mAnimation.getFrame(), mPhysics.getX()+mDrawOffsetX, mPhysics.getY()+mDrawOffsetY, mWidth, mHeight);
+		sb.drawSprite(mAnimation.getFrame(), mPhysics.getX()+mDrawOffsetX, mPhysics.getY()+mDrawOffsetY, mDrawWidth, mDrawHeight);
 	}
 	
 	public void update(float deltaTime){
@@ -62,6 +71,14 @@ public class Sprite extends BaseEntity{
 	public float getY(){
 		return mPhysics.getY();
 	}
+	
+	/*public float getOriginX(){
+		return mPhysics.getX() + mDrawWidth/2f;
+	}
+	
+	public float getOriginY(){
+		return mPhysics.getY() + mDrawHeight/2f;
+	}*/
 	
 	public void pauseAnimation(){
 		mAnimation.pause();

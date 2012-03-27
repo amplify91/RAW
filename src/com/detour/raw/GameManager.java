@@ -1,5 +1,7 @@
 package com.detour.raw;
 
+import org.jbox2d.common.Vec2;
+
 import android.content.Context;
 
 public class GameManager {
@@ -18,6 +20,7 @@ public class GameManager {
 	
 	Tile[] tileMap;
 	Hero hero;
+	Tile test1;
 	
 	boolean levelLoaded = false;
 	
@@ -34,9 +37,10 @@ public class GameManager {
 	
 	public void update(float deltaTime){
 		if(levelLoaded){
-			camera.update((float)hero.getX(), (float)hero.getY());
+			camera.update((float)hero.getX()+1f, (float)hero.getY());
 			mHUD.update();
 			mLevel.update(deltaTime, 8, 3);
+			//TODO update camera AFTER level?
 		}
 	}
 	
@@ -52,8 +56,9 @@ public class GameManager {
 			spriteBatch.end();
 			spriteBatch.begin(mHeroTexture);
 			hero.draw(spriteBatch);
+			test1.draw(spriteBatch);
 			spriteBatch.end();
-			//mLevel.drawDebug(camera);
+			mLevel.drawDebug(camera);
 		}
 		
 	}
@@ -62,7 +67,6 @@ public class GameManager {
 		
 		levelLoaded = false;
 		
-		//<Practice> TODO
 		mLevel = new Level(context);
 		
 		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 3, new int[]{3,1,5}, new int[]{8,8,4,0,7,16,16,16,16}, new int[]{128,1024,64}, new int[]{128,320,64});
@@ -71,7 +75,10 @@ public class GameManager {
 			tileMap = levelLoader.getTileMap();
 			
 			hero = new Hero();
-			mLevel.create(hero, 2, 3, 2, 2, true);
+			test1 = new Tile(64);
+			Vec2[] verts = {new Vec2(0,0),new Vec2(0.5f,0),new Vec2(0.5f,0.5f)};
+			mLevel.create(test1, 47.5f, 1.5f, verts, false);
+			mLevel.create(hero, 2, 3, 1, 1, true);
 			
 			spriteBatch = new SpriteBatch(1600, SpriteBatch.SPRITE_SHADER, context, camera);
 			

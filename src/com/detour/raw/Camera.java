@@ -46,7 +46,7 @@ public class Camera {
 	
 	public void createMatrices(){
 		if(mRatio!=0){
-			Matrix.orthoM(mProjMatrix, 0, -mRatio, mRatio, -1, 1, 0.5f, 10);
+			Matrix.orthoM(mProjMatrix, 0, -mRatio, /*mRatio*/0, -1, /*1*/0, 0.5f, 10);
 			Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 1.0f, 0.0f, 0f, 0f, 0f, 1.0f, 0.0f);
 			Matrix.setIdentityM(mModelMatrix, 0);
 			Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
@@ -92,7 +92,7 @@ public class Camera {
 	}
 	
 	public float getOriginY(){
-		return cameraY - 1f;
+		return cameraY;
 	}
 	
 	public float getScreenRatio(){
