@@ -86,7 +86,7 @@ public class Vector {
     }
     
     boolean isParallelTo(Vector v){
-    	if(abs(mTheta) == abs(v.mTheta)){ //not sure if this is mathematically true.
+    	if((mTheta == v.mTheta) || (mTheta + 180.0 == v.mTheta)){
     		return true;
     	}else{
     		return false;

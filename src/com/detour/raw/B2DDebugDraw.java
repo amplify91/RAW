@@ -7,7 +7,6 @@ import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 
 import android.content.Context;
-import android.opengl.GLES20;
 
 public class B2DDebugDraw extends DebugDraw{
 	

@@ -74,4 +74,8 @@ public abstract class PhysicsComponent {
 		return mBody.getPosition().y;
 	}
 	
+	public void setProjectileProperties(Sprite parent, float xDest, float yDest, int type){
+		
+	}
+	
 }

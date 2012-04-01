@@ -1,5 +1,9 @@
 package com.detour.raw;
 
+import com.detour.raw.R;
+import com.detour.raw.R.id;
+import com.detour.raw.R.layout;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

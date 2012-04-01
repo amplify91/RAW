@@ -56,7 +56,7 @@ public class AnimationComponent {
 	
 	public void setAnimation(int animation){
 		if(animation==Animation.RUNNING){
-			index = Animation.RUNNING_INDEX;
+			index = Animation.FRAME_RUNNING_INDEX;
 			duration = Animation.RUNNING_DURATION;
 		}
 	}

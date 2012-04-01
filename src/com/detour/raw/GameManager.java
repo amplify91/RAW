@@ -58,7 +58,7 @@ public class GameManager {
 			hero.draw(spriteBatch);
 			test1.draw(spriteBatch);
 			spriteBatch.end();
-			mLevel.drawDebug(camera);
+			//mLevel.drawDebug(camera);
 		}
 		
 	}

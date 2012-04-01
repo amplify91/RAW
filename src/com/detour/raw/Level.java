@@ -13,6 +13,8 @@ public class Level {
 	World mWorld;
 	ArrayList<Sprite> mDynamicSprites;
 	
+	//ProjectileList mProjectiles = new ProjectileList(8);
+	
 	B2DDebugDraw debug;
 	
 	public Level(Context context){
@@ -44,18 +46,22 @@ public class Level {
 		mWorld.step(deltaTime, velocityIterations, positionIterations);
 	}
 	
-	void create(Sprite sprite, float x, float y, float width, float height, boolean dynamic){
+	public void create(Sprite sprite, float x, float y, float width, float height, boolean dynamic){
 		sprite.create(mWorld, x, y, width, height, dynamic);
 		if(dynamic){
 			mDynamicSprites.add(sprite);
 		}
 	}
 	
-	void create(Sprite sprite, float x, float y, Vec2 vertices[], boolean dynamic){
+	public void create(Sprite sprite, float x, float y, Vec2 vertices[], boolean dynamic){
 		sprite.create(mWorld, x, y, vertices, dynamic);
 		if(dynamic){
 			mDynamicSprites.add(sprite);
 		}
+	}
+	
+	public void createProjectile(Sprite parent, float xDest, float yDest, int type){
+		//mProjectiles.create();
 	}
 	
 	void step(float deltaTime){

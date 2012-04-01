@@ -1,6 +1,5 @@
 package com.detour.raw;
 
-import org.jbox2d.dynamics.World;
 
 public abstract class BaseEntity {
 	

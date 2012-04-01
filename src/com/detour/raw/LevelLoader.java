@@ -235,7 +235,7 @@ public class LevelLoader {
 	private int convertTileFrame(int f){
 		int frame = 0;
 		if(f>0&&f<65){
-			frame = Animation.TEST_TILES[f-1];
+			frame = Animation.FRAME_TEST_TILES[f-1];
 		}else{
 			frame = f;
 		}

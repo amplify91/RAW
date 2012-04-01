@@ -29,7 +29,7 @@ public class HUD {
 	}
 	
 	public void draw(SpriteBatch sb){
-		sb.drawSprite(Animation.JUMP_BUTTON, originX, originY, 2f * Sprite.SCALE_FACTOR, 2f * Sprite.SCALE_FACTOR);
+		sb.drawSprite(Animation.FRAME_JUMP_BUTTON, originX, originY, 2f * Sprite.SCALE_FACTOR, 2f * Sprite.SCALE_FACTOR);
 	}
 	
 }

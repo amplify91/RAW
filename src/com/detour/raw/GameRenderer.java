@@ -26,13 +26,13 @@ public class GameRenderer implements GLSurfaceView.Renderer{
 	
 	static float ratio;
 	
-	FPSCounter fps;
+	FPSCounter fps = new FPSCounter();
 	
 	private static float[] mViewMatrix = new float[16];
 	private static float[] mProjMatrix = new float[16];
 	
 	private GameRenderer(){
-		fps = new FPSCounter();
+		
 	}
 	
 	/*private GameRenderer(Context context){
