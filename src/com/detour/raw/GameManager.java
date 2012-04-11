@@ -21,6 +21,7 @@ public class GameManager {
 	Tile[] tileMap;
 	Hero hero;
 	Tile test1;
+	Projectile bullet1;
 	
 	boolean levelLoaded = false;
 	
@@ -57,8 +58,9 @@ public class GameManager {
 			spriteBatch.begin(mHeroTexture);
 			hero.draw(spriteBatch);
 			test1.draw(spriteBatch);
+			//bullet1.draw(spriteBatch);
 			spriteBatch.end();
-			//mLevel.drawDebug(camera);
+			mLevel.drawDebug(camera);
 		}
 		
 	}
@@ -79,6 +81,8 @@ public class GameManager {
 			Vec2[] verts = {new Vec2(0,0),new Vec2(0.5f,0),new Vec2(0.5f,0.5f)};
 			mLevel.create(test1, 47.5f, 1.5f, verts, false);
 			mLevel.create(hero, 2, 3, 1, 1, true);
+			//bullet1 = new Projectile(Projectile.TYPE_RAW, hero, null);
+			//mLevel.create(bullet1, 0, 0, null, true);
 			
 			spriteBatch = new SpriteBatch(1600, SpriteBatch.SPRITE_SHADER, context, camera);
 			

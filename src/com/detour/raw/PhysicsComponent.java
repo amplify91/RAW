@@ -11,6 +11,7 @@ import org.jbox2d.dynamics.World;
 public abstract class PhysicsComponent {
 	
 	Body mBody;
+	Vec2[] mVertices;
 	
 	public PhysicsComponent(){
 		
@@ -38,7 +39,7 @@ public abstract class PhysicsComponent {
 		
 	}
 	
-	public void create(World world, float x, float y, Vec2 vertices[], int count, boolean dynamic){
+	public void create(World world, float x, float y, Vec2 vertices[], boolean dynamic){
 		
 		BodyDef bodyDef = new BodyDef();
 		if(dynamic){
@@ -50,7 +51,7 @@ public abstract class PhysicsComponent {
 		mBody = world.createBody(bodyDef);
 		
 		PolygonShape dynamicBox = new PolygonShape();
-		dynamicBox.set(vertices, count);
+		dynamicBox.set(vertices, vertices.length);
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = dynamicBox;
 		fixtureDef.density = 1.0f;
@@ -74,7 +75,7 @@ public abstract class PhysicsComponent {
 		return mBody.getPosition().y;
 	}
 	
-	public void setProjectileProperties(Sprite parent, float xDest, float yDest, int type){
+	public void setProjectileProperties(int type, Vec2 destinationPoint){
 		
 	}
 	

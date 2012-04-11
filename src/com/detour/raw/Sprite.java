@@ -9,12 +9,12 @@ public class Sprite extends BaseEntity{
 	PhysicsComponent mPhysics;
 	AnimationComponent mAnimation;
 	
-	private boolean isActive = false;
-	
 	private float mDrawWidth;
 	private float mDrawHeight;
 	private float mDrawOffsetX = 0;
 	private float mDrawOffsetY = 0;
+	
+	private Vec2 mProjectileSpawnPoint = new Vec2();
 	
 	public static final int VERTEX_SIZE = 2 + 2;
 	public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
@@ -36,7 +36,6 @@ public class Sprite extends BaseEntity{
 		mDrawHeight = height * SCALE_FACTOR;
 		mDrawOffsetX = -width / 2f;
 		mDrawOffsetY = -height / 2f;
-		setActive(true);
 		mPhysics.create(world, x/2f, y/2f, width, height, dynamic);
 		
 	}
@@ -47,18 +46,11 @@ public class Sprite extends BaseEntity{
 		mDrawHeight = 0.5f * SCALE_FACTOR;
 		mDrawOffsetX = -mDrawWidth / 2f;
 		mDrawOffsetY = -mDrawHeight / 2f;
-		setActive(true);
-		mPhysics.create(world, x/2f, y/2f, vertices, vertices.length, dynamic);
-	}
-	
-	public void createProjectile(World world, Sprite parent, float xDest, float yDest, int type){
-		setActive(true);
-		mPhysics.setProjectileProperties(parent, xDest, yDest, type);
+		mPhysics.create(world, x/2f, y/2f, vertices, dynamic);
 	}
 	
 	public void destroy(){
 		//TODO
-		setActive(false);
 	}
 	
 	public void draw(SpriteBatch sb){
@@ -82,14 +74,6 @@ public class Sprite extends BaseEntity{
 		return mPhysics.getY();
 	}
 	
-	public boolean isActive(){
-		return isActive;
-	}
-	
-	public void setActive(boolean active){
-		isActive = active;
-	}
-	
 	/*public float getOriginX(){
 		return mPhysics.getX() + mDrawWidth/2f;
 	}
@@ -97,6 +81,11 @@ public class Sprite extends BaseEntity{
 	public float getOriginY(){
 		return mPhysics.getY() + mDrawHeight/2f;
 	}*/
+	
+	public Vec2 getProjectileSpawnPoint(){
+		mProjectileSpawnPoint.set(mPhysics.getX(), mPhysics.getY());//TODO change arguments to mPhysics.getProjectileSpawn
+		return mProjectileSpawnPoint;
+	}
 	
 	public void pauseAnimation(){
 		mAnimation.pause();
