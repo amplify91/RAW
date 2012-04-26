@@ -4,7 +4,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 
 
-public class Sprite extends BaseEntity{
+public class Sprite{
 	
 	PhysicsComponent mPhysics;
 	AnimationComponent mAnimation;

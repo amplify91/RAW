@@ -10,17 +10,21 @@ public class HUD {
 	float originX = 0;
 	float originY = 0;
 	
-	public static final float JUMP_BUTTON_MIN_X = 0;
-	public static final float JUMP_BUTTON_MAX_X = 3;
-	public static final float JUMP_BUTTON_MIN_Y = 0;
-	public static final float JUMP_BUTTON_MAX_Y = 3;
+	public static final float JUMP_BUTTON_X = 0;
+	public static final float JUMP_BUTTON_Y = 0;
+	public static final float JUMP_BUTTON_WIDTH = 3;
+	public static final float JUMP_BUTTON_HEIGHT = 3;
+	public static final float JUMP_BUTTON_MIN_X = JUMP_BUTTON_X;
+	public static final float JUMP_BUTTON_MAX_X = JUMP_BUTTON_X + JUMP_BUTTON_WIDTH;
+	public static final float JUMP_BUTTON_MIN_Y = JUMP_BUTTON_Y;
+	public static final float JUMP_BUTTON_MAX_Y = JUMP_BUTTON_Y + JUMP_BUTTON_HEIGHT;
 	
 	public static final int HUD_SPRITES = 1;
 	
 	public HUD(Camera c){
 		mCamera = c;
 		originX = mCamera.getOriginX();
-		originY = 0f;
+		//originY = mCamera.getOriginY();
 	}
 	
 	public void update(){

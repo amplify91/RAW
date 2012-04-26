@@ -73,10 +73,26 @@ public class Camera {
 		cameraX = (heroX * Sprite.SCALE_FACTOR) + CAMERA_OFFSET_X;
 		cameraY = (heroY * Sprite.SCALE_FACTOR) + CAMERA_OFFSET_Y;
 		
-		Matrix.setLookAtM(mViewMatrix, 0, cameraX, cameraY, 1.0f, cameraX, cameraY, 0f, 0f, 1.0f, 0.0f);
+		lookAtWorld(heroX, heroY);
+	}
+	
+	private void lookAtScreen(float x, float y){
+		//look at these OpenGL screen coordinates
+		
+		Matrix.setLookAtM(mViewMatrix, 0, x, y, 1.0f, x, y, 0f, 0f, 1.0f, 0.0f);
 		
 		Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjMatrix, 0, mMVMatrix, 0);
+		
+	}
+	
+	private void lookAtWorld(float x, float y){
+		
+		float screenX = (x * Sprite.SCALE_FACTOR) + CAMERA_OFFSET_X;
+		float screenY = (y * Sprite.SCALE_FACTOR) + CAMERA_OFFSET_Y;
+		
+		lookAtScreen(screenX, screenY);
+		
 	}
 	
 	public float getCameraX(){
