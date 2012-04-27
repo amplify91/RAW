@@ -23,6 +23,8 @@ public class LevelLoader {
 	 */
 	
 	Context mContext;
+	Level mLevel;
+	SpriteFactory mSpriteFactory;
 	int levelWidth = 0;
 	int levelHeight = 0;
 	int sprites = 0;
@@ -31,10 +33,13 @@ public class LevelLoader {
 	
 	public LevelLoader(Context c, int lvln, Level level){
 		mContext = c;
+		mLevel = level;
+		mSpriteFactory = new SpriteFactory(mLevel);
 		if(lvln==0){
 			//createRandomTileMap(); TODO
 		}else{
 			createLevelFromFile(mContext, lvln, level);
+			mSpriteFactory.createHero(2, 3);
 		}
 		
 		sprites += HUD.HUD_SPRITES;
@@ -143,7 +148,8 @@ public class LevelLoader {
 			for(int y=levelHeight-1;y>-1;y--){
 				for(int x=0;x<levelWidth;x++){
 					if(gridArr[i]!=0){
-						ph_tiles[sprites] = createTile(gridArr[i], x, y, level);
+						//ph_tiles[sprites] = createTile(gridArr[i], x, y, level);
+						mSpriteFactory.createTile((float)x/2f, (float)y/2f, gridArr[i]);
 						sprites++;
 					}
 					i++;
@@ -223,23 +229,6 @@ public class LevelLoader {
 		
 		//return levelInfo;
 		
-	}
-	
-	private Tile createTile(int frame, float x, float y, Level level) {
-		int frame2 = convertTileFrame(frame);
-		Tile t = new Tile(frame2);
-		level.create(t, x, y, 0.5f, 0.5f, false);
-		return t;
-	}
-	
-	private int convertTileFrame(int f){
-		int frame = 0;
-		if(f>0&&f<65){
-			frame = Animation.FRAME_TEST_TILES[f-1];
-		}else{
-			frame = f;
-		}
-		return frame;
 	}
 
 	private int getFileName(int ln){

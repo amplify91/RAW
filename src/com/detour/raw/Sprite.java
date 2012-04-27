@@ -30,25 +30,6 @@ public class Sprite{
 		
 	}
 	
-	public void create(World world, float x, float y, float width, float height, boolean dynamic){
-		
-		mDrawWidth = width * SCALE_FACTOR; //TODO change SCALE_FACTOR without breaking Camera class.
-		mDrawHeight = height * SCALE_FACTOR;
-		mDrawOffsetX = -width / 2f;
-		mDrawOffsetY = -height / 2f;
-		mPhysics.create(world, x/2f, y/2f, width, height, dynamic);
-		
-	}
-	
-	public void create(World world, float x, float y, Vec2 vertices[], boolean dynamic){
-		//TODO height and width are equal to 1 and so this method currently only works for tiles. Fix.
-		mDrawWidth = 0.5f * SCALE_FACTOR;
-		mDrawHeight = 0.5f * SCALE_FACTOR;
-		mDrawOffsetX = -mDrawWidth / 2f;
-		mDrawOffsetY = -mDrawHeight / 2f;
-		mPhysics.create(world, x/2f, y/2f, vertices, dynamic);
-	}
-	
 	public void destroy(){
 		//TODO
 	}

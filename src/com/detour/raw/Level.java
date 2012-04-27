@@ -11,7 +11,8 @@ public class Level {
 	//This class will be used to manage multiple world objects within one level.
 	
 	World mWorld;
-	ArrayList<Sprite> mDynamicSprites;
+	ArrayList<Sprite> mDrawableSprites;
+	ArrayList<Sprite> mUpdateableSprites;
 	
 	//ProjectileList mProjectiles = new ProjectileList(8);
 	
@@ -23,7 +24,8 @@ public class Level {
 		mWorld = new World(gravity, true);
 		mWorld.setContinuousPhysics(true);
 		
-		mDynamicSprites = new ArrayList<Sprite>();
+		mDrawableSprites = new ArrayList<Sprite>();
+		mUpdateableSprites = new ArrayList<Sprite>();
 		
 		debug = new B2DDebugDraw(null, context);//TODO if debug drawing doesn't work, this null is probably why.
 		
@@ -40,49 +42,33 @@ public class Level {
 	}
 	
 	public void update(float deltaTime, int velocityIterations, int positionIterations){
-		for(int i=0;i<mDynamicSprites.size();i++){
-			mDynamicSprites.get(i).update(deltaTime);
+		for(int i=0;i<mUpdateableSprites.size();i++){
+			mUpdateableSprites.get(i).update(deltaTime);
 		}
 		mWorld.step(deltaTime, velocityIterations, positionIterations);
 	}
 	
 	public void draw(SpriteBatch sb){
-		//TODO change/get rid of this!
-		for(int i=0;i<mDynamicSprites.size();i++){
-			mDynamicSprites.get(i).draw(sb);
+		for(int i=0;i<mDrawableSprites.size();i++){
+			mDrawableSprites.get(i).draw(sb);
 		}
-	}
-	
-	//TODO Get rid of these create methods. All creation should be done in Factories or Pools
-	public void create(Sprite sprite, float x, float y, float width, float height, boolean dynamic){
-		sprite.create(mWorld, x, y, width, height, dynamic);
-		if(dynamic){
-			mDynamicSprites.add(sprite);
-		}
-	}
-	
-	public void create(Sprite sprite, float x, float y, Vec2 vertices[], boolean dynamic){
-		sprite.create(mWorld, x, y, vertices, dynamic);
-		if(dynamic){
-			mDynamicSprites.add(sprite);
-		}
-	}
-	
-	public void createProjectile(Sprite parent, float xDest, float yDest, int type){
-		//mProjectiles.create();
 	}
 	
 	Hero mHero;
 	public void assignHero(Hero hero){
-		//TODO get rid of this nonsense
+		//TODO change this to assign a different Hero to each client (for multiplayer).
 		mHero = hero;
 	}
 	public Hero getHero(){
 		return mHero;
 	}
 	
-	public void addDynamicSprite(Sprite sprite){
-		mDynamicSprites.add(sprite);
+	public void addDrawableSprite(Sprite sprite){
+		mDrawableSprites.add(sprite);
+	}
+	
+	public void addUpdateableSprite(Sprite sprite){
+		mUpdateableSprites.add(sprite);
 	}
 	
 	void step(float deltaTime){

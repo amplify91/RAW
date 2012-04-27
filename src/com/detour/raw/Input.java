@@ -79,11 +79,11 @@ public class Input {
 	}
 	
 	private void jump(){
-		mGameManager.getHero().jump();
+		mGameManager.getLevel().getHero().jump();
 	}
 	
 	private void shoot(float x, float y){
-		mGameManager.getHero().dash();//TODO remove this and create separate dash() function
+		mGameManager.getLevel().getHero().dash();//TODO remove this and create separate dash() function
 		Log.i("Touch", "Shot at "+eventX[0]+"' "+eventY[0]);
 		/*Projectile p = new Projectile();
 		mGameManager.mLevel.create(p, mGameManager.getHero().getX(), mGameManager.getHero().getY(), 0.2f, 0.2f, true);

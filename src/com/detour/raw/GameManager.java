@@ -50,17 +50,12 @@ public class GameManager {
 		if(levelLoaded){
 			
 			spriteBatch.begin(mHeroTexture);
-			for(int i=0;i<tileMap.length;i++){
+			/*for(int i=0;i<tileMap.length;i++){
 				tileMap[i].draw(spriteBatch);
-			}
+			}*/
 			mHUD.draw(spriteBatch);
 			mLevel.draw(spriteBatch);
 			spriteBatch.end();
-			//spriteBatch.begin(mHeroTexture);
-			//hero.draw(spriteBatch);
-			//test1.draw(spriteBatch);
-			//bullet1.draw(spriteBatch);
-			//spriteBatch.end();
 			//mLevel.drawDebug(camera);
 		}
 		
@@ -75,13 +70,13 @@ public class GameManager {
 		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 3, new int[]{3,1,5}, new int[]{8,8,4,0,7,16,16,16,16}, new int[]{128,1024,64}, new int[]{128,320,64});
 		if(!levelLoaded){
 			levelLoader = new LevelLoader(context, level, mLevel);
-			tileMap = levelLoader.getTileMap();
+			//tileMap = levelLoader.getTileMap();
 			
 			//hero = new Hero();
 			//test1 = new Tile(64);
 			//Vec2[] verts = {new Vec2(0,0),new Vec2(0.5f,0),new Vec2(0.5f,0.5f)};
-			SpriteFactory sf = new SpriteFactory(mLevel);
-			sf.createHero(2, 3);
+			//SpriteFactory sf = new SpriteFactory(mLevel);
+			//sf.createHero(2, 3);
 			//sf.createTile(64);
 			//mLevel.create(test1, 47.5f, 1.5f, verts, false);
 			//mLevel.create(hero, 2, 3, 1, 1, true);
@@ -108,8 +103,8 @@ public class GameManager {
 		return camera;
 	}
 	
-	public Hero getHero(){
-		return mLevel.getHero();
+	public Level getLevel(){
+		return mLevel;
 	}
 	
 }

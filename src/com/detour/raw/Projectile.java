@@ -23,11 +23,11 @@ public class Projectile extends Sprite{
 		
 	}
 	
-	@Override
-	public void create(World world, float x, float y, Vec2 vertices[], boolean dynamic){
-		super.create(world, mParent.getProjectileSpawnPoint().x, mParent.getProjectileSpawnPoint().y, mPhysics.mVertices, /* why does this break my game?!?! */true);
+	//@Override
+	//public void create(World world, float x, float y, Vec2 vertices[], boolean dynamic){
+		//super.create(world, mParent.getProjectileSpawnPoint().x, mParent.getProjectileSpawnPoint().y, mPhysics.mVertices, /* why does this break my game?!?! */true);
 		//mPhysics.mBody.setBullet(true);
-	}
+	//}
 	
 	public void recycleAs(int type, Sprite parent, Vec2 destination){
 		destroy();
