@@ -18,7 +18,7 @@ public class PhysicsHero extends PhysicsComponent{
 	public PhysicsHero(){
 		
 	}
-
+	
 	@Override
 	public void update() {
 		mBody.setLinearVelocity(mBody.getLinearVelocity().mul(0.9f)); // Slow down, in case we're above max speed.

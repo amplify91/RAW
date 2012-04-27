@@ -46,6 +46,14 @@ public class Level {
 		mWorld.step(deltaTime, velocityIterations, positionIterations);
 	}
 	
+	public void draw(SpriteBatch sb){
+		//TODO change/get rid of this!
+		for(int i=0;i<mDynamicSprites.size();i++){
+			mDynamicSprites.get(i).draw(sb);
+		}
+	}
+	
+	//TODO Get rid of these create methods. All creation should be done in Factories or Pools
 	public void create(Sprite sprite, float x, float y, float width, float height, boolean dynamic){
 		sprite.create(mWorld, x, y, width, height, dynamic);
 		if(dynamic){
@@ -62,6 +70,19 @@ public class Level {
 	
 	public void createProjectile(Sprite parent, float xDest, float yDest, int type){
 		//mProjectiles.create();
+	}
+	
+	Hero mHero;
+	public void assignHero(Hero hero){
+		//TODO get rid of this nonsense
+		mHero = hero;
+	}
+	public Hero getHero(){
+		return mHero;
+	}
+	
+	public void addDynamicSprite(Sprite sprite){
+		mDynamicSprites.add(sprite);
 	}
 	
 	void step(float deltaTime){

@@ -19,9 +19,9 @@ public class GameManager {
 	Texture mHeroTexture;
 	
 	Tile[] tileMap;
-	Hero hero;
-	Tile test1;
-	Projectile bullet1;
+	//Hero hero;
+	//Tile test1;
+	//Projectile bullet1;
 	
 	boolean levelLoaded = false;
 	
@@ -38,7 +38,7 @@ public class GameManager {
 	
 	public void update(float deltaTime){
 		if(levelLoaded){
-			camera.update((float)hero.getX()+1f, (float)hero.getY());
+			camera.update((float)mLevel.getHero().getX()+1f, (float)mLevel.getHero().getY());
 			mHUD.update();
 			mLevel.update(deltaTime, 8, 3);
 			//TODO update camera AFTER level?
@@ -54,13 +54,14 @@ public class GameManager {
 				tileMap[i].draw(spriteBatch);
 			}
 			mHUD.draw(spriteBatch);
+			mLevel.draw(spriteBatch);
 			spriteBatch.end();
-			spriteBatch.begin(mHeroTexture);
-			hero.draw(spriteBatch);
-			test1.draw(spriteBatch);
+			//spriteBatch.begin(mHeroTexture);
+			//hero.draw(spriteBatch);
+			//test1.draw(spriteBatch);
 			//bullet1.draw(spriteBatch);
-			spriteBatch.end();
-			mLevel.drawDebug(camera);
+			//spriteBatch.end();
+			//mLevel.drawDebug(camera);
 		}
 		
 	}
@@ -76,11 +77,14 @@ public class GameManager {
 			levelLoader = new LevelLoader(context, level, mLevel);
 			tileMap = levelLoader.getTileMap();
 			
-			hero = new Hero();
-			test1 = new Tile(64);
-			Vec2[] verts = {new Vec2(0,0),new Vec2(0.5f,0),new Vec2(0.5f,0.5f)};
-			mLevel.create(test1, 47.5f, 1.5f, verts, false);
-			mLevel.create(hero, 2, 3, 1, 1, true);
+			//hero = new Hero();
+			//test1 = new Tile(64);
+			//Vec2[] verts = {new Vec2(0,0),new Vec2(0.5f,0),new Vec2(0.5f,0.5f)};
+			SpriteFactory sf = new SpriteFactory(mLevel);
+			sf.createHero(2, 3);
+			//sf.createTile(64);
+			//mLevel.create(test1, 47.5f, 1.5f, verts, false);
+			//mLevel.create(hero, 2, 3, 1, 1, true);
 			//bullet1 = new Projectile(Projectile.TYPE_RAW, hero, null);
 			//mLevel.create(bullet1, 0, 0, null, true);
 			
@@ -105,7 +109,7 @@ public class GameManager {
 	}
 	
 	public Hero getHero(){
-		return hero;
+		return mLevel.getHero();
 	}
 	
 }

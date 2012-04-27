@@ -9,10 +9,10 @@ public class Sprite{
 	PhysicsComponent mPhysics;
 	AnimationComponent mAnimation;
 	
-	private float mDrawWidth;
-	private float mDrawHeight;
-	private float mDrawOffsetX = 0;
-	private float mDrawOffsetY = 0;
+	float mDrawWidth;
+	float mDrawHeight;
+	float mDrawOffsetX = 0;
+	float mDrawOffsetY = 0;
 	
 	private Vec2 mProjectileSpawnPoint = new Vec2();
 	
