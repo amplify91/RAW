@@ -6,7 +6,7 @@ public class PhysicsProjectile extends PhysicsComponent{
 	
 	//int mType;
 	float mVelocity;
-	Vec2 mVelocityVec = new Vec2(1, 1);
+	Vec2 mVelocityVec = new Vec2(0, 1);
 	//Vec2 mSpawnPoint;
 	Vec2 mDestinationPoint;
 	
@@ -20,9 +20,9 @@ public class PhysicsProjectile extends PhysicsComponent{
 		
 	}
 	
-	@Override
-	public void setProjectileProperties(int type, Vec2 destinationPoint){
-		
+	public void setProjectileProperties(int type, Sprite parent, Vec2 destinationPoint){
+		//TODO finish. also swap parent for just vec2 spawnpoint if no other info is needed from parent.
+		mBody.setTransform(parent.getProjectileSpawnPoint(), 0);
 		//mType = type;
 		//mSpawnPoint = spawnPoint;
 		mDestinationPoint = destinationPoint;

@@ -1,5 +1,7 @@
 package com.detour.raw;
 
+import org.jbox2d.common.Vec2;
+
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -84,7 +86,8 @@ public class Input {
 	
 	private void shoot(float x, float y){
 		mGameManager.getLevel().getHero().dash();//TODO remove this and create separate dash() function
-		Log.i("Touch", "Shot at "+eventX[0]+"' "+eventY[0]);
+		FireProjectileEvent fire = new FireProjectileEvent(eventX[0], eventY[0]);
+		EventQueue.getEventQueue().queue(fire);
 		/*Projectile p = new Projectile();
 		mGameManager.mLevel.create(p, mGameManager.getHero().getX(), mGameManager.getHero().getY(), 0.2f, 0.2f, true);
 		p.mPhysics.setProjectileProperties(mGameManager.getHero(), mGameManager.getHero().getX()+0.5f, mGameManager.getHero().getY()+0.5f, 0);*/

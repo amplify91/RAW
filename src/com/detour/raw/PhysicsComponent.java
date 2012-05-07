@@ -75,8 +75,4 @@ public abstract class PhysicsComponent {
 		return mBody.getPosition().y;
 	}
 	
-	public void setProjectileProperties(int type, Vec2 destinationPoint){
-		
-	}
-	
 }

@@ -63,8 +63,8 @@ public class Sprite{
 		return mPhysics.getY() + mDrawHeight/2f;
 	}*/
 	
-	public Vec2 getProjectileSpawnPoint(){
-		mProjectileSpawnPoint.set(mPhysics.getX(), mPhysics.getY());//TODO change arguments to mPhysics.getProjectileSpawn
+	public Vec2 getProjectileSpawnPoint(){//TODO move to an interface like IProjectileParent or something
+		mProjectileSpawnPoint.set(mPhysics.getX()+3, mPhysics.getY());//TODO change arguments to mPhysics.getProjectileSpawn
 		return mProjectileSpawnPoint;
 	}
 	

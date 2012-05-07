@@ -1,7 +1,5 @@
 package com.detour.raw;
 
-import org.jbox2d.common.Vec2;
-
 import android.content.Context;
 
 public class GameManager {
@@ -40,6 +38,7 @@ public class GameManager {
 		if(levelLoaded){
 			camera.update((float)mLevel.getHero().getX()+1f, (float)mLevel.getHero().getY());
 			mHUD.update();
+			EventQueue.getEventQueue().processAndRemoveAllEvents();
 			mLevel.update(deltaTime, 8, 3);
 			//TODO update camera AFTER level?
 		}
@@ -70,18 +69,6 @@ public class GameManager {
 		mHeroTexture = new Texture(context, Animation.HERO_TEXTURE, 3, new int[]{3,1,5}, new int[]{8,8,4,0,7,16,16,16,16}, new int[]{128,1024,64}, new int[]{128,320,64});
 		if(!levelLoaded){
 			levelLoader = new LevelLoader(context, level, mLevel);
-			//tileMap = levelLoader.getTileMap();
-			
-			//hero = new Hero();
-			//test1 = new Tile(64);
-			//Vec2[] verts = {new Vec2(0,0),new Vec2(0.5f,0),new Vec2(0.5f,0.5f)};
-			//SpriteFactory sf = new SpriteFactory(mLevel);
-			//sf.createHero(2, 3);
-			//sf.createTile(64);
-			//mLevel.create(test1, 47.5f, 1.5f, verts, false);
-			//mLevel.create(hero, 2, 3, 1, 1, true);
-			//bullet1 = new Projectile(Projectile.TYPE_RAW, hero, null);
-			//mLevel.create(bullet1, 0, 0, null, true);
 			
 			spriteBatch = new SpriteBatch(1600, SpriteBatch.SPRITE_SHADER, context, camera);
 			

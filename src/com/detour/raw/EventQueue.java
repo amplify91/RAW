@@ -25,4 +25,11 @@ public class EventQueue {
 		return mQueue.remove(0);
 	}
 	
+	public void processAndRemoveAllEvents(){
+		for(Event event: mQueue){
+			event.executeEvent();
+		}
+		mQueue.clear();
+	}
+	
 }
